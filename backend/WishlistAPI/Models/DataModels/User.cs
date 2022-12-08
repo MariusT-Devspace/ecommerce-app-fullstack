@@ -27,6 +27,9 @@ namespace WishlistAPI.Models.DataModels
 
         [Required]
         public UserRole? Role { get; set; }
+
+        [Required]
+        public ICollection<WishlistItem> Wishlist { get; set; } = new List<Product>();
         
     }
 }
