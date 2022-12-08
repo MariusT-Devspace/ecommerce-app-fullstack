@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using WishlistAPI.Models;
+using WishlistAPI.Models.DataModels;
 
 namespace WishlistAPI.DataAccess
 {
@@ -10,5 +10,6 @@ namespace WishlistAPI.DataAccess
         public DbSet<Product>? Products { get; set; }
         public DbSet<Category>? Categories { get; set; }
         public DbSet<Rating>? Ratings { get; set; }
+        public DbSet<WishlistAPI.Models.DataModels.User> User { get; set; }
     }
 }

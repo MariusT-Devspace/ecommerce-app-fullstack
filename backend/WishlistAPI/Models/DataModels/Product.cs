@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 
-namespace WishlistAPI.Models
+namespace WishlistAPI.Models.DataModels
 {
     public class Product : BaseEntity
     {

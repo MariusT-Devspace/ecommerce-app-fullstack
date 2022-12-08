@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using WishlistAPI.DataAccess;
-using WishlistAPI.Models;
+using WishlistAPI.Models.DataModels;
 
 namespace WishlistAPI.Controllers
 {

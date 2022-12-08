@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace WishlistAPI.Models
+namespace WishlistAPI.Models.DataModels
 {
     public class BaseEntity
     {

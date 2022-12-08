@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace WishlistAPI.Models
+namespace WishlistAPI.Models.DataModels
 {
-    public class Rating: BaseEntity
+    public class Rating : BaseEntity
     {
         [Required]
         [RegularExpression(@"^\d+\.\d{0,1}$")]

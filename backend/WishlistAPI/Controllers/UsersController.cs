@@ -12,47 +12,47 @@ namespace WishlistAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class RatingsController : ControllerBase
+    public class UsersController : ControllerBase
     {
         private readonly WishlistDBContext _context;
 
-        public RatingsController(WishlistDBContext context)
+        public UsersController(WishlistDBContext context)
         {
             _context = context;
         }
 
-        // GET: api/Ratings
+        // GET: api/Users
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Rating>>> GetRatings()
+        public async Task<ActionResult<IEnumerable<User>>> GetUser()
         {
-            return await _context.Ratings.ToListAsync();
+            return await _context.User.ToListAsync();
         }
 
-        // GET: api/Ratings/5
+        // GET: api/Users/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Rating>> GetRating(int id)
+        public async Task<ActionResult<User>> GetUser(int id)
         {
-            var rating = await _context.Ratings.FindAsync(id);
+            var user = await _context.User.FindAsync(id);
 
-            if (rating == null)
+            if (user == null)
             {
                 return NotFound();
             }
 
-            return rating;
+            return user;
         }
 
-        // PUT: api/Ratings/5
+        // PUT: api/Users/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutRating(int id, Rating rating)
+        public async Task<IActionResult> PutUser(int id, User user)
         {
-            if (id != rating.Id)
+            if (id != user.Id)
             {
                 return BadRequest();
             }
 
-            _context.Entry(rating).State = EntityState.Modified;
+            _context.Entry(user).State = EntityState.Modified;
 
             try
             {
@@ -60,7 +60,7 @@ namespace WishlistAPI.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!RatingExists(id))
+                if (!UserExists(id))
                 {
                     return NotFound();
                 }
@@ -73,36 +73,36 @@ namespace WishlistAPI.Controllers
             return NoContent();
         }
 
-        // POST: api/Ratings
+        // POST: api/Users
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Rating>> PostRating(Rating rating)
+        public async Task<ActionResult<User>> PostUser(User user)
         {
-            _context.Ratings.Add(rating);
+            _context.User.Add(user);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetRating", new { id = rating.Id }, rating);
+            return CreatedAtAction("GetUser", new { id = user.Id }, user);
         }
 
-        // DELETE: api/Ratings/5
+        // DELETE: api/Users/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteRating(int id)
+        public async Task<IActionResult> DeleteUser(int id)
         {
-            var rating = await _context.Ratings.FindAsync(id);
-            if (rating == null)
+            var user = await _context.User.FindAsync(id);
+            if (user == null)
             {
                 return NotFound();
             }
 
-            _context.Ratings.Remove(rating);
+            _context.User.Remove(user);
             await _context.SaveChangesAsync();
 
             return NoContent();
         }
 
-        private bool RatingExists(int id)
+        private bool UserExists(int id)
         {
-            return _context.Ratings.Any(e => e.Id == id);
+            return _context.User.Any(e => e.Id == id);
         }
     }
 }
