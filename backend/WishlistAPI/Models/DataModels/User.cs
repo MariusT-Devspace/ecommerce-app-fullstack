@@ -29,7 +29,7 @@ namespace WishlistAPI.Models.DataModels
         public UserRole? Role { get; set; }
 
         [Required]
-        public ICollection<WishlistItem> Wishlist { get; set; } = new List<Product>();
+        public ICollection<WishlistItem> Wishlist { get; set; } = new List<WishlistItem>();
         
     }
 }
