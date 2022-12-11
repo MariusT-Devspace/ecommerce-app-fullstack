@@ -18,6 +18,9 @@ namespace WishlistAPI.Models.DataModels
 
         public string Picture { get; set; } = string.Empty;
 
+        [Required]
+        public bool IsAvailable { get; set; } = true;
+
         [ForeignKey("Rating")]
         public int? RatingId { get; set; }
         public Rating? Rating { get; set; }
@@ -25,5 +28,6 @@ namespace WishlistAPI.Models.DataModels
         [ForeignKey("Category")]
         public int? CategoryId { get; set; }
         public virtual Category? Category { get; set; }
+
     }
 }
