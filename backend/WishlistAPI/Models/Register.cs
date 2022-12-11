@@ -18,6 +18,8 @@ namespace WishlistAPI.Models
         public string Username { get; set; } = string.Empty;
 
         [Required]
+        // 1 uppercase letter, 1 number and minimum 6 characters
+        [RegularExpression(@"^(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{6,}$")]
         public string Password { get; set; } = string.Empty;
     }
 }
