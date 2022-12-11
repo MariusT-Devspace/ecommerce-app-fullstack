@@ -11,6 +11,6 @@ namespace WishlistAPI.DataAccess
         public DbSet<Category>? Categories { get; set; }
         public DbSet<Rating>? Ratings { get; set; }
         public DbSet<User>? Users { get; set; }
-        public DbSet<WishlistItem>? Wishlists { get; set; }
+        public DbSet<WishlistItem>? WishlistItems { get; set; }
     }
 }

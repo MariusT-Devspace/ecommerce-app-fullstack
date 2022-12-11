@@ -26,10 +26,9 @@ namespace WishlistAPI.Models.DataModels
         public string PasswordHash { get; set; } = string.Empty;
 
         [Required]
-        public UserRole? Role { get; set; }
+        public UserRole? Role { get; set; } = UserRole.User;
 
-        [Required]
-        public ICollection<WishlistItem> Wishlist { get; set; } = new List<WishlistItem>();
+        public virtual ICollection<WishlistItem> Wishlist { get; set; } = new List<WishlistItem>();
         
     }
 }
