@@ -10,15 +10,17 @@ namespace WishlistAPI.Models.DataModels
             Administrator,
             User
         }
-        string IUser<string>.Id { get; } = string.Empty;
 
-        [Required, StringLength(50)]
-        string IUser<string>.UserName { get; set; } = string.Empty;
+        [Key]
+        public string Id { get; private set;  } = Guid.NewGuid().ToString();
+
+        [Required, StringLength(20)]
+        public string UserName { get; set; } = string.Empty;
 
         [Required, StringLength(50)]
         public string FirstName { get; set; } = string.Empty;
 
-        [Required, StringLength(50)]
+        [Required, StringLength(50)]  
         public string LastName { get; set; } = string.Empty;
 
         [Required, EmailAddress]
@@ -28,10 +30,10 @@ namespace WishlistAPI.Models.DataModels
         public string PasswordHash { get; set; } = string.Empty;
 
         [Required]
-        public UserRole? Role { get; set; } = UserRole.User;
+        public UserRole? Role { get; private set; } = UserRole.User;
 
-        public DateTime CreatedOn { get; set; } = DateTime.Now;
-        public DateTime UpdatedOn { get; set; } = DateTime.Now;
+        public DateTime CreatedOn { get; private set; } = DateTime.Now;
+        public DateTime UpdatedOn { get; private set; } = DateTime.Now;
         public DateTime? DeletedOn { get; set; }
         public bool IsDeleted { get; set; } = false;
 
