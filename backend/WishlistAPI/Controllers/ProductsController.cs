@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using WishlistAPI.DataAccess;
 using WishlistAPI.Models.DataModels;
@@ -24,7 +19,12 @@ namespace WishlistAPI.Controllers
         // GET: api/Products
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Product>>> GetProducts()
-        {
+        { 
+            if (_context.Products == null)
+            {
+                return NotFound();
+            }
+
             return await _context.Products.ToListAsync();
         }
 
@@ -32,7 +32,7 @@ namespace WishlistAPI.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Product>> GetProduct(int id)
         {
-            var product = await _context.Products.FindAsync(id);
+            var product = await _context.Products!.FindAsync(id);
 
             if (product == null)
             {
@@ -78,6 +78,11 @@ namespace WishlistAPI.Controllers
         [HttpPost]
         public async Task<ActionResult<Product>> PostProduct(Product product)
         {
+            if (_context.Products == null)
+            {
+                return NotFound();
+            }
+
             _context.Products.Add(product);
             await _context.SaveChangesAsync();
 
@@ -88,6 +93,11 @@ namespace WishlistAPI.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteProduct(int id)
         {
+            if (_context.Products == null)
+            {
+                return NotFound();
+            }
+
             var product = await _context.Products.FindAsync(id);
             if (product == null)
             {
@@ -102,7 +112,7 @@ namespace WishlistAPI.Controllers
 
         private bool ProductExists(int id)
         {
-            return _context.Products.Any(e => e.Id == id);
+            return _context.Products!.Any(e => e.Id == id);
         }
     }
 }

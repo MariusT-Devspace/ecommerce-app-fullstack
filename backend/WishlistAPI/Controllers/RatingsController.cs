@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using WishlistAPI.DataAccess;
 using WishlistAPI.Models.DataModels;
@@ -25,6 +20,11 @@ namespace WishlistAPI.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Rating>>> GetRatings()
         {
+            if (_context.Ratings == null)
+            {
+                return NotFound();
+            }
+
             return await _context.Ratings.ToListAsync();
         }
 
@@ -32,6 +32,11 @@ namespace WishlistAPI.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Rating>> GetRating(int id)
         {
+            if (_context.Ratings == null)
+            {
+                return NotFound();
+            }
+
             var rating = await _context.Ratings.FindAsync(id);
 
             if (rating == null)
@@ -78,6 +83,11 @@ namespace WishlistAPI.Controllers
         [HttpPost]
         public async Task<ActionResult<Rating>> PostRating(Rating rating)
         {
+            if (_context.Ratings == null)
+            {
+                return NotFound();
+            }
+
             _context.Ratings.Add(rating);
             await _context.SaveChangesAsync();
 
@@ -88,6 +98,11 @@ namespace WishlistAPI.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteRating(int id)
         {
+            if (_context.Ratings == null)
+            {
+                return NotFound();
+            }
+
             var rating = await _context.Ratings.FindAsync(id);
             if (rating == null)
             {
@@ -102,7 +117,7 @@ namespace WishlistAPI.Controllers
 
         private bool RatingExists(int id)
         {
-            return _context.Ratings.Any(e => e.Id == id);
+            return _context.Ratings!.Any(e => e.Id == id);
         }
     }
 }

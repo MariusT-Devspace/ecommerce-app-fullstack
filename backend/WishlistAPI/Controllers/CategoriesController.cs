@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using WishlistAPI.DataAccess;
 using WishlistAPI.Models.DataModels;
@@ -25,6 +20,11 @@ namespace WishlistAPI.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Category>>> GetCategories()
         {
+            if (_context.Categories == null)
+            {
+                return NotFound();
+            }
+
             return await _context.Categories.ToListAsync();
         }
 
@@ -32,6 +32,11 @@ namespace WishlistAPI.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Category>> GetCategory(int id)
         {
+            if (_context.Categories == null)
+            {
+                return NotFound();
+            }
+
             var category = await _context.Categories.FindAsync(id);
 
             if (category == null)
@@ -47,6 +52,11 @@ namespace WishlistAPI.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> PutCategory(int id, Category category)
         {
+            if (_context.Categories == null)
+            {
+                return NotFound();
+            }
+
             if (id != category.Id)
             {
                 return BadRequest();
@@ -78,6 +88,11 @@ namespace WishlistAPI.Controllers
         [HttpPost]
         public async Task<ActionResult<Category>> PostCategory(Category category)
         {
+            if (_context.Categories == null)
+            {
+                return NotFound();
+            }
+
             _context.Categories.Add(category);
             await _context.SaveChangesAsync();
 
@@ -88,6 +103,11 @@ namespace WishlistAPI.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteCategory(int id)
         {
+            if (_context.Categories == null)
+            {
+                return NotFound();
+            }
+
             var category = await _context.Categories.FindAsync(id);
             if (category == null)
             {
@@ -102,7 +122,7 @@ namespace WishlistAPI.Controllers
 
         private bool CategoryExists(int id)
         {
-            return _context.Categories.Any(e => e.Id == id);
+            return _context.Categories!.Any(e => e.Id == id);
         }
     }
 }

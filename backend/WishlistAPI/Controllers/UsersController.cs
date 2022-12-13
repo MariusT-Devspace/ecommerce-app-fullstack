@@ -20,6 +20,11 @@ namespace WishlistAPI.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<User>>> GetUser()
         {
+            if (_context.Users == null)
+            {
+                return NotFound();
+            }
+
             return await _context.Users.ToListAsync();
         }
 
@@ -27,6 +32,11 @@ namespace WishlistAPI.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<User>> GetUser(int id)
         {
+            if (_context.Users == null)
+            {
+                return NotFound();
+            }
+
             var user = await _context.Users.FindAsync(id);
 
             if (user == null)
@@ -73,6 +83,11 @@ namespace WishlistAPI.Controllers
         [HttpPost]
         public async Task<ActionResult<User>> PostUser(User user)
         {
+            if (_context.Users == null)
+            {
+                return NotFound();
+            }
+
             _context.Users.Add(user);
             await _context.SaveChangesAsync();
 
@@ -83,6 +98,11 @@ namespace WishlistAPI.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteUser(int id)
         {
+            if (_context.Users == null)
+            {
+                return NotFound();
+            }
+
             var user = await _context.Users.FindAsync(id);
             if (user == null)
             {
@@ -97,7 +117,7 @@ namespace WishlistAPI.Controllers
 
         private bool UserExists(string id)
         {
-            return _context.Users.Any(e => e.Id == id);
+            return _context.Users!.Any(e => e.Id == id);
         }
     }
 }
