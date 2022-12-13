@@ -18,7 +18,7 @@ namespace WishlistAPI.Models.DataModels
         public string UserName { get; set; } = string.Empty;
 
         [Required, StringLength(20)]
-        public string UserNameNormalizer { get; set; } = string.Empty;
+        public string UserNameNormalized { get; set; } = string.Empty;
 
         [Required, StringLength(50)]
         public string FirstName { get; set; } = string.Empty;

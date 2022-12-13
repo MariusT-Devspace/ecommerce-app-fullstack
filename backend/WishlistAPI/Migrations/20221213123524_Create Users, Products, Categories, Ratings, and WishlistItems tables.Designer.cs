@@ -12,8 +12,8 @@ using WishlistAPI.DataAccess;
 namespace WishlistAPI.Migrations
 {
     [DbContext(typeof(WishlistDBContext))]
-    [Migration("20221211183341_Add IsAvailable field to Products table")]
-    partial class AddIsAvailablefieldtoProductstable
+    [Migration("20221213123524_Create Users, Products, Categories, Ratings, and WishlistItems tables")]
+    partial class CreateUsersProductsCategoriesRatingsandWishlistItemstables
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -143,11 +143,8 @@ namespace WishlistAPI.Migrations
 
             modelBuilder.Entity("WishlistAPI.Models.DataModels.User", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<DateTime>("CreatedOn")
                         .HasColumnType("datetime2");
@@ -182,10 +179,15 @@ namespace WishlistAPI.Migrations
                     b.Property<DateTime>("UpdatedOn")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("Username")
+                    b.Property<string>("UserName")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
+                    b.Property<string>("UserNameNormalized")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
 
                     b.HasKey("Id");
 
@@ -207,8 +209,8 @@ namespace WishlistAPI.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("UserId")
-                        .HasColumnType("int");
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("ProductId");
 

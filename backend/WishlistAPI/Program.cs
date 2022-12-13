@@ -36,9 +36,13 @@ KeyVaultSecret secret = client.GetSecret("WishlistAPIConnectionString");
 
 string secretValue = secret.Value;
 
+// Connection with local SQL Server
+const string CONNECTIONNAME = "WishlistDB";
+var connectionString = builder.Configuration.GetConnectionString(CONNECTIONNAME);
 
 // Add DbContext
-builder.Services.AddDbContext<WishlistDBContext>(options => options.UseSqlServer(secretValue));
+//builder.Services.AddDbContext<WishlistDBContext>(options => options.UseSqlServer(secretValue));
+builder.Services.AddDbContext<WishlistDBContext>(options => options.UseSqlServer(connectionString));
 
 // CORS Configuration
 builder.Services.AddCors(options =>

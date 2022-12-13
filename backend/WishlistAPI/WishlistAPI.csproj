@@ -25,7 +25,6 @@
 
   <ItemGroup>
     <Folder Include="Migrations\" />
-    <Folder Include="Extensions\" />
     <Folder Include="Services\Classes\" />
     <Folder Include="Services\Interfaces\" />
   </ItemGroup>
