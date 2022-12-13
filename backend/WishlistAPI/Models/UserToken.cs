@@ -10,6 +10,8 @@ namespace WishlistAPI.Models
         public string LastName { get; set; } = string.Empty;
         public string Email { get; set; } = string.Empty;
         public DateTime Expiration { get; set; }
+        public TimeSpan Validity { get; set; }
+        public string RefreshToken { get; set; } = string.Empty;
         public string Token { get; set; } = string.Empty;
         public UserRole? Role { get; set; }
         public string WelcomeMessage { get; set; } = string.Empty;
