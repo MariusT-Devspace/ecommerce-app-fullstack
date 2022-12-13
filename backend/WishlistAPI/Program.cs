@@ -3,6 +3,7 @@ using Azure.Identity;
 using Azure.Security.KeyVault.Secrets;
 using Microsoft.EntityFrameworkCore;
 using WishlistAPI.DataAccess;
+using WishlistAPI.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -29,20 +30,20 @@ SecretClientOptions options = new SecretClientOptions()
          }
 };
 
-
-var client = new SecretClient(keyVaultEndpoint, new DefaultAzureCredential(), options);
-
-KeyVaultSecret secret = client.GetSecret("WishlistAPIConnectionString");
-
-string secretValue = secret.Value;
+var secretClient = new SecretClient(keyVaultEndpoint, new DefaultAzureCredential(), options);
+KeyVaultSecret connectionStringSecret = secretClient.GetSecret("WishlistAPIConnectionString");
+string connectionStringSecretValue = connectionStringSecret.Value;
 
 // Connection with local SQL Server
 const string CONNECTIONNAME = "WishlistDB";
 var connectionString = builder.Configuration.GetConnectionString(CONNECTIONNAME);
 
 // Add DbContext
-//builder.Services.AddDbContext<WishlistDBContext>(options => options.UseSqlServer(secretValue));
+//builder.Services.AddDbContext<WishlistDBContext>(options => options.UseSqlServer(connectionStringSecretValue));
 builder.Services.AddDbContext<WishlistDBContext>(options => options.UseSqlServer(connectionString));
+
+// Add JWT Authorization service
+builder.Services.AddJwtServices(builder.Configuration, builder.Environment, secretClient);
 
 // CORS Configuration
 builder.Services.AddCors(options =>
