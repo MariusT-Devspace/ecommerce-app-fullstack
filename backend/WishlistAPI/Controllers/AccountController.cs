@@ -29,28 +29,28 @@ namespace WishlistAPI.Controllers
                     return NotFound();
                 }
 
-                bool validUsername;
-                bool validPassword = false;                
+                bool isValidUsername;
+                bool isValidPassword = false;                
 
                 // Verify login input
                 if (LoginHelpers.IsEmail(login.LoginInput))
-                    validUsername = await _dBContext.Users.AnyAsync(user => user.EmailNormalized.Equals(login.LoginInput.ToUpperInvariant()));
+                    isValidUsername = await _dBContext.Users.AnyAsync(user => user.EmailNormalized.Equals(login.LoginInput.ToUpperInvariant()));
                 else
-                    validUsername = await _dBContext.Users.AnyAsync(user => user.UserNameNormalized.Equals(login.LoginInput.ToUpperInvariant()));
+                    isValidUsername = await _dBContext.Users.AnyAsync(user => user.UserNameNormalized.Equals(login.LoginInput.ToUpperInvariant()));
 
                 User? user;
 
                 string badRequestMessage = "Wrong username or password";
 
                 // If username valid, verify password hash
-                if (validUsername)
+                if (isValidUsername)
                 {
-                    user = await _dBContext.Users.FirstOrDefaultAsync();
-                    string hashedPassword = PasswordHasher.HashPassword(user, login.Password.ToString());
-                    validPassword = await _dBContext.Users.AnyAsync(user => user.PasswordHash.Equals(hashedPassword));
+                    user = await _dBContext.Users.FirstOrDefaultAsync(user => user.EmailNormalized.Equals(login.LoginInput.ToUpperInvariant()));
+                    string passwordHash = PasswordHasher.HashPassword(user, login.Password.ToString());
+                    isValidPassword = PasswordHasher.VerifyPassword(passwordHash, login.Password);
                     
                     // If both username and password are valid, return a token
-                    if (validUsername && validPassword)
+                    if (isValidUsername && isValidPassword)
                     {
                         DateTime expiration = DateTime.UtcNow.AddDays(1);
                         string message = $"Welcome back, {user.FirstName}";
