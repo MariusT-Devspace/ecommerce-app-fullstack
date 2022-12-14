@@ -29,6 +29,9 @@ namespace WishlistAPI.Models.DataModels
         [Required, EmailAddress]
         public string Email { get; set; } = string.Empty;
 
+        [Required, EmailAddress]
+        public string EmailNormalized { get; set; } = string.Empty;
+
         [Required]
         public string PasswordHash { get; set; } = string.Empty;
 
