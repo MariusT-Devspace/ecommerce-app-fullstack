@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using WishlistAPI.DataAccess;
 using WishlistAPI.Models;
@@ -34,9 +34,9 @@ namespace WishlistAPI.Controllers
 
                 // Verify login input
                 if (LoginHelpers.IsEmail(login.LoginInput))
-                    validUsername = await _dBContext.Users.AnyAsync(user => user.Email.Equals(login));
+                    validUsername = await _dBContext.Users.AnyAsync(user => user.EmailNormalized.Equals(login.LoginInput.ToUpperInvariant()));
                 else
-                    validUsername = await _dBContext.Users.AnyAsync(user => user.UserName.Equals(login));
+                    validUsername = await _dBContext.Users.AnyAsync(user => user.UserNameNormalized.Equals(login.LoginInput.ToUpperInvariant()));
 
                 User? user;
 
