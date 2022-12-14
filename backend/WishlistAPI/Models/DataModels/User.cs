@@ -36,7 +36,7 @@ namespace WishlistAPI.Models.DataModels
         public string PasswordHash { get; set; } = string.Empty;
 
         [Required]
-        public UserRole? Role { get; private set; } = UserRole.User;
+        public UserRole? Role { get; set; } = UserRole.User;
 
         public DateTime CreatedOn { get; private set; } = DateTime.Now;
         public DateTime UpdatedOn { get; private set; } = DateTime.Now;
