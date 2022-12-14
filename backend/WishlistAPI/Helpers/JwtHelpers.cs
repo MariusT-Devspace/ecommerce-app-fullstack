@@ -39,9 +39,11 @@ namespace WishlistAPI.Helpers
                 // Obtain secret key
                 var key = System.Text.Encoding.ASCII.GetBytes(jwtSettings.IssuerSigningKey);
 
+                string issuer = Environment.GetEnvironmentVariable("Issuer") ?? jwtSettings.ValidIssuers[0];
+
                 // Generate JWT
                 var jwtToken = new JwtSecurityToken(
-                    issuer: jwtSettings.ValidIssuer,
+                    issuer: issuer,
                     audience: jwtSettings.ValidAudience,
                     claims: GetClaims(userToken),
                     notBefore: new DateTimeOffset(DateTime.Now).DateTime,

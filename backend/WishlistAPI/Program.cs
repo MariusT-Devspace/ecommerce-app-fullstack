@@ -43,7 +43,14 @@ var connectionString = builder.Configuration.GetConnectionString(CONNECTIONNAME)
 builder.Services.AddDbContext<WishlistDBContext>(options => options.UseSqlServer(connectionString));
 
 // Add JWT Authorization service
+
 builder.Services.AddJwtServices(builder.Configuration, builder.Environment, secretClient);
+
+// Set JWT Issuer based on environment
+if (builder.Environment.IsDevelopment())
+    Environment.SetEnvironmentVariable("Issuer", "https://localhost:7118");
+else
+    Environment.SetEnvironmentVariable("Issuer", "https://wishlist-api.azurewebsites.net");
 
 // CORS Configuration
 builder.Services.AddCors(options =>

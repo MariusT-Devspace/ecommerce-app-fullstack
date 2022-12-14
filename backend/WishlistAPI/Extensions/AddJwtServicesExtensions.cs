@@ -42,7 +42,7 @@ namespace WishlistAPI.Extensions
                     ValidateIssuerSigningKey = bindJwtSettings.ValidateIssuerSigningKey,
                     IssuerSigningKey = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(issuerSigningKeySecretValue)),
                     ValidateIssuer = bindJwtSettings.ValidateIssuer,
-                    ValidIssuer = bindJwtSettings.ValidIssuer,
+                    ValidIssuers = bindJwtSettings.ValidIssuers,
                     ValidateAudience = bindJwtSettings.ValidateAudience,
                     ValidAudience = bindJwtSettings.ValidAudience,
                     RequireExpirationTime = bindJwtSettings.RequireExpirationTime,
