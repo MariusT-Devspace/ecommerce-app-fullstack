@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using WishlistAPI.DataAccess;
 using WishlistAPI.Models;
@@ -20,7 +20,7 @@ namespace WishlistAPI.Controllers
             _jwtSettings = jwtSettings;
         }
 
-        [HttpPost]
+        [HttpPost("Login")]
         public async Task<ActionResult<IEnumerable<UserToken>>> Login(Login login)
         {
             try
@@ -89,7 +89,7 @@ namespace WishlistAPI.Controllers
             }
         }
 
-        [HttpPost]
+        [HttpPost("Register")]
         public async Task<ActionResult<IEnumerable<UserToken>>> Register(Register register)
         {
             try
