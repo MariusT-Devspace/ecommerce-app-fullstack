@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using WishlistAPI.DataAccess;
 using WishlistAPI.Models;
@@ -47,14 +47,14 @@ namespace WishlistAPI.Controllers
                 if (isValidUsername)
                 {
                     user = await _dBContext.Users.FirstOrDefaultAsync(user => user.EmailNormalized.Equals(login.LoginInput.ToUpperInvariant()));
-                    string passwordHash = PasswordHasher.HashPassword(user, login.Password.ToString());
-                    isValidPassword = PasswordHasher.VerifyPassword(user, passwordHash, login.Password);
+                    string passwordHash = PasswordHasher.HashPassword(user!, login.Password.ToString());
+                    isValidPassword = PasswordHasher.VerifyPassword(user!, passwordHash, login.Password);
                     
                     // If both username and password are valid, return a token
                     if (isValidUsername && isValidPassword)
                     {
                         DateTime expiration = DateTime.UtcNow.AddDays(1);
-                        string message = $"Welcome back, {user.FirstName}";
+                        string message = $"Welcome back, {user!.FirstName}";
 
                         UserToken token = new()
                         {
@@ -144,7 +144,7 @@ namespace WishlistAPI.Controllers
             }
             catch (Exception ex)
             {
-                throw new Exception("Register error");
+                throw new Exception("Register error", ex);
             }
         }
     }
