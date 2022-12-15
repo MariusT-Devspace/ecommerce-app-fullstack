@@ -13,7 +13,7 @@ namespace WishlistAPI.Identity
             return hashedPassword;
         }
 
-        public static bool VerifyPassword(IUser user, string password, string hashedPassword)
+        public static bool VerifyPassword(IUser user, string hashedPassword, string password)
         {
             var passwordHasher = new PasswordHasher<IUser>();
             var result = passwordHasher.VerifyHashedPassword(user, hashedPassword, password);

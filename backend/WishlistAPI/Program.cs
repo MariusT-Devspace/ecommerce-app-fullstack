@@ -2,6 +2,8 @@ using Azure.Core;
 using Azure.Identity;
 using Azure.Security.KeyVault.Secrets;
 using Microsoft.EntityFrameworkCore;
+using Serilog;
+using Serilog.Sinks.MSSqlServer;
 using WishlistAPI.DataAccess;
 using WishlistAPI.Extensions;
 
@@ -35,15 +37,39 @@ KeyVaultSecret connectionStringSecret = secretClient.GetSecret("WishlistAPIConne
 string connectionStringSecretValue = connectionStringSecret.Value;
 
 // Connection with local SQL Server
-const string CONNECTIONNAME = "WishlistDB";
-var connectionString = builder.Configuration.GetConnectionString(CONNECTIONNAME);
+const string LOCALCONNECTIONNAME = "WishlistDB";
+var localConnectionString = builder.Configuration.GetConnectionString(LOCALCONNECTIONNAME);
 
 // Add DbContext
 //builder.Services.AddDbContext<WishlistDBContext>(options => options.UseSqlServer(connectionStringSecretValue));
-builder.Services.AddDbContext<WishlistDBContext>(options => options.UseSqlServer(connectionString));
+builder.Services.AddDbContext<WishlistDBContext>(options => options.UseSqlServer(localConnectionString));
+
+// Configure Serilog
+var loggerConnectionString = string.Empty;
+if (builder.Environment.IsDevelopment())
+    loggerConnectionString = localConnectionString;
+else
+    loggerConnectionString = connectionStringSecretValue;
+
+builder.Host.UseSerilog((hostBuilderCtx, loggerConf) =>
+{
+    loggerConf.WriteTo.Console()
+              .WriteTo.Debug()
+              .ReadFrom.Configuration(hostBuilderCtx.Configuration)
+              .WriteTo.MSSqlServer(
+                  connectionString: localConnectionString,
+                  sinkOptions: new MSSqlServerSinkOptions()
+                  {
+                      SchemaName = "EventLogging",
+                      TableName = "Logs",
+                      AutoCreateSqlTable = true,
+                      BatchPostingLimit = 1000,
+                      BatchPeriod = new TimeSpan(0, 0, 30)
+                  }
+              );
+});
 
 // Add JWT Authorization service
-
 builder.Services.AddJwtServices(builder.Configuration, builder.Environment, secretClient);
 
 // Set JWT Issuer based on environment
