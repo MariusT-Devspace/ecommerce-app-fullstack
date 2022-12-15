@@ -69,6 +69,9 @@ builder.Host.UseSerilog((hostBuilderCtx, loggerConf) =>
               );
 });
 
+// Add HttpContextAccessor
+builder.Services.AddHttpContextAccessor();
+
 // Add JWT Authorization service
 builder.Services.AddJwtServices(builder.Configuration, builder.Environment, secretClient);
 
