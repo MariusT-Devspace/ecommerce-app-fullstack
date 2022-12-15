@@ -1,16 +1,20 @@
 ﻿using Azure.Security.KeyVault.Secrets;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
+using Serilog;
 using WishlistAPI.Models;
+using ILogger = Serilog.ILogger;
 
 namespace WishlistAPI.Extensions
 {
     public static class AddJwtServicesExtension
     {
+        private static readonly ILogger logger = Log.ForContext(typeof(AddJwtServicesExtension));
         public static void AddJwtServices(this IServiceCollection services, IConfiguration configuration, 
                                             IWebHostEnvironment environment, SecretClient secretClient)
         {
             // Add JWT Settings
+            logger.Information("{Class} - {Method}: Binding Jwt settings...", "AddJwtServicesExtension", "AddJwtServices");
             var bindJwtSettings = new JwtSettings();
             configuration.Bind("JwtKeys", bindJwtSettings);
 
@@ -18,9 +22,8 @@ namespace WishlistAPI.Extensions
             services.AddSingleton(bindJwtSettings);
 
             // Get IssuerSigningKey secret
-            var _secretClient = secretClient;
-            KeyVaultSecret issuerSigningKeySecret = _secretClient.GetSecret("WishlistAPIJwtIssuerSigningKey");
-            var issuerSigningKeySecretValue = issuerSigningKeySecret.Value;
+            KeyVaultSecret issuerSigningKeySecret = secretClient.GetSecret("WishlistAPIJwtIssuerSigningKey");
+            var issuerSigningKeySecretValue = Convert.FromBase64String(issuerSigningKeySecret.Value);
 
             // Add jwt bearer authentication
             services.AddAuthentication(options =>
@@ -40,7 +43,7 @@ namespace WishlistAPI.Extensions
                 options.TokenValidationParameters = new TokenValidationParameters()
                 {
                     ValidateIssuerSigningKey = bindJwtSettings.ValidateIssuerSigningKey,
-                    IssuerSigningKey = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(issuerSigningKeySecretValue)),
+                    IssuerSigningKey = new SymmetricSecurityKey(issuerSigningKeySecretValue),
                     ValidateIssuer = bindJwtSettings.ValidateIssuer,
                     ValidIssuers = bindJwtSettings.ValidIssuers,
                     ValidateAudience = bindJwtSettings.ValidateAudience,

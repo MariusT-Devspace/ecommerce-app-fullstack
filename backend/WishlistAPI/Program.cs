@@ -2,6 +2,7 @@ using Azure.Core;
 using Azure.Identity;
 using Azure.Security.KeyVault.Secrets;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.OpenApi.Models;
 using Serilog;
 using Serilog.Sinks.MSSqlServer;
 using WishlistAPI.DataAccess;
@@ -10,7 +11,9 @@ using WishlistAPI.Extensions;
 var builder = WebApplication.CreateBuilder(args);
 
 //var keyVaultEndpoint = new Uri(Environment.GetEnvironmentVariable("VaultUri"));
-var keyVaultEndpoint = new Uri("https://wishlistapivault.vault.azure.net/");
+Environment.SetEnvironmentVariable("VaultURI", builder.Configuration["VaultURIString"]);
+
+var keyVaultEndpoint = new Uri(Environment.GetEnvironmentVariable("VaultURI"));
 builder.Configuration.AddAzureKeyVault(keyVaultEndpoint, new DefaultAzureCredential());
 
 // Add services to the container.
@@ -19,7 +22,34 @@ builder.Configuration.AddAzureKeyVault(keyVaultEndpoint, new DefaultAzureCredent
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(options =>
+{
+    // Define the Security for authorization
+    options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+    {
+        Name = "Authorization",
+        Type = SecuritySchemeType.Http,
+        Scheme = "Bearer",
+        BearerFormat = "JWT",
+        In = ParameterLocation.Header,
+        Description = "JWT Authorization Header using Bearer Scheme",
+    });
+
+    options.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {
+        {
+            new OpenApiSecurityScheme
+            {
+                Reference = new OpenApiReference
+                {
+                    Type = ReferenceType.SecurityScheme,
+                    Id = "Bearer"
+                }
+            },
+            new string[]{}
+        }
+    });
+});
 
 SecretClientOptions options = new SecretClientOptions()
 {
@@ -33,7 +63,7 @@ SecretClientOptions options = new SecretClientOptions()
 };
 
 var secretClient = new SecretClient(keyVaultEndpoint, new DefaultAzureCredential(), options);
-KeyVaultSecret connectionStringSecret = secretClient.GetSecret("WishlistAPIConnectionString");
+KeyVaultSecret connectionStringSecret = await secretClient.GetSecretAsync("WishlistAPIConnectionString");
 string connectionStringSecretValue = connectionStringSecret.Value;
 
 // Connection with local SQL Server
@@ -55,7 +85,6 @@ builder.Host.UseSerilog((hostBuilderCtx, loggerConf) =>
 {
     loggerConf.WriteTo.Console()
               .WriteTo.Debug()
-              .ReadFrom.Configuration(hostBuilderCtx.Configuration)
               .WriteTo.MSSqlServer(
                   connectionString: localConnectionString,
                   sinkOptions: new MSSqlServerSinkOptions()
@@ -66,11 +95,16 @@ builder.Host.UseSerilog((hostBuilderCtx, loggerConf) =>
                       BatchPostingLimit = 1000,
                       BatchPeriod = new TimeSpan(0, 0, 30)
                   }
-              );
+              )
+              .ReadFrom.Configuration(hostBuilderCtx.Configuration);
 });
 
 // Add HttpContextAccessor
 builder.Services.AddHttpContextAccessor();
+
+// Get IssuerSigningKey secret
+KeyVaultSecret issuerSigningKey = await secretClient.GetSecretAsync("WishlistAPIJwtIssuerSigningKey");
+var issuerSigningKeyValue = issuerSigningKey.Value;
 
 // Add JWT Authorization service
 builder.Services.AddJwtServices(builder.Configuration, builder.Environment, secretClient);
@@ -100,6 +134,9 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+// Tell app to use Serilog
+app.UseSerilogRequestLogging();
 
 app.UseHttpsRedirection();
 

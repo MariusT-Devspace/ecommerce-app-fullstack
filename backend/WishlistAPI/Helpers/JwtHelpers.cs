@@ -1,13 +1,20 @@
-﻿using Microsoft.IdentityModel.Tokens;
+﻿using Azure.Core;
+using Azure.Identity;
+using Azure.Security.KeyVault.Secrets;
+using Microsoft.IdentityModel.Tokens;
+using Serilog;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using WishlistAPI.Extensions;
 using WishlistAPI.Models;
 using WishlistAPI.Models.DataModels;
+using ILogger = Serilog.ILogger;
 
 namespace WishlistAPI.Helpers
 {
     public static class JwtHelpers
     {
+        private static readonly ILogger logger = Log.ForContext(typeof(JwtHelpers));
         public static IEnumerable<Claim> GetClaims(UserToken userToken)
         {
             List<Claim> claims = new List<Claim>()
@@ -32,15 +39,29 @@ namespace WishlistAPI.Helpers
             return claims;
         }
 
-        public static string GetTokenKey(this UserToken userToken, JwtSettings jwtSettings)
+        public static async Task<string>GetTokenKey(this UserToken userToken, JwtSettings jwtSettings)
         {
             try
             {
                 // Obtain secret key
-                var key = System.Text.Encoding.ASCII.GetBytes(jwtSettings.IssuerSigningKey);
+                SecretClientOptions options = new SecretClientOptions()
+                {
+                    Retry =
+                    {
+                    Delay= TimeSpan.FromSeconds(2),
+                    MaxDelay = TimeSpan.FromSeconds(16),
+                    MaxRetries = 5,
+                    Mode = RetryMode.Exponential
+                    }
+                };
+                var keyVaultEndpoint = new Uri(Environment.GetEnvironmentVariable("VaultURI"));
+                var secretClient = new SecretClient(keyVaultEndpoint, new DefaultAzureCredential(), options);
+                KeyVaultSecret issuerSigningKeySecret = await secretClient.GetSecretAsync("WishlistAPIJwtIssuerSigningKey");
+                var issuerSigningKeySecretValue = Convert.FromBase64String(issuerSigningKeySecret.Value);
 
                 string issuer = Environment.GetEnvironmentVariable("Issuer") ?? jwtSettings.ValidIssuers[0];
 
+                logger.Information($"JwtHelpers - GetTokenKey: Generating token...");
                 // Generate JWT
                 var jwtToken = new JwtSecurityToken(
                     issuer: issuer,
@@ -49,7 +70,7 @@ namespace WishlistAPI.Helpers
                     notBefore: new DateTimeOffset(DateTime.Now).DateTime,
                     expires: new DateTimeOffset(userToken.Expiration).DateTime,
                     signingCredentials: new SigningCredentials(
-                        new SymmetricSecurityKey(key),
+                        new SymmetricSecurityKey(issuerSigningKeySecretValue),
                         SecurityAlgorithms.HmacSha256
                         )
                     );
@@ -59,6 +80,9 @@ namespace WishlistAPI.Helpers
             }
             catch (Exception ex)
             {
+                logger.Error("Error trying to get user: {Message}", ex.Message);
+                logger.Error("Inner exception: {InnerException}", ex.InnerException);
+                logger.Error("Stack trace: {StackTrace}", ex.StackTrace);
                 throw new Exception("Error generating the JWT", ex);
             }
         }
