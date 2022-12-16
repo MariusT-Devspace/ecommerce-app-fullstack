@@ -111,7 +111,7 @@ builder.Services.AddJwtServices(builder.Configuration, builder.Environment, secr
 
 // Set JWT Issuer based on environment
 if (builder.Environment.IsDevelopment())
-    Environment.SetEnvironmentVariable("Issuer", "https://localhost:7118");
+    Environment.SetEnvironmentVariable("Issuer", "https://localhost:7201");
 else
     Environment.SetEnvironmentVariable("Issuer", "https://wishlist-api.azurewebsites.net");
 
