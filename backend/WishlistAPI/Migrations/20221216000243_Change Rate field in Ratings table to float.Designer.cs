@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WishlistAPI.DataAccess;
 
@@ -11,9 +12,10 @@ using WishlistAPI.DataAccess;
 namespace WishlistAPI.Migrations
 {
     [DbContext(typeof(WishlistDBContext))]
-    partial class WishlistDBContextModelSnapshot : ModelSnapshot
+    [Migration("20221216000243_Change Rate field in Ratings table to float")]
+    partial class ChangeRatefieldinRatingstabletofloat
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -49,7 +51,7 @@ namespace WishlistAPI.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Categories", (string)null);
+                    b.ToTable("Categories");
                 });
 
             modelBuilder.Entity("WishlistAPI.Models.DataModels.Product", b =>
@@ -104,7 +106,7 @@ namespace WishlistAPI.Migrations
 
                     b.HasIndex("RatingId");
 
-                    b.ToTable("Products", (string)null);
+                    b.ToTable("Products");
                 });
 
             modelBuilder.Entity("WishlistAPI.Models.DataModels.Rating", b =>
@@ -136,7 +138,7 @@ namespace WishlistAPI.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Ratings", (string)null);
+                    b.ToTable("Ratings");
                 });
 
             modelBuilder.Entity("WishlistAPI.Models.DataModels.User", b =>
@@ -193,7 +195,7 @@ namespace WishlistAPI.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Users", (string)null);
+                    b.ToTable("Users");
                 });
 
             modelBuilder.Entity("WishlistAPI.Models.DataModels.WishlistItem", b =>
@@ -218,7 +220,7 @@ namespace WishlistAPI.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("WishlistItems", (string)null);
+                    b.ToTable("WishlistItems");
                 });
 
             modelBuilder.Entity("WishlistAPI.Models.DataModels.Product", b =>
