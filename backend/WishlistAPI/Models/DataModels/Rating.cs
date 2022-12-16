@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace WishlistAPI.Models.DataModels
 {
@@ -11,5 +12,14 @@ namespace WishlistAPI.Models.DataModels
 
         [Required]
         public int Count { get; set; } = 0;
+
+
+
+        // Properties excluded from parent class
+        [NotMapped]
+        public DateTime? DeletedOn { get; set; }
+
+        [NotMapped]
+        public bool IsDeleted { get; set; } = false;
     }
 }
