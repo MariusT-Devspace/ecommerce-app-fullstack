@@ -66,13 +66,20 @@ var secretClient = new SecretClient(keyVaultEndpoint, new DefaultAzureCredential
 KeyVaultSecret connectionStringSecret = await secretClient.GetSecretAsync("WishlistAPIConnectionString");
 string connectionStringSecretValue = connectionStringSecret.Value;
 
+
 // Connection with local SQL Server
 const string LOCALCONNECTIONNAME = "WishlistDB";
 var localConnectionString = builder.Configuration.GetConnectionString(LOCALCONNECTIONNAME);
 
+var connectionString = localConnectionString;
+
+
 // Add DbContext
-//builder.Services.AddDbContext<WishlistDBContext>(options => options.UseSqlServer(connectionStringSecretValue));
-builder.Services.AddDbContext<WishlistDBContext>(options => options.UseSqlServer(localConnectionString));
+if (builder.Environment.IsProduction())
+    connectionString = connectionStringSecretValue;
+
+builder.Services.AddDbContext<WishlistDBContext>(options => options.UseSqlServer(connectionString));
+
 
 // Configure Serilog
 var loggerConnectionString = string.Empty;
