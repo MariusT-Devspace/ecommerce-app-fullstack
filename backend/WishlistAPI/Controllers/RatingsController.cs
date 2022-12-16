@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using WishlistAPI.DataAccess;
 using WishlistAPI.Models.DataModels;
@@ -50,6 +52,7 @@ namespace WishlistAPI.Controllers
         // PUT: api/Ratings/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Administrator")]
         public async Task<IActionResult> PutRating(int id, Rating rating)
         {
             if (id != rating.Id)
@@ -81,6 +84,7 @@ namespace WishlistAPI.Controllers
         // POST: api/Ratings
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Administrator")]
         public async Task<ActionResult<Rating>> PostRating(Rating rating)
         {
             if (_context.Ratings == null)
@@ -96,6 +100,7 @@ namespace WishlistAPI.Controllers
 
         // DELETE: api/Ratings/5
         [HttpDelete("{id}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Administrator")]
         public async Task<IActionResult> DeleteRating(int id)
         {
             if (_context.Ratings == null)
