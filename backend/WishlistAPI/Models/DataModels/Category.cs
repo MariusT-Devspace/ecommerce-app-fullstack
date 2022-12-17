@@ -7,6 +7,6 @@ namespace WishlistAPI.Models.DataModels
         [Required, StringLength(50)]
         public string Name { get; set; } = string.Empty;
 
-        public readonly ICollection<Product> Products = new List<Product>();
+        public virtual ICollection<Product> Products { get; set; } = new List<Product>();
     }
 }

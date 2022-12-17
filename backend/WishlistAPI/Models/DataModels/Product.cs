@@ -21,13 +21,11 @@ namespace WishlistAPI.Models.DataModels
         [Required]
         public bool IsAvailable { get; set; } = true;
 
-        [ForeignKey("Rating")]
         public int? RatingId { get; set; }
         public Rating? Rating { get; set; }
 
-        [ForeignKey("Category")]
         public int? CategoryId { get; set; }
-        public virtual Category? Category { get; set; }
+        public Category? Category { get; set; }
 
     }
 }

@@ -218,7 +218,7 @@ namespace WishlistAPI.Migrations
             modelBuilder.Entity("WishlistAPI.Models.DataModels.Product", b =>
                 {
                     b.HasOne("WishlistAPI.Models.DataModels.Category", "Category")
-                        .WithMany()
+                        .WithMany("Products")
                         .HasForeignKey("CategoryId");
 
                     b.HasOne("WishlistAPI.Models.DataModels.Rating", "Rating")
@@ -235,6 +235,11 @@ namespace WishlistAPI.Migrations
                     b.HasOne("WishlistAPI.Models.DataModels.User", null)
                         .WithMany("Wishlist")
                         .HasForeignKey("UserId");
+                });
+
+            modelBuilder.Entity("WishlistAPI.Models.DataModels.Category", b =>
+                {
+                    b.Navigation("Products");
                 });
 
             modelBuilder.Entity("WishlistAPI.Models.DataModels.User", b =>

@@ -12,8 +12,8 @@ using WishlistAPI.DataAccess;
 namespace WishlistAPI.Migrations
 {
     [DbContext(typeof(WishlistDBContext))]
-    [Migration("20221216000243_Change Rate field in Ratings table to float")]
-    partial class ChangeRatefieldinRatingstabletofloat
+    [Migration("20221217204944_Create Users, Products, Categories, Ratings, and WishlistItems tables")]
+    partial class CreateUsersProductsCategoriesRatingsandWishlistItemstables
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -123,12 +123,6 @@ namespace WishlistAPI.Migrations
                     b.Property<DateTime>("CreatedOn")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime?>("DeletedOn")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
                     b.Property<float?>("Rate")
                         .IsRequired()
                         .HasColumnType("real");
@@ -226,7 +220,7 @@ namespace WishlistAPI.Migrations
             modelBuilder.Entity("WishlistAPI.Models.DataModels.Product", b =>
                 {
                     b.HasOne("WishlistAPI.Models.DataModels.Category", "Category")
-                        .WithMany()
+                        .WithMany("Products")
                         .HasForeignKey("CategoryId");
 
                     b.HasOne("WishlistAPI.Models.DataModels.Rating", "Rating")
@@ -243,6 +237,11 @@ namespace WishlistAPI.Migrations
                     b.HasOne("WishlistAPI.Models.DataModels.User", null)
                         .WithMany("Wishlist")
                         .HasForeignKey("UserId");
+                });
+
+            modelBuilder.Entity("WishlistAPI.Models.DataModels.Category", b =>
+                {
+                    b.Navigation("Products");
                 });
 
             modelBuilder.Entity("WishlistAPI.Models.DataModels.User", b =>
