@@ -103,17 +103,21 @@ namespace WishlistAPI.Controllers
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Administrator")]
-        public async Task<ActionResult<Product>> PostProduct(Product product)
+        public async Task<ActionResult<Product>> PostProduct(ProductRequestPOST product)
         {
             if (_context.Products == null)
             {
                 return NotFound();
             }
 
-            _context.Products.Add(product);
+            var mappedRequestProduct = _mapper.Map<Product>(product);
+
+            _context.Products.Add(mappedRequestProduct);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetProduct", new { id = product.Id }, product);
+            var mappedResponseProduct = _mapper.Map<ProductResponse>(product);
+
+            return CreatedAtAction("GetProduct", new { id = mappedResponseProduct.Id }, mappedResponseProduct);
         }
 
         // DELETE: api/Products/5
