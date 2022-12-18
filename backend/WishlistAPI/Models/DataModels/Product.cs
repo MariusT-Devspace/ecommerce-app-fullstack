@@ -24,6 +24,7 @@ namespace WishlistAPI.Models.DataModels
         public int? RatingId { get; set; }
         public Rating? Rating { get; set; }
 
+        [Required]
         public int? CategoryId { get; set; }
         public Category? Category { get; set; }
 
