@@ -13,7 +13,7 @@ namespace WishlistAPI.Models.DataModels
 
         [Required]
         [RegularExpression(@"^\d+\.\d{2}$")]
-        [Range(0, 9999999999999999.99)]
+        [Range(0, 99999999.99)]
         public decimal Price { get; set; }
 
         public string Picture { get; set; } = string.Empty;
