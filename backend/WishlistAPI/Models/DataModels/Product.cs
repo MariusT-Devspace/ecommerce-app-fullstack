@@ -6,7 +6,7 @@ namespace WishlistAPI.Models.DataModels
     public class Product : BaseEntity
     {
         [Required, StringLength(100)]
-        public string? Title { get; set; }
+        public string Title { get; set; } = string.Empty;
 
         [StringLength(2000)]
         public string Description { get; set; } = string.Empty;
