@@ -11,7 +11,6 @@ namespace WishlistAPI.Models.MappingProfiles
             CreateMap<CategoryRequestPOST, Category>();
             CreateMap<CategoryRequestPUT, Category>();
             CreateMap<Category, CategoryResponse>();
-            CreateMap<Category, CategoryWithProductsResponse>();
         }
     }
 }
