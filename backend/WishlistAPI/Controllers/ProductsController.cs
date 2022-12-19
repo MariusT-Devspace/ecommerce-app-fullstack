@@ -42,7 +42,12 @@ namespace WishlistAPI.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<ProductResponse>> GetProduct(int id)
         {
-            var product = await _context.Products!.FindAsync(id);
+            if (_context.Products == null)
+            {
+                return NotFound();
+            }
+
+            var product = await _context.Products.FindAsync(id);
 
             if (product == null)
             {
@@ -59,14 +64,14 @@ namespace WishlistAPI.Controllers
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Administrator")]
         public async Task<IActionResult> PutProduct(int id, ProductRequestPUT productDTO)
         {
-            if (id != productDTO.Id)
-            {
-                return BadRequest($"Id does not match. Id = {id}, body Id = {productDTO.Id}");
-            }
-
             if (_context.Products == null)
             {
                 return NotFound();
+            }
+
+            if (id != productDTO.Id)
+            {
+                return BadRequest("Id does not match.");
             }
 
             var product = await _context.Products.FindAsync(id);
@@ -103,21 +108,21 @@ namespace WishlistAPI.Controllers
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Administrator")]
-        public async Task<ActionResult<Product>> PostProduct(ProductRequestPOST product)
+        public async Task<ActionResult<Product>> PostProduct(ProductRequestPOST productRequest)
         {
             if (_context.Products == null)
             {
                 return NotFound();
             }
 
-            var mappedRequestProduct = _mapper.Map<Product>(product);
+            var product = _mapper.Map<Product>(productRequest);
 
-            _context.Products.Add(mappedRequestProduct);
+            _context.Products.Add(product);
             await _context.SaveChangesAsync();
 
-            var mappedResponseProduct = _mapper.Map<ProductResponse>(product);
+            var productResponse = _mapper.Map<ProductResponse>(product);
 
-            return CreatedAtAction("GetProduct", new { id = mappedResponseProduct.Id }, mappedResponseProduct);
+            return CreatedAtAction("GetProduct", new { id = productResponse.Id }, productResponse);
         }
 
         // DELETE: api/Products/5
