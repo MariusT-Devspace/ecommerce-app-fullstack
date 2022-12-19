@@ -23,7 +23,7 @@ import { MatNavigationComponent } from './mat-navigation/mat-navigation.componen
     MatButtonModule,
     MatSidenavModule,
     MatIconModule,
-    MatListModule
+    MatListModule,
   ]
 })
 export class CoreModule { }
