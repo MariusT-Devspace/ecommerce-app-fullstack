@@ -1,9 +1,12 @@
-﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using WishlistAPI.DataAccess;
 using WishlistAPI.Models.DataModels;
+using WishlistAPI.Models.DTOs.CategoryDTOs.Request;
+using WishlistAPI.Models.DTOs.CategoryDTOs.Response;
 
 namespace WishlistAPI.Controllers
 {
@@ -12,27 +15,32 @@ namespace WishlistAPI.Controllers
     public class CategoriesController : ControllerBase
     {
         private readonly WishlistDBContext _context;
+        private readonly IMapper _mapper;
 
-        public CategoriesController(WishlistDBContext context)
+        public CategoriesController(WishlistDBContext context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
 
         // GET: api/Categories
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Category>>> GetCategories()
+        public async Task<ActionResult<IEnumerable<CategoryResponse>>> GetCategories()
         {
             if (_context.Categories == null)
             {
                 return NotFound();
             }
 
-            return await _context.Categories.ToListAsync();
+            var categories = await _context.Categories.ToListAsync();
+            var categoriesResponse = _mapper.Map<IEnumerable<CategoryResponse>>(categories);
+
+            return Ok(categoriesResponse);
         }
 
         // GET: api/Categories/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Category>> GetCategory(int id)
+        public async Task<ActionResult<CategoryResponse>> GetCategory(int id)
         {
             if (_context.Categories == null)
             {
@@ -46,24 +54,34 @@ namespace WishlistAPI.Controllers
                 return NotFound();
             }
 
-            return category;
+            var categoryResponse = _mapper.Map<CategoryResponse>(category);
+            return Ok(categoryResponse);
         }
 
         // PUT: api/Categories/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Administrator")]
-        public async Task<IActionResult> PutCategory(int id, Category category)
+        public async Task<IActionResult> PutCategory(int id, CategoryRequestPUT categoryDTO)
         {
             if (_context.Categories == null)
             {
                 return NotFound();
             }
 
-            if (id != category.Id)
+            if (id != categoryDTO.Id)
             {
-                return BadRequest();
+                return BadRequest("Id does not match.");
             }
+
+            var category = await _context.Categories.FindAsync(id);
+
+            if (category == null)
+            {
+                return NotFound();
+            }
+
+            _mapper.Map(categoryDTO, category);
 
             _context.Entry(category).State = EntityState.Modified;
 
@@ -90,17 +108,20 @@ namespace WishlistAPI.Controllers
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Administrator")]
-        public async Task<ActionResult<Category>> PostCategory(Category category)
+        public async Task<ActionResult<Category>> PostCategory(CategoryRequestPOST categoryRequest)
         {
             if (_context.Categories == null)
             {
                 return NotFound();
             }
 
+            var category = _mapper.Map<Category>(categoryRequest);
+
             _context.Categories.Add(category);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetCategory", new { id = category.Id }, category);
+            var categoryResponse = _mapper.Map<CategoryResponse>(category);
+            return CreatedAtAction("GetCategory", new { id = categoryResponse.Id }, categoryResponse);
         }
 
         // DELETE: api/Categories/5
