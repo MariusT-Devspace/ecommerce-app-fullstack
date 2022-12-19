@@ -24,6 +24,9 @@ import { MatNavigationComponent } from './mat-navigation/mat-navigation.componen
     MatSidenavModule,
     MatIconModule,
     MatListModule,
+  ],
+  exports: [
+    MatNavigationComponent
   ]
 })
 export class CoreModule { }
