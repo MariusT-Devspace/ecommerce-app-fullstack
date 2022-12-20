@@ -1,8 +1,10 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
-import {MatCardModule} from '@angular/material/card';
-import {MatCommonModule} from '@angular/material/core';
+import { MatCardModule } from '@angular/material/card';
+import { MatCommonModule} from '@angular/material/core';
+import { MatGridListModule } from '@angular/material/grid-list';
+import { LayoutModule } from '@angular/cdk/layout';
 
 @NgModule({
   declarations: [
@@ -11,11 +13,14 @@ import {MatCommonModule} from '@angular/material/core';
     CommonModule,
     MatCardModule,
     MatButtonModule,
-    MatCommonModule
+    MatCommonModule,
+    MatGridListModule
   ],
   exports: [
     MatCardModule,
-    MatCommonModule
+    MatCommonModule,
+    MatGridListModule,
+    LayoutModule
   ]
 })
 export class SharedModule { }
