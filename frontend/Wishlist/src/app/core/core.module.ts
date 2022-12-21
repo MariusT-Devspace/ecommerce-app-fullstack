@@ -9,6 +9,7 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
 import { MatNavigationComponent } from './mat-navigation/mat-navigation.component';
+import { AuthModule } from './auth/auth.module';
 
 
 @NgModule({
@@ -24,6 +25,7 @@ import { MatNavigationComponent } from './mat-navigation/mat-navigation.componen
     MatSidenavModule,
     MatIconModule,
     MatListModule,
+    AuthModule
   ],
   exports: [
     MatNavigationComponent
