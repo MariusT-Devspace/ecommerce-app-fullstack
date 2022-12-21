@@ -1,7 +1,7 @@
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { Component, Input, OnInit } from '@angular/core';
 import { map } from 'rxjs';
-import { Product } from './product.model';
+import { IProduct } from './product.model';
 
 @Component({
   selector: 'app-product',
@@ -9,7 +9,7 @@ import { Product } from './product.model';
   styleUrls: ['./product.component.sass']
 })
 export class ProductComponent implements OnInit{
-  @Input() product: Product = {
+  @Input() product: IProduct = {
     id: 0,
     title: "",
     description: "",

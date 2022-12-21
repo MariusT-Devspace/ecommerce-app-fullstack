@@ -1,0 +1,52 @@
+<mat-card>
+  <mat-card-header>
+    <mat-card-title>Sign Up</mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    <form [formGroup]="signUpForm" id="signUpForm">
+      <div class="name-container">
+
+        <mat-form-field appearance="fill">
+          <mat-label>Enter your first name</mat-label>
+          <input matInput #input maxlength="10" placeholder="First Name" formControlName="firstName">
+        </mat-form-field>
+      
+        <mat-form-field appearance="fill">
+          <mat-label>Enter your last name</mat-label>
+          <input matInput #input maxlength="10" placeholder="Last Name" formControlName="lastName">
+        </mat-form-field>
+
+      </div>
+      
+      <mat-form-field appearance="fill">
+        <mat-label>Enter your email</mat-label>
+        <input matInput #input maxlength="50" placeholder="Email" formControlName="email">
+        <mat-hint align="end"></mat-hint>
+      </mat-form-field>
+
+      <mat-form-field hintLabel="Max 20 characters" appearance="fill">
+        <mat-label>Enter a user name</mat-label>
+        <input matInput #input maxlength="20" placeholder="Username" formControlName="username">
+        <mat-hint align="end"></mat-hint>
+      </mat-form-field>
+
+      <mat-form-field hintLabel="Must be at least 6 characters and include uppercase letters and numbers" appearance="fill">
+        <mat-label>Enter your password</mat-label>
+        <input matInput #input [type]="hide ? 'password' : 'text'" maxlength="10" placeholder="Password" formControlName="password">
+        <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+          <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+        </button>
+        <mat-hint align="end"></mat-hint>
+      </mat-form-field>
+
+    </form>
+    <mat-divider></mat-divider>
+  </mat-card-content>
+  <mat-card-actions align="end">
+    <button mat-button (click)="resetForm()">Reset</button>
+    <button mat-raised-button color="primary" type="submit" form="signUpForm" (click)="submitForm()">Sign Up</button>
+  </mat-card-actions>
+  <mat-card-footer>
+    <mat-progress-bar *ngIf="showProgressBar" mode="indeterminate"></mat-progress-bar>
+  </mat-card-footer>
+</mat-card>

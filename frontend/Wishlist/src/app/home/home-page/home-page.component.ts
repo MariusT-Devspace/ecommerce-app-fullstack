@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Product } from '../product/product.model';
+import { IProduct } from '../product/product.model';
 import { ProductsService } from '../../core/services/products.service';
 
 @Component({
@@ -8,13 +8,13 @@ import { ProductsService } from '../../core/services/products.service';
   styleUrls: ['./home-page.component.sass']
 })
 export class HomePageComponent implements OnInit {
-  products: Product[] = [];
+  products: IProduct[] = [];
 
   constructor(private productsService: ProductsService){ }
 
   ngOnInit(){
     this.productsService.getProducts().subscribe({
-      next: (response: Product[]) => {this.products = response; console.log(`Product: ${response}`);},
+      next: (response: IProduct[]) => {this.products = response; console.log(`Product: ${response}`);},
       error: (err: Error) => console.error("Could not retrieve product" + err.message),
       complete: () => console.log("All products have been retrieved")
     });

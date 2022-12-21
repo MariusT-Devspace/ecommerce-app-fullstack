@@ -6,6 +6,7 @@ import { SharedModule } from '../shared/shared.module';
 import { ProductComponent } from './product/product.component'
 import { MatButtonModule } from '@angular/material/button';
 import { HttpClientModule } from '@angular/common/http';
+import { SignUpPageComponent } from '../core/auth/components/sign-up-page/sign-up-page.component';
 
 @NgModule({
   declarations: [
@@ -17,7 +18,7 @@ import { HttpClientModule } from '@angular/common/http';
     HomeRoutingModule,
     MatButtonModule,
     SharedModule,
-    HttpClientModule
+    HttpClientModule,
   ],
   exports: [
     HomePageComponent,

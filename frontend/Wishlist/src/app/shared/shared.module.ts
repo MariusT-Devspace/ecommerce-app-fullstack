@@ -6,6 +6,11 @@ import { MatCommonModule} from '@angular/material/core';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { LayoutModule } from '@angular/cdk/layout';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MatIconModule } from '@angular/material/icon';
+import { ReactiveFormsModule } from '@angular/forms';
+import {MatInputModule} from '@angular/material/input';
 
 @NgModule({
   declarations: [
@@ -15,14 +20,28 @@ import { MatFormFieldModule } from '@angular/material/form-field';
     MatCardModule,
     MatButtonModule,
     MatCommonModule,
-    MatGridListModule
+    MatGridListModule,
+    MatDividerModule,
+    MatProgressBarModule,
+    MatIconModule,
+    ReactiveFormsModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatButtonModule
   ],
   exports: [
     MatCardModule,
     MatCommonModule,
     MatGridListModule,
     LayoutModule,
-    MatFormFieldModule
+    MatFormFieldModule,
+    MatDividerModule,
+    MatProgressBarModule,
+    MatIconModule,
+    ReactiveFormsModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatButtonModule
   ]
 })
 export class SharedModule { }
