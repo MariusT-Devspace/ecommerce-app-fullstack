@@ -12,6 +12,7 @@ import { MatNavigationComponent } from './mat-navigation/mat-navigation.componen
 import { AuthModule } from './auth/auth.module';
 
 
+
 @NgModule({
   declarations: [
     MatNavigationComponent

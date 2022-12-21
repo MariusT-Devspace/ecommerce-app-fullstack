@@ -5,6 +5,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatCommonModule} from '@angular/material/core';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { LayoutModule } from '@angular/cdk/layout';
+import { MatFormFieldModule } from '@angular/material/form-field';
 
 @NgModule({
   declarations: [
@@ -20,7 +21,8 @@ import { LayoutModule } from '@angular/cdk/layout';
     MatCardModule,
     MatCommonModule,
     MatGridListModule,
-    LayoutModule
+    LayoutModule,
+    MatFormFieldModule
   ]
 })
 export class SharedModule { }
