@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormGroup, FormBuilder, FormControl } from '@angular/forms';
 import { ISignUp } from '../../../models/sign-up.model';
 
@@ -14,6 +14,9 @@ export class SignUpFormComponent implements OnInit{
   hide = true;
   showProgressBar = false;
 
+  @Output() onSignUp = new EventEmitter<ISignUp>
+  //((requestBody: ISignUp) => void) | undefined;
+
   constructor(private formBuilder: FormBuilder) {}
 
   ngOnInit(){
@@ -28,14 +31,15 @@ export class SignUpFormComponent implements OnInit{
 
   submitForm(){
     this.signUpValues = this.signUpForm.value;
-    console.log(`Form values: ${JSON.stringify(this.signUpValues)}`)
+    console.log(`Form values: ${JSON.stringify(this.signUpValues)}`);
+    if (this.signUpValues)
+      this.onSignUp.emit(this.signUpValues);
+    else
+      console.error("Sign up form not submitted correctly");
   }
 
   resetForm(){
     this.signUpForm.reset();
   }
 
-  onSubmit(){
-    
-  }
 }
