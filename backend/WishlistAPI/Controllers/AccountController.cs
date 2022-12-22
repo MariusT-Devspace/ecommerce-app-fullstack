@@ -46,10 +46,10 @@ namespace WishlistAPI.Controllers
                     bool isValidPassword = false;
 
                     // Verify login input
-                    if (LoginHelpers.IsEmail(login.LoginInput))
-                        isValidUsername = await _dBContext.Users.AnyAsync(user => user.EmailNormalized.Equals(login.LoginInput.ToUpperInvariant()));
+                    if (LoginHelpers.IsEmail(login.Identifier))
+                        isValidUsername = await _dBContext.Users.AnyAsync(user => user.EmailNormalized.Equals(login.Identifier.ToUpperInvariant()));
                     else
-                        isValidUsername = await _dBContext.Users.AnyAsync(user => user.UserNameNormalized.Equals(login.LoginInput.ToUpperInvariant()));
+                        isValidUsername = await _dBContext.Users.AnyAsync(user => user.UserNameNormalized.Equals(login.Identifier.ToUpperInvariant()));
 
                     User? user;
                     string badRequestMessage = "Wrong username or password";
@@ -57,12 +57,12 @@ namespace WishlistAPI.Controllers
                     // If username valid, verify password hash
                     if (isValidUsername)
                     {
-                        _logger.LogInformation("{Controller} - {ActionMethod}: Username {Username} is valid", login.LoginInput);
+                        _logger.LogInformation("{Controller} - {ActionMethod}: Username {Username} is valid", login.Identifier);
 
-                        if (LoginHelpers.IsEmail(login.LoginInput))
-                            user = await _dBContext.Users.SingleOrDefaultAsync(user => user.EmailNormalized.Equals(login.LoginInput.ToUpperInvariant()));
+                        if (LoginHelpers.IsEmail(login.Identifier))
+                            user = await _dBContext.Users.SingleOrDefaultAsync(user => user.EmailNormalized.Equals(login.Identifier.ToUpperInvariant()));
                         else
-                            user = await _dBContext.Users.SingleOrDefaultAsync(user => user.UserNameNormalized.Equals(login.LoginInput.ToUpperInvariant()));
+                            user = await _dBContext.Users.SingleOrDefaultAsync(user => user.UserNameNormalized.Equals(login.Identifier.ToUpperInvariant()));
                         _logger.LogDebug("{Controller} - {ActionMethod}: User: {User}", user);
 
                         string passwordHash = PasswordHasher.HashPassword(user!, login.Password.ToString());
@@ -101,7 +101,7 @@ namespace WishlistAPI.Controllers
                     }
                     else
                     {
-                        _logger.LogError("{Controller} - {ActionMethod}: Username {Username} is not valid", login.LoginInput);
+                        _logger.LogError("{Controller} - {ActionMethod}: Username {Username} is not valid", login.Identifier);
                         return BadRequest(badRequestMessage);
                     }
 
@@ -113,6 +113,42 @@ namespace WishlistAPI.Controllers
                     _logger.LogError("{Controller} - {ActionMethod}: Stack trace: {StackTrace}", ex.StackTrace);
                     throw new Exception("Login error", ex);
                 }
+            }
+        }
+
+        [HttpPost("SetToken")]
+        public async Task<IActionResult> SetToken(string token)
+        {
+            try
+            {
+                Response.Cookies.Append("token", token, new CookieOptions
+                {
+                    HttpOnly = true,
+                    SameSite = SameSiteMode.Lax
+                });
+
+                return Ok();
+            }
+            catch(Exception ex)
+            {
+                throw new Exception("Error setting token cookie: ", ex);
+            }
+            
+        }
+
+        [HttpGet("CheckCookie")]
+        public async Task<IActionResult> CheckCookie()
+        {
+            try
+            {
+                if (Request.Cookies.ContainsKey("token"))
+                    return Ok(new { authenticated = true });
+                else
+                    return Ok(new { authenticated = false });
+            }
+            catch(Exception ex)
+            {
+                throw new Exception("Error checking token cookie: ", ex);
             }
         }
 
@@ -176,7 +212,7 @@ namespace WishlistAPI.Controllers
                         _logger.LogInformation("{Controller} - {ActionMethod}: Login request");
                         return await Login(new Login()
                         {
-                            LoginInput = register.Username,
+                            Identifier = register.Username,
                             Password = register.Password
                         });
                     }
