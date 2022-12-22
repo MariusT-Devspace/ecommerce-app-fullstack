@@ -1,0 +1,31 @@
+<mat-card>
+    <mat-card-header>
+      <mat-card-title>Log in</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <form [formGroup]="loginForm" id="loginForm">
+
+        <mat-form-field appearance="fill">
+          <mat-label>Enter a user name</mat-label>
+          <input matInput #input maxlength="20" placeholder="Username" formControlName="username">
+        </mat-form-field>
+  
+        <mat-form-field appearance="fill">
+          <mat-label>Enter your password</mat-label>
+          <input matInput #input [type]="hide ? 'password' : 'text'" maxlength="10" placeholder="Password" formControlName="password">
+          <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+            <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+          </button>
+        </mat-form-field>
+  
+</form>
+      <mat-divider></mat-divider>
+    </mat-card-content>
+    <mat-card-actions align="end">
+      <button mat-button (click)="resetForm()">Reset</button>
+      <button mat-raised-button color="primary" type="submit" form="loginForm" (click)="submitForm()">Log in</button>
+    </mat-card-actions>
+    <mat-card-footer>
+      <mat-progress-bar *ngIf="showProgressBar" mode="indeterminate"></mat-progress-bar>
+    </mat-card-footer>
+  </mat-card>

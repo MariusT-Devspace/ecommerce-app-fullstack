@@ -5,19 +5,23 @@ import { SharedModule } from '../../shared/shared.module';
 import { AuthRoutingModule } from './auth-routing.module';
 import { SignUpFormComponent } from './components/sign-up-page/sign-up-form/sign-up-form.component';
 import { SignUpPageComponent } from './components/sign-up-page/sign-up-page.component';
+import { HttpClientModule } from '@angular/common/http';
+import { LoginFormComponent } from './components/login-page/login-form/login-form.component';
 
 
 @NgModule({
   declarations: [
     SignUpPageComponent,
     LoginPageComponent,
-    SignUpFormComponent
+    SignUpFormComponent,
+    LoginFormComponent
   ],
   imports: [
     CommonModule,
     SharedModule,
-    AuthRoutingModule
-  ],
+    AuthRoutingModule,
+    HttpClientModule
+  ],   
   exports: [
     SignUpPageComponent
   ]
