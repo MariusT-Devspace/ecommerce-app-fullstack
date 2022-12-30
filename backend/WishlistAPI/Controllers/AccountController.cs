@@ -6,6 +6,8 @@ using WishlistAPI.Helpers;
 using WishlistAPI.Identity;
 using WishlistAPI.Models.DataModels;
 using Serilog.Context;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 
 namespace WishlistAPI.Controllers
 {
@@ -63,7 +65,6 @@ namespace WishlistAPI.Controllers
                             user = await _dBContext.Users.SingleOrDefaultAsync(user => user.EmailNormalized.Equals(login.Identifier.ToUpperInvariant()));
                         else
                             user = await _dBContext.Users.SingleOrDefaultAsync(user => user.UserNameNormalized.Equals(login.Identifier.ToUpperInvariant()));
-                        _logger.LogDebug("{Controller} - {ActionMethod}: User: {User}", user);
 
                         string passwordHash = PasswordHasher.HashPassword(user!, login.Password.ToString());
                         isValidPassword = PasswordHasher.VerifyPassword(user!, passwordHash, login.Password);
@@ -117,15 +118,24 @@ namespace WishlistAPI.Controllers
         }
 
         [HttpPost("SetToken")]
-        public async Task<IActionResult> SetToken(string token)
+        public async Task<IActionResult> SetToken()
         {
+           
             try
             {
-                Response.Cookies.Append("token", token, new CookieOptions
+                var authorizationHeader = Request.Headers["Authorization"];
+                if (authorizationHeader.Count > 0)
                 {
-                    HttpOnly = true,
-                    SameSite = SameSiteMode.Lax
-                });
+                    var token = authorizationHeader[0].Substring("Bearer ".Length);
+                    _logger.LogInformation("Token: {Token}: ", token);
+                    Response.Cookies.Append("auth_token", token, new CookieOptions
+                    {
+                        HttpOnly = true,
+                        SameSite = SameSiteMode.Lax,
+                        Secure = true
+                    });
+                }
+                
 
                 return Ok();
             }
@@ -141,13 +151,21 @@ namespace WishlistAPI.Controllers
         {
             try
             {
-                if (Request.Cookies.ContainsKey("token"))
+                if (Request.Cookies.ContainsKey("auth_token"))
+                {
+                    _logger.LogInformation("Cookies contain auth_token key: {ContainsKey}: ", Request.Cookies.ContainsKey("auth_token"));
+                    _logger.LogInformation("Request cookies: {RequestCookies}: ", Request.Cookies);
                     return Ok(new { authenticated = true });
+                }
                 else
+                {
+                    _logger.LogInformation("Cookies contain auth_token key: {ContainsKey}: ", Request.Cookies.ContainsKey("auth_token"));
                     return Ok(new { authenticated = false });
+                }
             }
             catch(Exception ex)
             {
+                _logger.LogError("Error checking token cookie: {Exception}", ex);
                 throw new Exception("Error checking token cookie: ", ex);
             }
         }

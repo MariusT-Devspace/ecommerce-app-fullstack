@@ -9,7 +9,7 @@ import { SignUpService } from '../../services/sign-up.service';
   templateUrl: './sign-up-page.component.html',
   styleUrls: ['./sign-up-page.component.sass']
 })
-export class SignUpPageComponent{
+export class SignUpPageComponent {
   
 
   constructor(private signUpService: SignUpService, private loginService: LoginService) {}

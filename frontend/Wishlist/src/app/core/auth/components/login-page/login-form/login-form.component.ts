@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Output } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder } from '@angular/forms';
-import { ISignUp } from '../../../models/sign-up.model';
+import { ILogin } from '../../../models/login.model';
 
 @Component({
   selector: 'app-login-form',
@@ -9,21 +9,18 @@ import { ISignUp } from '../../../models/sign-up.model';
 })
 export class LoginFormComponent {
   loginForm: FormGroup = new FormGroup({});
-  loginValues: ISignUp | undefined;
+  loginValues: ILogin | undefined;
 
   hide = true;
   showProgressBar = false;
 
-  @Output() onLogin = new EventEmitter<ISignUp>
+  @Output() onLogIn = new EventEmitter<ILogin>();
 
   constructor(private formBuilder: FormBuilder) {}
   
   ngOnInit(){
     this.loginForm = this.formBuilder.group({
-      firstName: new FormControl(''),
-      lastName: new FormControl(''),
-      email: new FormControl(''),
-      username: new FormControl(''),
+      identifier: new FormControl(''),
       password: new FormControl('')
     });
   }
@@ -31,10 +28,12 @@ export class LoginFormComponent {
   submitForm(){
     this.loginValues = this.loginForm.value;
     console.log(`Form values: ${JSON.stringify(this.loginValues)}`);
-    if (this.loginValues)
-      this.onLogin.emit(this.loginValues);
-    else
+    if (this.loginValues){
+      console.log("Login values are valid")
+      this.onLogIn.emit(this.loginValues);
+    }else{
       console.error("Sign up form not submitted correctly");
+    }
   }
 
   resetForm(){
