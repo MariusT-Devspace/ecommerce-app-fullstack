@@ -1,6 +1,6 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { first, lastValueFrom, map, Observable } from 'rxjs';
+import { Observable } from 'rxjs';
 import { environment } from 'src/environment/environment';
 import { IAuthenticated } from '../models/authenticated.model';
 import { ILogin } from '../models/login.model';
@@ -11,7 +11,7 @@ import { HttpResponse } from '@angular/common/http';
   providedIn: 'root'
 })
 export class LoginService {
-  _isLoggedIn: boolean | undefined
+  _isLoggedIn: boolean | undefined 
 
   loginURL = `${environment.apiHost}/api/Account/Login`;
   setTokenURL = `${environment.apiHost}/api/Account/SetToken`;
@@ -20,7 +20,21 @@ export class LoginService {
   constructor(private httpClient: HttpClient) { }
 
   get isLoggedIn(): boolean {
-    return this._isLoggedIn ?? false;
+    if (this._isLoggedIn !== undefined) {
+      return this._isLoggedIn as boolean;
+    } else{
+      if (localStorage.getItem("isLoggedIn")) {
+        this._isLoggedIn = JSON.parse(localStorage.getItem("isLoggedIn")!);
+        return this._isLoggedIn as boolean;
+      } else {
+        return false;
+      }
+    }
+  }
+
+  set isLoggedIn(isLoggedIn: boolean | undefined) {
+    this._isLoggedIn = isLoggedIn;
+    localStorage.setItem("isLoggedIn", JSON.stringify(isLoggedIn));
   }
 
   logIn(requestBody: ILogin): Observable<IToken> {

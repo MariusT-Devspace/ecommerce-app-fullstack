@@ -50,7 +50,7 @@ export class LoginPageComponent {
       next: (response: HttpResponse<IAuthenticated>) => {
         console.log("navigateToHome() - next");
         // Check token
-        this.loginService._isLoggedIn = response.body?.authenticated;
+        this.loginService.isLoggedIn = response.body?.authenticated;
         const isLoggedIn = response.body?.authenticated;
         console.log("authenticated: ", response.body?.authenticated)
         console.log("isLoggedIn: ", isLoggedIn);
