@@ -11,7 +11,7 @@ import { LoginService } from '../../services/login.service';
   templateUrl: './login-page.component.html',
   styleUrls: ['./login-page.component.sass']
 })
-export class LoginPageComponent {
+export class LoginPageComponent{
 
   constructor(private loginService: LoginService, private router: Router) {}
 
@@ -22,10 +22,7 @@ export class LoginPageComponent {
         next: async (response: IToken) => {
           console.log("logIn() - next");
           // Set token
-          
           console.log("Login data: ", requestBody);
-          
-          // Navigate to home page
           this.setToken(response.token);
         },
         error: (err: Error) => console.error(`Error logging in: ${err.message}`),
@@ -54,7 +51,7 @@ export class LoginPageComponent {
         const isLoggedIn = response.body?.authenticated;
         console.log("authenticated: ", response.body?.authenticated)
         console.log("isLoggedIn: ", isLoggedIn);
-        if (response.body?.authenticated === true) {
+        if (this.loginService.isLoggedIn === true) {
           console.log("You are logged in");
           this.router.navigate(['']);
         }

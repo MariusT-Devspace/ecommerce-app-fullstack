@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { environment } from 'src/environment/environment';
 import { IAuthenticated } from '../models/authenticated.model';
 import { ILogin } from '../models/login.model';
@@ -11,15 +11,19 @@ import { HttpResponse } from '@angular/common/http';
   providedIn: 'root'
 })
 export class LoginService {
-  _isLoggedIn: boolean | undefined 
+  _isLoggedIn: boolean | undefined;
+  isLoggedIn$ = new BehaviorSubject<boolean>(this.isLoggedIn); 
 
+  // URLs
   loginURL = `${environment.apiHost}/api/Account/Login`;
   setTokenURL = `${environment.apiHost}/api/Account/SetToken`;
   checkTokenCookieURL = `${environment.apiHost}/api/Account/CheckCookie`;
+  logOutURL = `${environment.apiHost}/api/Account/Logout`;
 
-  constructor(private httpClient: HttpClient) { }
+  constructor(private httpClient: HttpClient) {  }
 
   get isLoggedIn(): boolean {
+    console.log("isLoggedIn getter");
     if (this._isLoggedIn !== undefined) {
       return this._isLoggedIn as boolean;
     } else{
@@ -32,9 +36,11 @@ export class LoginService {
     }
   }
 
-  set isLoggedIn(isLoggedIn: boolean | undefined) {
-    this._isLoggedIn = isLoggedIn;
-    localStorage.setItem("isLoggedIn", JSON.stringify(isLoggedIn));
+  set isLoggedIn(loginStatus: boolean | undefined) {
+    console.log("isLoggedIn setter");
+    this._isLoggedIn = loginStatus;
+    this.isLoggedIn$.next(loginStatus ?? false);
+    localStorage.setItem("isLoggedIn", JSON.stringify(loginStatus));
   }
 
   logIn(requestBody: ILogin): Observable<IToken> {
@@ -54,5 +60,14 @@ export class LoginService {
       observe: 'response' as 'response'
     };  
     return this.httpClient.get<IAuthenticated>(this.checkTokenCookieURL, httpOptions) as Observable<HttpResponse<IAuthenticated>>;
+  }
+
+  logOut(): Observable<any> {
+    const httpOptions = {
+      withCredentials: true, 
+      secureCookie: false,
+      observe: 'response' as 'response'
+    };  
+    return this.httpClient.post(this.logOutURL, httpOptions) as Observable<any>
   }
 }

@@ -170,6 +170,15 @@ namespace WishlistAPI.Controllers
             }
         }
 
+        [HttpPost("Logout")]
+        public async Task<IActionResult> Logout()
+        {
+            // Delete the JWT cookie
+            HttpContext.Response.Cookies.Delete("auth_token");
+
+            return Ok();
+        }
+
         [HttpPost("Register")]
         public async Task<ActionResult<IEnumerable<UserToken>>> Register(Register register)
         {

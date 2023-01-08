@@ -21,6 +21,8 @@
         <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
       </button>
       <span>Wishlist</span>
+      <span class="spacer"></span>
+      <button mat-flat-button color="primary" type="button" (click)="logOut()" *ngIf="this._loginService.isLoggedIn$ | async">Logout</button>
     </mat-toolbar>
     <!-- Add Content Here -->
     <div class="content-wrapper">
