@@ -4,16 +4,18 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { environment } from 'src/environment/environment';
 import { IAuthenticated } from '../models/authenticated.model';
 import { ILogin } from '../models/login.model';
-import { IToken } from '../models/token.model';
+import { IToken, UserRole } from '../models/token.model';
 import { HttpResponse } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
 })
+
 export class LoginService {
   _isLoggedIn: boolean | undefined;
   isLoggedIn$ = new BehaviorSubject<boolean>(this.isLoggedIn); 
   isLoading$ = new BehaviorSubject<boolean>(false);
+  userRole: UserRole | undefined;
 
   // URLs
   loginURL = `${environment.apiHost}/api/Account/Login`;
@@ -21,7 +23,10 @@ export class LoginService {
   checkTokenCookieURL = `${environment.apiHost}/api/Account/CheckCookie`;
   logOutURL = `${environment.apiHost}/api/Account/Logout`;
 
-  constructor(private httpClient: HttpClient) {  }
+  constructor(private httpClient: HttpClient) { 
+    if (localStorage.getItem("user_info"))
+      this.userRole = JSON.parse(localStorage.getItem("user_info")!).role
+   }
 
   get isLoggedIn(): boolean {
     console.log("isLoggedIn getter");
@@ -43,6 +48,7 @@ export class LoginService {
     this.isLoggedIn$.next(loginStatus ?? false);
     localStorage.setItem("isLoggedIn", JSON.stringify(loginStatus));
   }
+
 
   logIn(requestBody: ILogin): Observable<IToken> {
     return this.httpClient.post(this.loginURL, requestBody) as Observable<IToken>;

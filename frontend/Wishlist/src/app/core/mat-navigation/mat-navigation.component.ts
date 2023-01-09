@@ -37,6 +37,7 @@ export class MatNavigationComponent implements OnInit {
       complete: () => {
         console.log("Logout complete");
         this.router.navigate(['/login']);
+        localStorage.removeItem("user_info")
       }
     });
   }

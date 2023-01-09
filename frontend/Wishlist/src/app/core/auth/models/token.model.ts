@@ -1,3 +1,7 @@
+export enum UserRole {
+    Administrator,
+    User
+  }
 export interface IToken {
     userId:         string;
     userName:       string;
@@ -8,6 +12,6 @@ export interface IToken {
     validity:       string;
     refreshToken:   string;
     token:          string;
-    role:           number;
+    role:           UserRole;
     welcomeMessage: string;
 }

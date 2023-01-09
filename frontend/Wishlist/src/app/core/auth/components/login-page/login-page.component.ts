@@ -3,7 +3,7 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { IAuthenticated } from '../../models/authenticated.model';
 import { ILogin } from '../../models/login.model';
-import { IToken } from '../../models/token.model';
+import { IToken, UserRole } from '../../models/token.model';
 import { LoginService } from '../../services/login.service';
 
 @Component({
@@ -24,18 +24,32 @@ export class LoginPageComponent{
           console.log("logIn() - next");
           // Set token
           console.log("Login data: ", requestBody);
-          this.setToken(response.token);
+          await this.setToken(response.token);
+          const userInfo: IToken = {
+            userId: response.userId,
+            userName: response.userName,
+            firstName: response.firstName,
+            lastName: response.lastName,
+            email: response.email,
+            expiration: response.expiration,
+            validity: response.validity,
+            refreshToken: "",
+            token: "",
+            role: response.role,
+            welcomeMessage: response.welcomeMessage
+          }
+          localStorage.setItem("user_info", JSON.stringify(userInfo));
         },
         error: (err: Error) => {
           console.error(`Error logging in: ${err.message}`);
           this.loginService.isLoading$.next(false);
         },
-        complete: () => {}
+        complete: () => { }
       }
     );
   }
 
-  setToken(token: string) {
+  async setToken(token: string) {
     this.loginService.setToken(token).subscribe({
       next: (response: HttpResponse<IAuthenticated>) => {
         this.navigateToHome()
@@ -60,7 +74,11 @@ export class LoginPageComponent{
         console.log("isLoggedIn: ", isLoggedIn);
         if (this.loginService.isLoggedIn === true) {
           console.log("You are logged in");
-          this.router.navigate(['']);
+          this.loginService.userRole = JSON.parse(localStorage.getItem("user_info")!).role as UserRole
+          if (this.loginService.userRole == UserRole.Administrator)
+            this.router.navigate(['admin']);
+          else
+            this.router.navigate(['']);
         }
         else {
           console.log("Could not log in");
