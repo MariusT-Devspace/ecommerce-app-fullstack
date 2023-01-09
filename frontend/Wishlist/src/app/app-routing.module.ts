@@ -1,6 +1,8 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AuthGuard } from './core/auth/guards/auth.guard';
+import { RoleGuard } from './core/auth/guards/role.guard';
+import { UserRole } from './core/auth/models/token.model';
 import { HomePageComponent } from './home/home-page/home-page.component'
 
 const routes: Routes = [
@@ -8,7 +10,10 @@ const routes: Routes = [
     path: '',
     pathMatch: 'full',
     component: HomePageComponent,
-    canActivate: [AuthGuard]
+    canActivate: [AuthGuard, RoleGuard],
+    data: {
+      role: UserRole.User
+    }
   },
   {
     path: 'admin',
@@ -20,7 +25,6 @@ const routes: Routes = [
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule],
-  providers: [AuthGuard]
+  exports: [RouterModule]
 })
 export class AppRoutingModule { }
