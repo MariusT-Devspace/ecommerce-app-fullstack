@@ -13,6 +13,7 @@ import { HttpResponse } from '@angular/common/http';
 export class LoginService {
   _isLoggedIn: boolean | undefined;
   isLoggedIn$ = new BehaviorSubject<boolean>(this.isLoggedIn); 
+  isLoading$ = new BehaviorSubject<boolean>(false);
 
   // URLs
   loginURL = `${environment.apiHost}/api/Account/Login`;

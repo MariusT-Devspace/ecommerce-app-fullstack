@@ -17,6 +17,7 @@ export class LoginPageComponent{
 
   logIn(requestBody: ILogin){
     console.log("logIn()");
+    this.loginService.isLoading$.next(true);
     this.loginService.logIn(requestBody).subscribe(
       {
         next: async (response: IToken) => {
@@ -25,7 +26,10 @@ export class LoginPageComponent{
           console.log("Login data: ", requestBody);
           this.setToken(response.token);
         },
-        error: (err: Error) => console.error(`Error logging in: ${err.message}`),
+        error: (err: Error) => {
+          console.error(`Error logging in: ${err.message}`);
+          this.loginService.isLoading$.next(false);
+        },
         complete: () => {}
       }
     );
@@ -36,7 +40,10 @@ export class LoginPageComponent{
       next: (response: HttpResponse<IAuthenticated>) => {
         this.navigateToHome()
       },
-      error: (err: Error) => console.error("Error checking token cookie: ", err.message),
+      error: (err: Error) => {
+        console.error("Error checking token cookie: ", err.message);
+        this.loginService.isLoading$.next(false);
+      },
       complete: () => console.log("Token cookie check complete")
     });
   }
@@ -60,7 +67,10 @@ export class LoginPageComponent{
         }
       },
       error: (err: Error) => console.error("Error checking token cookie: ", err.message),
-      complete: () => console.log("Token cookie check complete")
+      complete: () => {
+        console.log("Token cookie check complete");
+        this.loginService.isLoading$.next(false);
+      }
     });
   }
 }

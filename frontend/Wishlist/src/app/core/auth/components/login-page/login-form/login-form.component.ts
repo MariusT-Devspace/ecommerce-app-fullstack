@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Output } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder } from '@angular/forms';
 import { ILogin } from '../../../models/login.model';
+import { LoginService } from '../../../services/login.service';
 
 @Component({
   selector: 'app-login-form',
@@ -16,7 +17,9 @@ export class LoginFormComponent {
 
   @Output() onLogIn = new EventEmitter<ILogin>();
 
-  constructor(private formBuilder: FormBuilder) {}
+  constructor(private formBuilder: FormBuilder, private loginService: LoginService) {
+    this.loginService.isLoading$.subscribe({next: (v) => this.showProgressBar = v})
+  }
   
   ngOnInit(){
     this.loginForm = this.formBuilder.group({
