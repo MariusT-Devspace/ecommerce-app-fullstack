@@ -3,6 +3,7 @@ import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { Observable } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
 import { LoginService } from '../auth/services/login.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-navigation',
@@ -19,7 +20,7 @@ export class MatNavigationComponent implements OnInit {
       shareReplay()
     );
 
-  constructor(private breakpointObserver: BreakpointObserver, private loginService: LoginService) {
+  constructor(private breakpointObserver: BreakpointObserver, private loginService: LoginService, private router: Router) {
     this._loginService = loginService;
   }
 
@@ -33,7 +34,10 @@ export class MatNavigationComponent implements OnInit {
     this._loginService.logOut().subscribe({
       next: (response) => this._loginService.isLoggedIn = false,
       error: (err: Error) => console.error("Error logging out: ", err),
-      complete: () => console.log("Logout complete")
+      complete: () => {
+        console.log("Logout complete");
+        this.router.navigate(['/login']);
+      }
     });
   }
 
