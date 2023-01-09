@@ -66,8 +66,7 @@ namespace WishlistAPI.Controllers
                         else
                             user = await _dBContext.Users.SingleOrDefaultAsync(user => user.UserNameNormalized.Equals(login.Identifier.ToUpperInvariant()));
 
-                        string passwordHash = PasswordHasher.HashPassword(user!, login.Password.ToString());
-                        isValidPassword = PasswordHasher.VerifyPassword(user!, passwordHash, login.Password);
+                        isValidPassword = PasswordHasher.VerifyPassword(user!, user.PasswordHash, login.Password);
                         _logger.LogDebug("{Controller} - {ActionMethod}: Password is valid: {isValidPassword}", isValidPassword);
 
                         // If both username and password are valid, return a token
