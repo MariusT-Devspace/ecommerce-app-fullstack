@@ -8,12 +8,12 @@
 
         <mat-form-field appearance="fill">
           <mat-label>Enter your first name</mat-label>
-          <input matInput #input maxlength="10" placeholder="First Name" formControlName="firstName">
+          <input matInput #input maxlength="20" placeholder="First Name" formControlName="firstName">
         </mat-form-field>
       
         <mat-form-field appearance="fill">
           <mat-label>Enter your last name</mat-label>
-          <input matInput #input maxlength="10" placeholder="Last Name" formControlName="lastName">
+          <input matInput #input maxlength="20" placeholder="Last Name" formControlName="lastName">
         </mat-form-field>
 
       </div>
@@ -32,7 +32,7 @@
 
       <mat-form-field hintLabel="Must be at least 6 characters and include uppercase letters and numbers" appearance="fill">
         <mat-label>Enter your password</mat-label>
-        <input matInput #input [type]="hide ? 'password' : 'text'" maxlength="10" placeholder="Password" formControlName="password">
+        <input matInput #input [type]="hide ? 'password' : 'text'" maxlength="20" placeholder="Password" formControlName="password">
         <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
           <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
         </button>
