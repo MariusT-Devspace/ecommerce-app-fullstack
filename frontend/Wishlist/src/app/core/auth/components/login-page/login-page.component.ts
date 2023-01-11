@@ -13,32 +13,19 @@ import { LoginService } from '../../services/login.service';
 })
 export class LoginPageComponent{
 
-  constructor(private loginService: LoginService, private router: Router) {}
+  constructor(private loginService: LoginService, private router: Router) { 
+  }
 
   logIn(requestBody: ILogin){
     console.log("logIn()");
     this.loginService.isLoading$.next(true);
     this.loginService.logIn(requestBody).subscribe(
       {
-        next: async (response: IToken) => {
+        next: (response: IToken) => {
           console.log("logIn() - next");
           // Set token
           console.log("Login data: ", requestBody);
-          await this.setToken(response.token);
-          const userInfo: IToken = {
-            userId: response.userId,
-            userName: response.userName,
-            firstName: response.firstName,
-            lastName: response.lastName,
-            email: response.email,
-            expiration: response.expiration,
-            validity: response.validity,
-            refreshToken: "",
-            token: "",
-            role: response.role,
-            welcomeMessage: response.welcomeMessage
-          }
-          localStorage.setItem("user_info", JSON.stringify(userInfo));
+          this.setToken(response);
         },
         error: (err: Error) => {
           console.error(`Error logging in: ${err.message}`);
@@ -49,9 +36,26 @@ export class LoginPageComponent{
     );
   }
 
-  async setToken(token: string) {
-    this.loginService.setToken(token).subscribe({
+  async setToken(tokenResponse: IToken) {
+    console.log("setToken()");
+    this.loginService.isLoading$.next(true);
+    this.loginService.setToken(tokenResponse.token).subscribe({
       next: (response: HttpResponse<IAuthenticated>) => {
+        console.log("setToken() - next");
+        const userInfo: IToken = {
+          userId: tokenResponse.userId,
+          userName: tokenResponse.userName,
+          firstName: tokenResponse.firstName,
+          lastName: tokenResponse.lastName,
+          email: tokenResponse.email,
+          expiration: tokenResponse.expiration,
+          validity: tokenResponse.validity,
+          refreshToken: "",
+          token: "",
+          role: tokenResponse.role,
+          welcomeMessage: tokenResponse.welcomeMessage
+        }
+        localStorage.setItem("user_info", JSON.stringify(userInfo));
         this.navigateToHome()
       },
       error: (err: Error) => {
