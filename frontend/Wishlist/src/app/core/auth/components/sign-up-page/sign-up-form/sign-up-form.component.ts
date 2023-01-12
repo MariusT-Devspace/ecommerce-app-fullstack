@@ -1,6 +1,7 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormGroup, FormBuilder, FormControl } from '@angular/forms';
 import { ISignUp } from '../../../models/sign-up.model';
+import { SignUpService } from '../../../services/sign-up.service';
 
 @Component({
   selector: 'app-sign-up-form',
@@ -15,9 +16,10 @@ export class SignUpFormComponent implements OnInit{
   showProgressBar = false;
 
   @Output() onSignUp = new EventEmitter<ISignUp>
-  //((requestBody: ISignUp) => void) | undefined;
 
-  constructor(private formBuilder: FormBuilder) {}
+  constructor(private formBuilder: FormBuilder, private signUpService: SignUpService) {
+    this.signUpService.isLoading$.subscribe({next: (v) => this.showProgressBar = v})
+  }
 
   ngOnInit(){
     this.signUpForm = this.formBuilder.group({

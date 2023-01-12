@@ -12,9 +12,12 @@ import { LoginPageComponent } from '../login-page/login-page.component';
   styleUrls: ['./sign-up-page.component.sass']
 })
 export class SignUpPageComponent {
-  
+
+  showConfirmationPage = false
 
   constructor(private signUpService: SignUpService, private loginService: LoginService, @Inject(LoginPageComponent) private loginPageComponent: LoginPageComponent) {
+    this.loginService.isLoading$.subscribe({next: (v) => this.showConfirmationPage = v});
+  }
 
   signUp(requestBody: ISignUp){
     this.signUpService.signUp(requestBody).subscribe(

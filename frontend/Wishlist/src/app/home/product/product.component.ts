@@ -1,7 +1,7 @@
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { Component, Input, OnInit } from '@angular/core';
 import { map } from 'rxjs';
-import { IProduct } from './product.model';
+import { IProduct } from 'src/app/models/product.model';
 
 @Component({
   selector: 'app-product',

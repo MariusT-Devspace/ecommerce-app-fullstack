@@ -17,11 +17,7 @@ export class LoginService {
   isLoading$ = new BehaviorSubject<boolean>(false);
   userRole: UserRole | undefined;
 
-  // URLs
-  loginURL = `${environment.apiHost}/api/Account/Login`;
-  setTokenURL = `${environment.apiHost}/api/Account/SetToken`;
-  checkTokenCookieURL = `${environment.apiHost}/api/Account/CheckCookie`;
-  logOutURL = `${environment.apiHost}/api/Account/Logout`;
+  baseURL = `${environment.apiHost}/api/Account`
 
   constructor(private httpClient: HttpClient) { 
     if (localStorage.getItem("user_info"))
@@ -51,30 +47,34 @@ export class LoginService {
 
 
   logIn(requestBody: ILogin): Observable<IToken> {
-    return this.httpClient.post(this.loginURL, requestBody) as Observable<IToken>;
+    let loginURL = `${this.baseURL}/Login`;
+    return this.httpClient.post(loginURL, requestBody) as Observable<IToken>;
   }
 
   setToken(token: string): Observable<any> {
     console.log("setToken()");
-    return this.httpClient.post(this.setTokenURL, {}, { headers: { 'Authorization': "Bearer " + token }}) as Observable<any>;
+    let setTokenURL = `${this.baseURL}/SetToken`;
+    return this.httpClient.post(setTokenURL, {}, { headers: { 'Authorization': "Bearer " + token }}) as Observable<any>;
   }
 
   checkTokenCookie():  Observable<HttpResponse<IAuthenticated>>{
     console.log("checkTokenCookie()");
+    let checkTokenCookieURL = `${this.baseURL}/CheckCookie`;
     const httpOptions = {
       withCredentials: true, 
       secureCookie: false,
       observe: 'response' as 'response'
     };  
-    return this.httpClient.get<IAuthenticated>(this.checkTokenCookieURL, httpOptions) as Observable<HttpResponse<IAuthenticated>>;
+    return this.httpClient.get<IAuthenticated>(checkTokenCookieURL, httpOptions) as Observable<HttpResponse<IAuthenticated>>;
   }
 
   logOut(): Observable<any> {
+    let logOutURL = `${this.baseURL}/Logout`;
     const httpOptions = {
       withCredentials: true, 
       secureCookie: false,
       observe: 'response' as 'response'
     };  
-    return this.httpClient.post(this.logOutURL, httpOptions) as Observable<any>
+    return this.httpClient.post(logOutURL, httpOptions) as Observable<any>
   }
 }

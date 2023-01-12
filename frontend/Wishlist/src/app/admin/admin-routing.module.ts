@@ -4,6 +4,7 @@ import { AuthGuard } from '../core/auth/guards/auth.guard';
 import { RoleGuard } from '../core/auth/guards/role.guard';
 import { UserRole } from '../core/auth/models/token.model';
 import { AdminHomePageComponent } from './admin-home-page/admin-home-page.component';
+import { ProductsListComponent } from './admin-home-page/products-list/products-list.component';
 
 const routes: Routes = [
   {
@@ -12,7 +13,13 @@ const routes: Routes = [
     canActivate: [AuthGuard, RoleGuard],
     data: {
       role: UserRole.Administrator
-    }
+    },
+    children: [
+      {
+        path: 'products',
+        component: ProductsListComponent
+      }
+    ]
   }
 ];
 

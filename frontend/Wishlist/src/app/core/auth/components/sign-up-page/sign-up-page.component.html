@@ -1,4 +1,5 @@
 <div class="signup-form-container">
-    <app-sign-up-form (onSignUp)="signUp($event)"></app-sign-up-form>
+    <app-sign-up-form *ngIf="!this.showConfirmationPage" (onSignUp)="signUp($event)"></app-sign-up-form>
+    <app-sign-up-confirmation *ngIf="this.showConfirmationPage"></app-sign-up-confirmation>
 </div>
 
