@@ -7,6 +7,7 @@ import { SignUpFormComponent } from './components/sign-up-page/sign-up-form/sign
 import { SignUpPageComponent } from './components/sign-up-page/sign-up-page.component';
 import { HttpClientModule } from '@angular/common/http';
 import { LoginFormComponent } from './components/login-page/login-form/login-form.component';
+import { SignUpConfirmationComponent } from './components/sign-up-page/sign-up-confirmation/sign-up-confirmation.component';
 
 
 @NgModule({
@@ -14,7 +15,8 @@ import { LoginFormComponent } from './components/login-page/login-form/login-for
     SignUpPageComponent,
     LoginPageComponent,
     SignUpFormComponent,
-    LoginFormComponent
+    LoginFormComponent,
+    SignUpConfirmationComponent
   ],
   imports: [
     CommonModule,
@@ -23,7 +25,8 @@ import { LoginFormComponent } from './components/login-page/login-form/login-for
     HttpClientModule
   ],   
   exports: [
-    SignUpPageComponent
+    SignUpPageComponent,
+    LoginPageComponent
   ]
 })
 export class AuthModule { }
