@@ -1,0 +1,45 @@
+<div class="content-wrapper" [ngClass]="breakpoint$ | async">
+  <div mat-dialog-content>
+    <h1 mat-dialog-title>Add a new product</h1>
+    <form [formGroup]="addProductForm" id="addProductForm">
+   
+      <mat-form-field appearance="fill">
+        <mat-label>Enter a title</mat-label>
+        <input matInput #input maxlength="100" placeholder="Title" formControlName="title">
+      </mat-form-field>
+  
+      <mat-form-field appearance="fill">
+        <mat-label>Enter a description</mat-label>
+        <textarea matInput #input maxlength="2000" placeholder="Description" formControlName="description"></textarea>
+      </mat-form-field>
+  
+      <mat-form-field appearance="fill">
+        <mat-label>Enter the price</mat-label>
+        <input matInput #input placeholder="Price" formControlName="price">
+      </mat-form-field>
+  
+      <mat-form-field appearance="fill">
+        <mat-label>Enter a picture</mat-label>
+        <input matInput #input maxlength="100" placeholder="Picture" formControlName="picture">
+      </mat-form-field>
+  
+      <label id="example-radio-group-label">Is the product available?</label>
+      <mat-radio-group aria-label="Select an option">
+        <mat-radio-button [value]=true>Yes</mat-radio-button>
+        <mat-radio-button [value]=false>No</mat-radio-button>
+      </mat-radio-group>
+  
+      <mat-form-field appearance="fill">
+        <mat-label>Category</mat-label>
+         <mat-select>
+          <mat-option>None</mat-option>
+          <mat-option *ngFor="let category of categories" [value]="category.name">{{category.name}}</mat-option>
+          </mat-select>
+  </mat-form-field>
+    </form>
+  </div>
+  <div mat-dialog-actions align="end">
+    <button mat-button mat-dialog-close>Cancel</button>
+    <button mat-button mat-dialog-close cdkFocusInitial>Add product</button>
+  </div>
+</div>

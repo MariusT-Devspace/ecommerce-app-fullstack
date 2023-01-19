@@ -1,6 +1,7 @@
+import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { Component } from '@angular/core';
-import { MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { ICategory } from 'src/app/models/category.model';
+import { MatDialog } from '@angular/material/dialog';
+import { map } from 'rxjs';
 import { AddProductDialogComponent } from './add-product-dialog/add-product-dialog.component';
 
 @Component({
@@ -9,8 +10,13 @@ import { AddProductDialogComponent } from './add-product-dialog/add-product-dial
   styleUrls: ['./products-list.component.sass']
 })
 export class ProductsListComponent {
+  breakpoint$ = this.breakpointObserver.observe(Breakpoints.Handset)
+              .pipe(
+                map(result => result.matches ? 'handset' : 'desktop')
+              );
 
-  constructor(public dialog: MatDialog) { }
+
+  constructor(public dialog: MatDialog, private breakpointObserver: BreakpointObserver) { }
 
   addProduct() {
     
@@ -20,12 +26,20 @@ export class ProductsListComponent {
     let enterAnimationDuration = '300ms';
     let exitAnimationDuration = '150ms';
     let disableClose = true;
+    let minWidth = 350;
+    this.breakpoint$.subscribe({
+      next: (v) => { 
+        if (v === 'desktop')
+          minWidth = 500;
+      }
+    });
 
     this.dialog.open(AddProductDialogComponent, {
       width: '250px',
       enterAnimationDuration,
       exitAnimationDuration,
-      disableClose
+      disableClose,
+      minWidth
     });
   }
 }
