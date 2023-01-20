@@ -4,7 +4,7 @@ import { AuthGuard } from '../core/auth/guards/auth.guard';
 import { RoleGuard } from '../core/auth/guards/role.guard';
 import { UserRole } from '../core/auth/models/token.model';
 import { AdminHomePageComponent } from './admin-home-page/admin-home-page.component';
-import { ProductsListComponent } from './admin-home-page/products-list/products-list.component';
+import { ProductsManagementPageComponent } from './admin-home-page/products-management-page/products-management-page.component';
 
 const routes: Routes = [
   {
@@ -17,7 +17,7 @@ const routes: Routes = [
     children: [
       {
         path: 'products',
-        component: ProductsListComponent
+        component: ProductsManagementPageComponent
       }
     ]
   }
