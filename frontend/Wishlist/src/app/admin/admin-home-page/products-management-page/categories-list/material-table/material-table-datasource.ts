@@ -1,10 +1,9 @@
 import { CollectionViewer, DataSource } from '@angular/cdk/collections';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
-import { map } from 'rxjs/operators';
 import { Observable, of as observableOf, merge, BehaviorSubject } from 'rxjs';
-import { ProductsService } from 'src/app/core/services/products.service';
-import { IProduct } from 'src/app/models/product.model';
+import { CategoriesService } from 'src/app/core/services/categories.service';
+import { ICategory } from 'src/app/models/category.model';
 
 // TODO: Replace this with your own data model type
 export interface MaterialTableItem {
@@ -18,14 +17,14 @@ export interface MaterialTableItem {
  * encapsulate all logic for fetching and manipulating the displayed data
  * (including sorting, pagination, and filtering).
  */
-export class MaterialTableDataSource extends DataSource<IProduct> {
-  data: IProduct[] = [];
+export class MaterialTableDataSource extends DataSource<ICategory> {
+  data: ICategory[] = [];
   paginator: MatPaginator | undefined;
   sort: MatSort | undefined;
 
-  private productsSubject$ = new BehaviorSubject<IProduct[]>([]);
+  private categoriesSubject$ = new BehaviorSubject<ICategory[]>([]);
 
-  constructor(private productsService: ProductsService) {
+  constructor(private categoriesService: CategoriesService) {
     super();
   }
 
@@ -34,7 +33,7 @@ export class MaterialTableDataSource extends DataSource<IProduct> {
    * the returned stream emits new items.
    * @returns A stream of the items to be rendered.
    */
-  connect(collectionViewer: CollectionViewer): Observable<IProduct[]> {
+  connect(collectionViewer: CollectionViewer): Observable<ICategory[]> {
     if (this.paginator && this.sort) {
       // Combine everything that affects the rendered data into one update
       // stream for the data-table to consume.
@@ -42,7 +41,7 @@ export class MaterialTableDataSource extends DataSource<IProduct> {
       //   .pipe(map(() => {
       //     return this.getPagedData(this.getSortedData([...this.data ]));
       //   }));
-      return this.productsSubject$.asObservable();
+      return this.categoriesSubject$.asObservable();
     } else {
       throw Error('Please set the paginator and sort on the data source before connecting.');
     }
@@ -54,11 +53,11 @@ export class MaterialTableDataSource extends DataSource<IProduct> {
    */
   disconnect(): void {}
 
-  getProducts() {
-    this.productsService.getProducts().subscribe({
-      next: (response: IProduct[]) => this.productsSubject$.next(response),
-      error: (err: Error) => console.error("Could not retrieve products" + err.message),
-      complete: () => console.log("Products retrieved successfully")
+  getCategories() {
+    this.categoriesService.getCategories().subscribe({
+      next: (response: ICategory[]) => this.categoriesSubject$.next(response),
+      error: (err: Error) => console.error("Could not retrieve categories" + err.message),
+      complete: () => console.log("Categories retrieved successfully")
     });
   }
 

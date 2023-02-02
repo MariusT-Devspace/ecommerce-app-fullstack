@@ -9,17 +9,23 @@ import { MatSortModule } from '@angular/material/sort';
 import { SharedModule } from '../shared/shared.module';
 import { ProductsManagementPageComponent } from './admin-home-page/products-management-page/products-management-page.component';
 import { AddProductDialogComponent } from './admin-home-page/products-management-page/products-list/add-product-dialog/add-product-dialog.component';
-import { MaterialTableComponent } from './admin-home-page/products-management-page/products-list/material-table/material-table.component';
+import { ProductsMaterialTableComponent } from './admin-home-page/products-management-page/products-list/material-table/products-material-table.component';
 import { ProductsListComponent } from './admin-home-page/products-management-page/products-list/products-list.component';
+import { CategoriesListComponent } from './admin-home-page/products-management-page/categories-list/categories-list.component';
+import { CategoriesMaterialTableComponent } from './admin-home-page/products-management-page/categories-list/material-table/categories-material-table.component';
+import { MoreButtonComponent } from './admin-home-page/products-management-page/more-button/more-button.component';
 
 
 @NgModule({
   declarations: [
     AdminHomePageComponent,
     ProductsListComponent,
-    MaterialTableComponent,
+    ProductsMaterialTableComponent,
     AddProductDialogComponent,
-    ProductsManagementPageComponent
+    ProductsManagementPageComponent,
+    CategoriesListComponent,
+    CategoriesMaterialTableComponent,
+    MoreButtonComponent
   ],
   imports: [
     CommonModule,

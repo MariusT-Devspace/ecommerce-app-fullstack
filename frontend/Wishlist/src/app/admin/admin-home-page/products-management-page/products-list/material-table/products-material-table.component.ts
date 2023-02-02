@@ -4,22 +4,22 @@ import { MatSort } from '@angular/material/sort';
 import { MatTable } from '@angular/material/table';
 import { ProductsService } from 'src/app/core/services/products.service';
 import { IProduct } from 'src/app/models/product.model';
-import { MaterialTableDataSource, MaterialTableItem } from './material-table-datasource';
+import { MaterialTableDataSource } from './material-table-datasource';
 
 
 @Component({
-  selector: 'app-material-table',
-  templateUrl: './material-table.component.html',
-  styleUrls: ['./material-table.component.css']
+  selector: 'app-products-material-table',
+  templateUrl: './products-material-table.component.html',
+  styleUrls: ['./products-material-table.component.css']
 })
-export class MaterialTableComponent implements AfterViewInit {
+export class ProductsMaterialTableComponent implements AfterViewInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
   @ViewChild(MatTable) table!: MatTable<IProduct>;
   dataSource: MaterialTableDataSource;
 
   /** Columns displayed in the table. Columns IDs can be added, removed, or reordered. */
-  displayedColumns = ['id', 'title', 'description', 'isAvailable'];
+  displayedColumns = ['id', 'title', 'isAvailable', 'actions'];
 
   @Output() onOpenDialog = new EventEmitter();
 
