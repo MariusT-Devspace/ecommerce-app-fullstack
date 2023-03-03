@@ -21,7 +21,7 @@ export class ProductsMaterialTableComponent implements AfterViewInit {
   /** Columns displayed in the table. Columns IDs can be added, removed, or reordered. */
   displayedColumns = ['id', 'title', 'isAvailable', 'actions'];
 
-  @Output() onOpenDialog = new EventEmitter();
+  @Output() onOpenDialog = new EventEmitter<IProduct>;
 
   constructor(private productsService: ProductsService) {
     this.dataSource = new MaterialTableDataSource(productsService);
@@ -34,8 +34,8 @@ export class ProductsMaterialTableComponent implements AfterViewInit {
     this.table.dataSource = this.dataSource;
   }
 
-  openDialog() {
-    this.onOpenDialog.emit();
+  openProductDetailDialog(selectedProduct: IProduct) {
+  this.onOpenDialog.emit(selectedProduct);
   }
 }
 

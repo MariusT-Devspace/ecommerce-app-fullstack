@@ -1,25 +1,25 @@
 <div class="content-wrapper" [ngClass]="breakpoint$ | async">
   <div mat-dialog-content>
-    <h1 mat-dialog-title>Add a new product</h1>
-    <form [formGroup]="addProductForm" id="addProductForm">
+    <h1 mat-dialog-title>Product detail</h1>
+    <form [formGroup]="productDetailForm" id="productDetailForm">
    
       <mat-form-field appearance="fill">
-        <mat-label>Enter a title</mat-label>
+        <mat-label>Title</mat-label>
         <input matInput #input maxlength="100" placeholder="Title" formControlName="title">
       </mat-form-field>
   
       <mat-form-field appearance="fill">
-        <mat-label>Enter a description</mat-label>
+        <mat-label>Description</mat-label>
         <textarea matInput #input maxlength="2000" placeholder="Description" formControlName="description"></textarea>
       </mat-form-field>
   
       <mat-form-field appearance="fill">
-        <mat-label>Enter the price</mat-label>
+        <mat-label>Price</mat-label>
         <input matInput #input placeholder="Price" formControlName="price">
       </mat-form-field>
   
       <mat-form-field appearance="fill">
-        <mat-label>Enter a picture</mat-label>
+        <mat-label>Picture</mat-label>
         <input matInput #input maxlength="100" placeholder="Picture" formControlName="picture">
       </mat-form-field>
   

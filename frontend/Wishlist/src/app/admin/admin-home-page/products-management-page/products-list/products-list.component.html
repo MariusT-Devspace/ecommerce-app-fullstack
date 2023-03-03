@@ -1,7 +1,7 @@
 <div class="products-list-container">
     <h2>Products</h2>
-    <app-products-material-table (onOpenDialog)="openDialog()"></app-products-material-table>
-    <button mat-raised-button color="primary" type="button" (click)="openDialog()">Add product</button>
+    <app-products-material-table (onOpenDialog)="openProductDetailDialog($event)"></app-products-material-table>
+    <button mat-raised-button color="primary" type="button" (click)="openAddProductDialog()">Add product</button>
 </div>
 
 

@@ -1,8 +1,8 @@
 import { Breakpoints, BreakpointObserver } from '@angular/cdk/layout';
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { map } from 'rxjs';
-import { CategoriesService } from 'src/app/core/services/categories.service';
 import { ProductsService } from 'src/app/core/services/products.service';
 import { ICategory } from 'src/app/models/category.model';
 
@@ -13,13 +13,14 @@ import { ICategory } from 'src/app/models/category.model';
 })
 export class AddProductDialogComponent implements OnInit{
   addProductForm: FormGroup = new FormGroup({});
-  categories: ICategory[] = [];
+  
   breakpoint$ = this.breakpointObserver.observe(Breakpoints.Handset)
               .pipe(
                 map(result => result.matches ? 'handset' : 'desktop')
               );
-  constructor(private formBuilder: FormBuilder, private productsService: ProductsService,
-              private categoriesService: CategoriesService, private breakpointObserver: BreakpointObserver) { }
+  constructor(public addProductDialogRef: MatDialogRef<AddProductDialogComponent>, private formBuilder: FormBuilder, private productsService: ProductsService,
+              private breakpointObserver: BreakpointObserver,
+              @Inject(MAT_DIALOG_DATA) public data: {categories: ICategory[]}) { }
 
   ngOnInit() {
     this.addProductForm = this.formBuilder.group({
@@ -31,14 +32,8 @@ export class AddProductDialogComponent implements OnInit{
       categoryId: new FormControl('')
     });
 
-    this.getCategories();
+    
   }
 
-  getCategories() {
-    this.categoriesService.getCategories().subscribe({
-      next: (response: ICategory[]) => this.categories = response,
-      error: (err: Error) => console.error("Error retrieving categories", err),
-      complete: () => console.log("Categories retrieved successfuly")
-    });
-  }
+  
 }
