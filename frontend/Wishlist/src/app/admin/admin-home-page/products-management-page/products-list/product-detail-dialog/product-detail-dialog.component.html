@@ -2,7 +2,7 @@
   <div mat-dialog-content>
     <div class="dialog-header">
       <h1 mat-dialog-title>Product details</h1>
-      <app-edit-button id="edit-button"></app-edit-button>
+      <app-edit-button *ngIf="!isEditMode" id="edit-button" (click)="enableEditMode()"></app-edit-button>
     </div>
 
     <div *ngIf="!this.isEditMode" id="product-details">

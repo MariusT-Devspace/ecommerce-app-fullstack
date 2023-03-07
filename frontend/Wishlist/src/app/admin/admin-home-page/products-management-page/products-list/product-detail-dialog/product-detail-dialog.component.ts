@@ -30,4 +30,8 @@ export class ProductDetailDialogComponent implements OnInit {
       categoryId: new FormControl(this.data.product.categoryId, [Validators.required]),
     });
   }
+
+  enableEditMode(): void {
+    this.isEditMode = true;
+  }
 }
