@@ -32,10 +32,6 @@ export class ProductsListComponent implements OnInit {
     this.getCategories();
   }
 
-  addProduct() {
-    
-  }
-
   openAddProductDialog(): void {
     let enterAnimationDuration = '300ms';
     let exitAnimationDuration = '150ms';

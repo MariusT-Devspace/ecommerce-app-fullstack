@@ -22,12 +22,12 @@ export class ProductDetailDialogComponent implements OnInit {
 
   ngOnInit(): void {
     this.productDetailForm = this.formBuilder.group({
-      title: new FormControl({value: this.data.product.title, disabled: !this.isEditMode}, [Validators.required]),
-      description: new FormControl({value: this.data.product.description, disabled: !this.isEditMode}, [Validators.required]),
-      price: new FormControl({value: this.data.product.price, disabled: !this.isEditMode}, [Validators.pattern("^\d+\.\d{2}$")]),
-      picture: new FormControl({value: this.data.product.picture, disabled: !this.isEditMode}, [Validators.required]),
+      title: new FormControl(this.data.product.title, [Validators.required]),
+      description: new FormControl(this.data.product.description, [Validators.required]),
+      price: new FormControl(this.data.product.price, [Validators.pattern("^\d+\.\d{2}$")]),
+      picture: new FormControl(this.data.product.picture, [Validators.required]),
       isAvailable: new FormControl(this.data.product.isAvailable, [Validators.required]),
-      categoryId: new FormControl({value: this.data.product.categoryId, disabled: !this.isEditMode}, [Validators.required]),
+      categoryId: new FormControl(this.data.product.categoryId, [Validators.required]),
     });
   }
 }
