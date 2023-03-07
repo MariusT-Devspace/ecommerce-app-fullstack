@@ -1,8 +1,6 @@
-import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { map } from 'rxjs';
 import { ICategory } from 'src/app/models/category.model';
 import { IProduct } from 'src/app/models/product.model';
 
@@ -13,13 +11,10 @@ import { IProduct } from 'src/app/models/product.model';
 })
 export class ProductDetailDialogComponent implements OnInit {
   productDetailForm: FormGroup = new FormGroup({});
-  breakpoint$ = this.breakpointObserver.observe(Breakpoints.Handset)
-              .pipe(
-                map(result => result.matches ? 'handset' : 'desktop')
-              );
+  isEditMode: boolean = false;
 
   constructor(public productDetailDialogRef: MatDialogRef<ProductDetailDialogComponent>, 
-    private formBuilder: FormBuilder, private breakpointObserver: BreakpointObserver,
+    private formBuilder: FormBuilder,
     @Inject(MAT_DIALOG_DATA) public data: {
       product: IProduct,
       categories: ICategory[]
@@ -27,12 +22,12 @@ export class ProductDetailDialogComponent implements OnInit {
 
   ngOnInit(): void {
     this.productDetailForm = this.formBuilder.group({
-      title: new FormControl({value: '', disabled: true}, [Validators.required]),
-      description: new FormControl({value: '', disabled: true}, [Validators.required]),
-      price: new FormControl({value: '', disabled: true}, [Validators.pattern("^\d+\.\d{2}$")]),
-      picture: new FormControl({value: '', disabled: true}, [Validators.required]),
-      isAvailable: new FormControl({value: '', disabled: true}, [Validators.required]),
-      categoryId: new FormControl({value: '', disabled: true}),
+      title: new FormControl({value: this.data.product.title, disabled: !this.isEditMode}, [Validators.required]),
+      description: new FormControl({value: this.data.product.description, disabled: !this.isEditMode}, [Validators.required]),
+      price: new FormControl({value: this.data.product.price, disabled: !this.isEditMode}, [Validators.pattern("^\d+\.\d{2}$")]),
+      picture: new FormControl({value: this.data.product.picture, disabled: !this.isEditMode}, [Validators.required]),
+      isAvailable: new FormControl(this.data.product.isAvailable, [Validators.required]),
+      categoryId: new FormControl({value: this.data.product.categoryId, disabled: !this.isEditMode}, [Validators.required]),
     });
   }
 }

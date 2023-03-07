@@ -14,12 +14,7 @@ import { ICategory } from 'src/app/models/category.model';
 export class AddProductDialogComponent implements OnInit{
   addProductForm: FormGroup = new FormGroup({});
   
-  breakpoint$ = this.breakpointObserver.observe(Breakpoints.Handset)
-              .pipe(
-                map(result => result.matches ? 'handset' : 'desktop')
-              );
   constructor(public addProductDialogRef: MatDialogRef<AddProductDialogComponent>, private formBuilder: FormBuilder, private productsService: ProductsService,
-              private breakpointObserver: BreakpointObserver,
               @Inject(MAT_DIALOG_DATA) public data: {categories: ICategory[]}) { }
 
   ngOnInit() {

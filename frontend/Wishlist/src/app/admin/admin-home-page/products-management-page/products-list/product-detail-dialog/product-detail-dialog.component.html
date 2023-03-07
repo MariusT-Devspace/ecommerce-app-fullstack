@@ -1,7 +1,32 @@
-<div class="content-wrapper" [ngClass]="breakpoint$ | async">
+<div class="content-wrapper">
   <div mat-dialog-content>
-    <h1 mat-dialog-title>Product detail</h1>
-    <form [formGroup]="productDetailForm" id="productDetailForm">
+    <div class="dialog-header">
+      <h1 mat-dialog-title>Product details</h1>
+      <app-edit-button id="edit-button"></app-edit-button>
+    </div>
+    
+
+    <div *ngIf="!this.isEditMode" id="product-details">
+      <h3>Title</h3>
+      <span>{{data.product.title}}</span>
+
+      <h3>Description</h3>
+      <span>{{data.product.description}}</span>
+
+      <h3>Price</h3>
+      <span>{{data.product.price}}</span>
+
+      <h3>Picture</h3>
+      <img src="{{data.product.picture}}" alt="product picture"/>
+
+      <h3>Is available</h3>
+      <span>{{data.product.isAvailable}}</span>
+
+      <h3>Category</h3>
+      <span>{{data.product.categoryId}}</span>
+    </div>
+
+    <form *ngIf="this.isEditMode" [formGroup]="productDetailForm" id="productDetailForm">
    
       <mat-form-field appearance="fill">
         <mat-label>Title</mat-label>
@@ -23,7 +48,7 @@
         <input matInput #input maxlength="100" placeholder="Picture" formControlName="picture">
       </mat-form-field>
   
-      <label id="example-radio-group-label">Is the product available?</label>
+      <label id="example-radio-group-label">Is available</label>
       <mat-radio-group aria-label="Select an option">
         <mat-radio-button [value]=true>Yes</mat-radio-button>
         <mat-radio-button [value]=false>No</mat-radio-button>
@@ -31,7 +56,7 @@
   
       <mat-form-field appearance="fill">
         <mat-label>Category</mat-label>
-         <mat-select>
+         <mat-select [disabled]="!this.isEditMode">
           <mat-option>None</mat-option>
           <mat-option *ngFor="let category of data.categories" [value]="category.name">{{category.name}}</mat-option>
           </mat-select>
