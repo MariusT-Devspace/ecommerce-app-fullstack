@@ -5,7 +5,7 @@
       <app-edit-button *ngIf="!isEditMode" id="edit-button" (click)="enableEditMode()"></app-edit-button>
     </div>
 
-    <div *ngIf="!this.isEditMode" id="product-details">
+    <div *ngIf="!isEditMode; else editForm" id="product-details">
       <h3>Title</h3>
       <span>{{data.product.title}}</span>
 
@@ -25,45 +25,52 @@
       <span>{{data.product.categoryId}}</span>
     </div>
 
-    <form *ngIf="this.isEditMode" [formGroup]="productDetailForm" id="productDetailForm">
+    <ng-template #editForm>
+      <form *ngIf="isEditMode" [formGroup]="productDetailForm" id="productDetailForm">
    
-      <mat-form-field appearance="fill">
-        <mat-label>Title</mat-label>
-        <input matInput #input maxlength="100" placeholder="Title" formControlName="title">
-      </mat-form-field>
-  
-      <mat-form-field appearance="fill">
-        <mat-label>Description</mat-label>
-        <textarea matInput #input maxlength="2000" placeholder="Description" formControlName="description"></textarea>
-      </mat-form-field>
-  
-      <mat-form-field appearance="fill">
-        <mat-label>Price</mat-label>
-        <input matInput #input placeholder="Price" formControlName="price">
-      </mat-form-field>
-  
-      <mat-form-field appearance="fill">
-        <mat-label>Picture</mat-label>
-        <input matInput #input maxlength="100" placeholder="Picture" formControlName="picture">
-      </mat-form-field>
-  
-      <label id="example-radio-group-label">Is available</label>
-      <mat-radio-group aria-label="Select an option">
-        <mat-radio-button [value]=true>Yes</mat-radio-button>
-        <mat-radio-button [value]=false>No</mat-radio-button>
-      </mat-radio-group>
-  
-      <mat-form-field appearance="fill">
-        <mat-label>Category</mat-label>
-         <mat-select [disabled]="!this.isEditMode">
-          <mat-option>None</mat-option>
-          <mat-option *ngFor="let category of data.categories" [value]="category.name">{{category.name}}</mat-option>
-          </mat-select>
-  </mat-form-field>
-    </form>
+        <mat-form-field appearance="fill">
+          <mat-label>Title</mat-label>
+          <input matInput #input maxlength="100" placeholder="Title" formControlName="title">
+        </mat-form-field>
+    
+        <mat-form-field appearance="fill">
+          <mat-label>Description</mat-label>
+          <textarea matInput #input maxlength="2000" placeholder="Description" formControlName="description"></textarea>
+        </mat-form-field>
+    
+        <mat-form-field appearance="fill">
+          <mat-label>Price</mat-label>
+          <input matInput #input placeholder="Price" formControlName="price">
+        </mat-form-field>
+    
+        <mat-form-field appearance="fill">
+          <mat-label>Picture</mat-label>
+          <input matInput #input maxlength="100" placeholder="Picture" formControlName="picture">
+        </mat-form-field>
+    
+        <label id="example-radio-group-label">Is available</label>
+        <mat-radio-group aria-label="Select an option">
+          <mat-radio-button [value]=true>Yes</mat-radio-button>
+          <mat-radio-button [value]=false>No</mat-radio-button>
+        </mat-radio-group>
+    
+        <mat-form-field appearance="fill">
+          <mat-label>Category</mat-label>
+           <mat-select [disabled]="!isEditMode">
+            <mat-option>None</mat-option>
+            <mat-option *ngFor="let category of data.categories" [value]="category.name">{{category.name}}</mat-option>
+            </mat-select>
+        </mat-form-field>
+      </form>
+    </ng-template>
+    
   </div>
   <div mat-dialog-actions align="end">
-    <button mat-button mat-dialog-close>Cancel</button>
-    <button mat-button mat-dialog-close cdkFocusInitial>Add product</button>
+    <button *ngIf="!isEditMode; else editModeActions" mat-button mat-dialog-close>Back</button>
+    <ng-template #editModeActions>
+      <button mat-button (click)="disableEditMode()">Cancel</button>
+      <button mat-button cdkFocusInitial (click)="saveProduct()">Save product</button>
+    </ng-template>
+    
   </div>
 </div>

@@ -34,4 +34,11 @@ export class ProductDetailDialogComponent implements OnInit {
   enableEditMode(): void {
     this.isEditMode = true;
   }
+
+  disableEditMode(): void {
+    this.isEditMode = false;
+  }
+
+  saveProduct() {
+  }
 }
