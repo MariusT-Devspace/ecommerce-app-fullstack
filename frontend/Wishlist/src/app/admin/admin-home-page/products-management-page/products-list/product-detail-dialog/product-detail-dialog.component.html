@@ -2,67 +2,83 @@
   <div mat-dialog-content>
     <div class="dialog-header">
       <h1 mat-dialog-title>Product details</h1>
-      <app-edit-button *ngIf="!isEditMode" id="edit-button" (click)="enableEditMode()"></app-edit-button>
+      <app-edit-button *ngIf="!isEditMode && isProductRetrieved" id="edit-button" (click)="enableEditMode()"></app-edit-button>
     </div>
 
-    <div *ngIf="!isEditMode; else editForm" id="product-details">
-      <h3>Title</h3>
-      <span>{{data.product.title}}</span>
+    <div *ngIf="!isLoading; else progressSpinner">
+      <div *ngIf="isProductRetrieved; else errorTemplate" id="product-template">
+        <div *ngIf="!isEditMode; else editForm" id="product-details">
+          <h3>Title</h3>
+          <span>{{product!.title}}</span>
+    
+          <h3>Description</h3>
+          <span>{{product!.description}}</span>
+    
+          <h3>Price</h3>
+          <span>{{product!.price}}</span>
+    
+          <h3>Picture</h3>
+          <img src="{{product!.picture}}" alt="product picture"/>
+    
+          <h3>Is available</h3>
+          <span>{{product!.isAvailable}}</span>
+    
+          <h3>Category</h3>
+          <span>{{product!.categoryId}}</span>
+        </div>
+    
+        <ng-template #editForm>
+          <form *ngIf="isEditMode" [formGroup]="productDetailForm" id="productDetailForm">
 
-      <h3>Description</h3>
-      <span>{{data.product.description}}</span>
+            <mat-form-field appearance="fill">
+              <mat-label>Title</mat-label>
+              <input matInput #input maxlength="100" placeholder="Title" formControlName="title">
+            </mat-form-field>
+        
+            <mat-form-field appearance="fill">
+              <mat-label>Description</mat-label>
+              <textarea matInput #input maxlength="2000" placeholder="Description" formControlName="description"></textarea>
+            </mat-form-field>
+        
+            <mat-form-field appearance="fill">
+              <mat-label>Price</mat-label>
+              <input matInput #input placeholder="Price" formControlName="price">
+            </mat-form-field>
+        
+            <mat-form-field appearance="fill">
+              <mat-label>Picture</mat-label>
+              <input matInput #input maxlength="100" placeholder="Picture" formControlName="picture">
+            </mat-form-field>
+        
+            <label id="example-radio-group-label">Is available</label>
+            <mat-radio-group aria-label="Select an option">
+              <mat-radio-button [value]=true>Yes</mat-radio-button>
+              <mat-radio-button [value]=false>No</mat-radio-button>
+            </mat-radio-group>
+        
+            <mat-form-field appearance="fill">
+              <mat-label>Category</mat-label>
+                <mat-select [disabled]="!isEditMode">
+                  <mat-option>None</mat-option>
+                  <mat-option *ngFor="let category of data.categories" [value]="category.name">{{category.name}}</mat-option>
+                </mat-select>
+            </mat-form-field>
+          </form>
+        </ng-template>
+      </div>
 
-      <h3>Price</h3>
-      <span>{{data.product.price}}</span>
-
-      <h3>Picture</h3>
-      <img src="{{data.product.picture}}" alt="product picture"/>
-
-      <h3>Is available</h3>
-      <span>{{data.product.isAvailable}}</span>
-
-      <h3>Category</h3>
-      <span>{{data.product.categoryId}}</span>
+      <ng-template #errorTemplate>
+        <h1>Unable to retrieve product</h1> 
+      </ng-template>
     </div>
 
-    <ng-template #editForm>
-      <form *ngIf="isEditMode" [formGroup]="productDetailForm" id="productDetailForm">
-   
-        <mat-form-field appearance="fill">
-          <mat-label>Title</mat-label>
-          <input matInput #input maxlength="100" placeholder="Title" formControlName="title">
-        </mat-form-field>
-    
-        <mat-form-field appearance="fill">
-          <mat-label>Description</mat-label>
-          <textarea matInput #input maxlength="2000" placeholder="Description" formControlName="description"></textarea>
-        </mat-form-field>
-    
-        <mat-form-field appearance="fill">
-          <mat-label>Price</mat-label>
-          <input matInput #input placeholder="Price" formControlName="price">
-        </mat-form-field>
-    
-        <mat-form-field appearance="fill">
-          <mat-label>Picture</mat-label>
-          <input matInput #input maxlength="100" placeholder="Picture" formControlName="picture">
-        </mat-form-field>
-    
-        <label id="example-radio-group-label">Is available</label>
-        <mat-radio-group aria-label="Select an option">
-          <mat-radio-button [value]=true>Yes</mat-radio-button>
-          <mat-radio-button [value]=false>No</mat-radio-button>
-        </mat-radio-group>
-    
-        <mat-form-field appearance="fill">
-          <mat-label>Category</mat-label>
-           <mat-select [disabled]="!isEditMode">
-            <mat-option>None</mat-option>
-            <mat-option *ngFor="let category of data.categories" [value]="category.name">{{category.name}}</mat-option>
-            </mat-select>
-        </mat-form-field>
-      </form>
+    <ng-template #progressSpinner>
+      <app-progress-spinner></app-progress-spinner>
     </ng-template>
+    
+
+   
+    
     
   </div>
   <div mat-dialog-actions align="end">

@@ -22,7 +22,7 @@ export class ProductsListComponent implements OnInit {
   categories: ICategory[] = [];
   _addProductDialogRef: MatDialogRef<AddProductDialogComponent> | undefined;
   _productDetailDialogRef: MatDialogRef<ProductDetailDialogComponent> | undefined;
-  selectedProduct: IProduct | undefined;
+  selectedProductId: number | undefined;
 
   constructor(private categoriesService: CategoriesService, 
     private breakpointObserver: BreakpointObserver, public dialog: MatDialog) { 
@@ -56,8 +56,8 @@ export class ProductsListComponent implements OnInit {
     });
   }
 
-  openProductDetailDialog(selectedProduct: IProduct): void {
-    this.selectedProduct = selectedProduct;
+  openProductDetailDialog(selectedProductId: number): void {
+    this.selectedProductId = selectedProductId;
     let enterAnimationDuration = '300ms';
     let exitAnimationDuration = '150ms';
     let disableClose = true;
@@ -76,7 +76,7 @@ export class ProductsListComponent implements OnInit {
       disableClose,
       minWidth,
       data: {
-        product: selectedProduct,
+        productId: selectedProductId,
         categories: this.categories
       }
     });

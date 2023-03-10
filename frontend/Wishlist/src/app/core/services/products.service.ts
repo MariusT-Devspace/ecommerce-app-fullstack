@@ -8,17 +8,22 @@ import { environment } from '../../../environment/environment'
 })
 export class ProductsService {
 
-  baseURL = `${environment.apiHost}/api`
+  baseURL = `${environment.apiHost}/api/Products`
 
   constructor(private httpClient: HttpClient ) { }
 
-  getProducts(): any{
-    let url = `${this.baseURL}/Products`;
+  getProducts(): any {
+    let url = `${this.baseURL}`;
+    return this.httpClient.get(url);
+  }
+
+  getProductById(id: number): any {
+    let url = `${this.baseURL}/${id}`;
     return this.httpClient.get(url);
   }
 
   addProduct(body: IProductPOST) {
-    let url = `${this.baseURL}/Products/`;
+    let url = `${this.baseURL}`;
     return this.httpClient.post(url, body, { withCredentials: true } );
   }
 }
