@@ -38,10 +38,14 @@ export class ProductDetailDialogComponent implements OnInit {
           });
   
         },
-        error: (err: Error) => console.error("Could not retrieve product: ", err),
+        error: (err: Error) => {
+          this.isLoading = false;
+          console.error("Could not retrieve product: ", err);
+
+        },
         complete: () => { 
           this.isLoading = false;
-          console.log("Finished retrieving product")
+          console.log("Finished retrieving product");
         }
       });
     }
