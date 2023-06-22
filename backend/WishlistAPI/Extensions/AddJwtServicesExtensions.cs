@@ -22,8 +22,7 @@ namespace WishlistAPI.Extensions
             services.AddSingleton(bindJwtSettings);
 
             // Get IssuerSigningKey secret
-            KeyVaultSecret issuerSigningKeySecret = secretClient.GetSecret("WishlistAPIJwtIssuerSigningKey");
-            var issuerSigningKeySecretValue = Convert.FromBase64String(issuerSigningKeySecret.Value);
+            var issuerSigningKey = Convert.FromBase64String(Environment.GetEnvironmentVariable("IssuerSigningKey"));
 
             // Add jwt bearer authentication
             services.AddAuthentication(options =>
@@ -43,7 +42,7 @@ namespace WishlistAPI.Extensions
                 options.TokenValidationParameters = new TokenValidationParameters()
                 {
                     ValidateIssuerSigningKey = bindJwtSettings.ValidateIssuerSigningKey,
-                    IssuerSigningKey = new SymmetricSecurityKey(issuerSigningKeySecretValue),
+                    IssuerSigningKey = new SymmetricSecurityKey(issuerSigningKey),
                     ValidateIssuer = bindJwtSettings.ValidateIssuer,
                     ValidIssuers = bindJwtSettings.ValidIssuers,
                     ValidateAudience = bindJwtSettings.ValidateAudience,

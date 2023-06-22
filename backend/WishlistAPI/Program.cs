@@ -11,11 +11,13 @@ using WishlistAPI.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
-//var keyVaultEndpoint = new Uri(Environment.GetEnvironmentVariable("VaultUri"));
 Environment.SetEnvironmentVariable("VaultURI", builder.Configuration["VaultURIString"]);
-
-var keyVaultEndpoint = new Uri(Environment.GetEnvironmentVariable("VaultURI"));
-builder.Configuration.AddAzureKeyVault(keyVaultEndpoint, new DefaultAzureCredential());
+Uri? keyVaultEndpoint = null;
+if (builder.Environment.IsProduction())
+{
+    keyVaultEndpoint = new Uri(Environment.GetEnvironmentVariable("VaultURI"));
+    builder.Configuration.AddAzureKeyVault(keyVaultEndpoint, new DefaultAzureCredential());
+}
 
 // Add services to the container.
 
@@ -55,49 +57,52 @@ builder.Services.AddSwaggerGen(options =>
     });
 });
 
-SecretClientOptions options = new SecretClientOptions()
+string connectionStringSecretValue = string.Empty;
+string connectionString = string.Empty;
+SecretClient? secretClient = null;
+
+if (builder.Environment.IsProduction())
 {
-    Retry =
+    SecretClientOptions options = new SecretClientOptions()
+    {
+        Retry =
         {
             Delay= TimeSpan.FromSeconds(2),
             MaxDelay = TimeSpan.FromSeconds(16),
             MaxRetries = 5,
             Mode = RetryMode.Exponential
          }
-};
+    };
 
-var secretClient = new SecretClient(keyVaultEndpoint, new DefaultAzureCredential(), options);
-KeyVaultSecret connectionStringSecret = await secretClient.GetSecretAsync("WishlistAPIConnectionString");
-string connectionStringSecretValue = connectionStringSecret.Value;
-
-
-// Connection with local SQL Server
-const string LOCALCONNECTIONNAME = "WishlistDB";
-var localConnectionString = builder.Configuration.GetConnectionString(LOCALCONNECTIONNAME);
-
-var connectionString = localConnectionString;
-
-
-// Add DbContext
-if (builder.Environment.IsProduction())
+    secretClient = new SecretClient(keyVaultEndpoint, new DefaultAzureCredential(), options);
+    KeyVaultSecret connectionStringSecret = await secretClient.GetSecretAsync("WishlistAPIConnectionString");
+    connectionStringSecretValue = connectionStringSecret.Value;
     connectionString = connectionStringSecretValue;
+} 
+else
+{
+    // Connection with local SQL Server
+    const string LOCALCONNECTIONNAME = "WishlistDB";
+    var localConnectionString = builder.Configuration.GetConnectionString(LOCALCONNECTIONNAME);
+    connectionString = localConnectionString;
+}
+
+
+
+    
 
 builder.Services.AddDbContext<WishlistDBContext>(options => options.UseSqlServer(connectionString));
 
 
 // Configure Serilog
-var loggerConnectionString = string.Empty;
-if (builder.Environment.IsDevelopment())
-    loggerConnectionString = localConnectionString;
-else
-    loggerConnectionString = connectionStringSecretValue;
+var loggerConnectionString = connectionString;
 
 builder.Host.UseSerilog((hostBuilderCtx, loggerConf) =>
 {
     loggerConf.WriteTo.Console()
               .WriteTo.Debug()
               .WriteTo.MSSqlServer(
-                  connectionString: localConnectionString,
+                  connectionString: connectionString,
                   sinkOptions: new MSSqlServerSinkOptions()
                   {
                       SchemaName = "EventLogging",
@@ -114,8 +119,20 @@ builder.Host.UseSerilog((hostBuilderCtx, loggerConf) =>
 builder.Services.AddHttpContextAccessor();
 
 // Get IssuerSigningKey secret
-KeyVaultSecret issuerSigningKey = await secretClient.GetSecretAsync("WishlistAPIJwtIssuerSigningKey");
-var issuerSigningKeyValue = issuerSigningKey.Value;
+
+if (builder.Environment.IsProduction())
+{
+    KeyVaultSecret issuerSigningKey = await secretClient.GetSecretAsync("WishlistAPIJwtIssuerSigningKey");
+    var issuerSigningKeyValue = issuerSigningKey.Value;
+    Environment.SetEnvironmentVariable("IssuerSigningKey", issuerSigningKeyValue);
+}
+else
+{
+    var issuerSigningKeyBytes = System.Text.Encoding.UTF8.GetBytes(builder.Configuration["JwtKeys:IssuerSigningKey"]);
+    Environment.SetEnvironmentVariable("IssuerSigningKey", Convert.ToBase64String(issuerSigningKeyBytes));
+}
+    
+
 
 // Add JWT Authorization service
 builder.Services.AddJwtServices(builder.Configuration, builder.Environment, secretClient);

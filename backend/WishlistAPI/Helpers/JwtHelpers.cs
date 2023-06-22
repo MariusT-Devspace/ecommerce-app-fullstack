@@ -1,11 +1,7 @@
-﻿using Azure.Core;
-using Azure.Identity;
-using Azure.Security.KeyVault.Secrets;
-using Microsoft.IdentityModel.Tokens;
+﻿using Microsoft.IdentityModel.Tokens;
 using Serilog;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
-using WishlistAPI.Extensions;
 using WishlistAPI.Models;
 using WishlistAPI.Models.DataModels;
 using ILogger = Serilog.ILogger;
@@ -43,21 +39,7 @@ namespace WishlistAPI.Helpers
         {
             try
             {
-                // Obtain secret key
-                SecretClientOptions options = new SecretClientOptions()
-                {
-                    Retry =
-                    {
-                    Delay= TimeSpan.FromSeconds(2),
-                    MaxDelay = TimeSpan.FromSeconds(16),
-                    MaxRetries = 5,
-                    Mode = RetryMode.Exponential
-                    }
-                };
-                var keyVaultEndpoint = new Uri(Environment.GetEnvironmentVariable("VaultURI"));
-                var secretClient = new SecretClient(keyVaultEndpoint, new DefaultAzureCredential(), options);
-                KeyVaultSecret issuerSigningKeySecret = await secretClient.GetSecretAsync("WishlistAPIJwtIssuerSigningKey");
-                var issuerSigningKeySecretValue = Convert.FromBase64String(issuerSigningKeySecret.Value);
+                var issuerSigningKey = Convert.FromBase64String(Environment.GetEnvironmentVariable("IssuerSigningKey"));
 
                 string issuer = Environment.GetEnvironmentVariable("Issuer") ?? jwtSettings.ValidIssuers[0];
 
@@ -70,7 +52,7 @@ namespace WishlistAPI.Helpers
                     notBefore: new DateTimeOffset(DateTime.Now).DateTime,
                     expires: new DateTimeOffset(userToken.Expiration).DateTime,
                     signingCredentials: new SigningCredentials(
-                        new SymmetricSecurityKey(issuerSigningKeySecretValue),
+                        new SymmetricSecurityKey(issuerSigningKey),
                         SecurityAlgorithms.HmacSha256
                         )
                     );
