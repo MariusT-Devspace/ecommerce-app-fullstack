@@ -7,7 +7,7 @@ import { AuthUtilsService } from './core/auth/services/auth-utils.service';
   styleUrls: ['./app.component.sass']
 })
 export class AppComponent implements OnInit{
-  title = 'Wishlist';
+  title = 'Ecommerce';
 
   constructor(private authUtilsService: AuthUtilsService) { }
 

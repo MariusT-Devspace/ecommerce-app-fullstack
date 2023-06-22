@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "Wishlist": {
+    "Ecommerce": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -17,7 +17,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/wishlist",
+            "outputPath": "dist/Ecommerce",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": [
@@ -79,10 +79,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "Wishlist:build:production"
+              "browserTarget": "Ecommerce:build:production"
             },
             "development": {
-              "browserTarget": "Wishlist:build:development"
+              "browserTarget": "Ecommerce:build:development"
             }
           },
           "defaultConfiguration": "development",
@@ -94,7 +94,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "Wishlist:build"
+            "browserTarget": "Ecommerce:build"
           }
         },
         "test": {
