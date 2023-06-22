@@ -28,7 +28,7 @@ jobs:
         run: dotnet build backend/WishlistAPI/WishlistAPI.csproj --configuration Release
 
       - name: dotnet publish
-        run: dotnet publish -c Release -o ${{env.DOTNET_ROOT}}/myapp
+        run: dotnet publish -c Release -o ${{env.DOTNET_ROOT}}/myapp backend/WishlistAPI/WishlistAPI.csproj
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v2
