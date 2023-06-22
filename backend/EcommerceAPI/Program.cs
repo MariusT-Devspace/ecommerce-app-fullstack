@@ -82,7 +82,7 @@ if (builder.Environment.IsProduction())
 else
 {
     // Connection with local SQL Server
-    const string LOCALCONNECTIONNAME = "WishlistDB";
+    const string LOCALCONNECTIONNAME = "EcommerceDB";
     var localConnectionString = builder.Configuration.GetConnectionString(LOCALCONNECTIONNAME);
     connectionString = localConnectionString;
 }
