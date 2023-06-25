@@ -16,6 +16,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatSelectModule } from '@angular/material/select';
 import { ProgressSpinnerComponent } from './progress-spinner/progress-spinner.component';
+import { MatListModule } from '@angular/material/list';
 
 @NgModule({
   declarations: [
@@ -37,7 +38,8 @@ import { ProgressSpinnerComponent } from './progress-spinner/progress-spinner.co
     MatProgressSpinnerModule,
     MatDialogModule,
     MatRadioModule,
-    MatSelectModule
+    MatSelectModule,
+    MatListModule
   ],
   exports: [
     MatCardModule,
@@ -56,7 +58,8 @@ import { ProgressSpinnerComponent } from './progress-spinner/progress-spinner.co
     MatDialogModule,
     MatRadioModule,
     MatSelectModule,
-    ProgressSpinnerComponent
+    ProgressSpinnerComponent,
+    MatListModule
   ]
 })
 export class SharedModule { }

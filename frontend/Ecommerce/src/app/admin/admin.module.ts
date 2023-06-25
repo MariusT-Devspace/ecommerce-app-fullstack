@@ -16,6 +16,7 @@ import { CategoriesMaterialTableComponent } from './admin-home-page/products-man
 import { MoreButtonComponent } from './admin-home-page/products-management-page/more-button/more-button.component';
 import { ProductDetailDialogComponent } from './admin-home-page/products-management-page/products-list/product-detail-dialog/product-detail-dialog.component';
 import { EditButtonComponent } from './admin-home-page/products-management-page/edit-button/edit-button.component';
+import { CategoriesListCardComponent } from './admin-home-page/products-management-page/categories-list-card/categories-list-card.component';
 
 
 @NgModule({
@@ -29,7 +30,8 @@ import { EditButtonComponent } from './admin-home-page/products-management-page/
     CategoriesMaterialTableComponent,
     MoreButtonComponent,
     ProductDetailDialogComponent,
-    EditButtonComponent
+    EditButtonComponent,
+    CategoriesListCardComponent
   ],
   imports: [
     CommonModule,
