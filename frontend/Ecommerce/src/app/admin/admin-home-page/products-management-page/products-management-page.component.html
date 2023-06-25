@@ -1,4 +1,8 @@
 <h1>Manage products and categories here</h1>
-<app-products-list [categories] = categories></app-products-list>
-<app-categories-list></app-categories-list>
-<app-categories-list-card [categories] = categories></app-categories-list-card>
+
+<div id="products-management-container">
+    <app-products-list [categories] = categories id="products-list"></app-products-list>
+    <app-categories-list-card [categories] = categories id="categories-list"></app-categories-list-card>
+</div>
+
+<!-- <app-categories-list></app-categories-list> -->
