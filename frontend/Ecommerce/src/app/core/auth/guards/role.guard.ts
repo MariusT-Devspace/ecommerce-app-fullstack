@@ -1,22 +1,14 @@
-import { Injectable } from '@angular/core';
-import { ActivatedRouteSnapshot, Router, RouterStateSnapshot, UrlTree } from '@angular/router';
-import { Observable } from 'rxjs';
+import { inject } from '@angular/core';
+import { CanActivateFn, Router } from '@angular/router';
 import { LoginService } from '../services/login.service';
+import { UserRole } from '../models/token.model';
 
-@Injectable({
-  providedIn: 'root'
-})
-export class RoleGuard  {
-  
-  constructor(private loginService: LoginService, private router: Router) {}
 
-  canActivate(
-    route: ActivatedRouteSnapshot,
-    state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-    const role = route.data['role'];
-      return this.loginService.userRole === role
+export function roleGuard(role: UserRole, redirectRoute: string): CanActivateFn  {
+  return () => {
+      return inject(LoginService).userRole === role
         ? true
-        : false
+        : inject(Router).createUrlTree([redirectRoute]);
       
   }
   
