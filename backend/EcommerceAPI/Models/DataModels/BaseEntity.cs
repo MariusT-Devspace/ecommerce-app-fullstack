@@ -1,5 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-
+﻿
 namespace EcommerceAPI.Models.DataModels
 {
     public class BaseEntity

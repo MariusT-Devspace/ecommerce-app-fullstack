@@ -7,16 +7,16 @@ import { roleGuard } from './core/auth/guards/role.guard';
 
 const routes: Routes = [
   {
-    path: '',
-    pathMatch: 'full',
-    component: HomePageComponent,
-    canActivate: [authGuard('auth/login'), roleGuard(UserRole.User, 'admin')],
-  },
-  {
     path: 'admin',
     loadChildren: () =>
       import("./admin/admin.module").then(m =>
         m.AdminModule)
+  },
+  {
+    path: '',
+    pathMatch: 'full',
+    component: HomePageComponent,
+    canActivate: [authGuard('auth/login'), roleGuard(UserRole.User, 'admin')],
   }
 ];
 

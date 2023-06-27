@@ -13,6 +13,11 @@ const routes: Routes = [
     canActivate: [authGuard('auth/login'), roleGuard(UserRole.Administrator, '')],
     children: [
       {
+        path: '',
+        redirectTo: 'products',
+        pathMatch: 'full'
+      },
+      {
         path: 'products',
         component: ProductsManagementPageComponent
       }

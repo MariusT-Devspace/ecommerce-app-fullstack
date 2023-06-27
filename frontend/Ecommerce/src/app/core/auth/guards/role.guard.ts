@@ -9,7 +9,6 @@ export function roleGuard(role: UserRole, redirectRoute: string): CanActivateFn 
       return inject(LoginService).userRole === role
         ? true
         : inject(Router).createUrlTree([redirectRoute]);
-      
   }
   
 }
