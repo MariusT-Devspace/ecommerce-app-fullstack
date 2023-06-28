@@ -6,8 +6,19 @@
         <mat-list role="list">
             <mat-list-item *ngFor="let category of categories">{{category.name}}</mat-list-item>
         </mat-list>
+        <form [formGroup]="addCategoryForm" id="addCategoryForm" *ngIf="addCategoryEnabled">
+            <mat-form-field appearance="outline">
+                <mat-label>Category name</mat-label>
+                <input matInput #input maxlength="50" placeholder="Category" formControlName="categoryName">
+            </mat-form-field>
+            <app-add-image-button></app-add-image-button>
+        </form>
     </mat-card-content>
     <mat-card-actions>
-        <app-add-category-button></app-add-category-button>
+        <app-new-category-button *ngIf="!addCategoryEnabled; else cancelAddCategoryButton" (click)="toggleAddCategory()"></app-new-category-button>
+        <ng-template #cancelAddCategoryButton>
+            <button mat-button color="primary" (click)="toggleAddCategory()">Cancel</button>
+            <button mat-button color="primary" (click)="toggleAddCategory()">Add category</button>
+        </ng-template>
     </mat-card-actions>
 </mat-card>
