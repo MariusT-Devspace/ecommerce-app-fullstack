@@ -6,7 +6,7 @@
         <mat-list role="list">
             <mat-list-item *ngFor="let category of categories">{{category.name}}</mat-list-item>
         </mat-list>
-        <form [formGroup]="addCategoryForm" id="addCategoryForm" *ngIf="addCategoryEnabled">
+        <form [formGroup]="newCategoryForm" id="addCategoryForm" *ngIf="addCategoryEnabled">
             <mat-form-field appearance="outline">
                 <mat-label>Category name</mat-label>
                 <input matInput #input maxlength="50" placeholder="Category" formControlName="categoryName">

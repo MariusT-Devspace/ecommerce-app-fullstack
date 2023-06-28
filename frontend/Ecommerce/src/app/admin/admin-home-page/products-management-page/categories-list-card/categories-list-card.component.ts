@@ -14,19 +14,21 @@ export class CategoriesListCardComponent implements OnInit{
 
   ADD_ICON = `<svg xmlns="http://www.w3.org/2000/svg" height="48" viewBox="0 -960 960 960" width="48"><path d="M450-200v-250H200v-60h250v-250h60v250h250v60H510v250h-60Z"/></svg>`
   addCategoryEnabled: boolean = false;
-  addCategoryForm: FormGroup = new FormGroup({})
+  newCategoryForm: FormGroup = new FormGroup({})
 
   constructor(private iconRegistry: MatIconRegistry, private sanitizer: DomSanitizer, private formBuilder: FormBuilder) {
     iconRegistry.addSvgIconLiteral('add', sanitizer.bypassSecurityTrustHtml(this.ADD_ICON));
   }
   ngOnInit(): void {
-    this.addCategoryForm = this.formBuilder.group({
+    this.newCategoryForm = this.formBuilder.group({
       categoryName: new FormControl('')
     })
   }
 
   toggleAddCategory(){
     this.addCategoryEnabled = !this.addCategoryEnabled;
+    if (this.addCategoryEnabled)
+      this.newCategoryForm.reset();
   }
 }
 
