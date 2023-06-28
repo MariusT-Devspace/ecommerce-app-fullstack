@@ -19,6 +19,7 @@ import { EditButtonComponent } from './admin-home-page/products-management-page/
 import { CategoriesListCardComponent } from './admin-home-page/products-management-page/categories-list-card/categories-list-card.component';
 import { NewCategoryButtonComponent } from './admin-home-page/products-management-page/categories-list-card/new-category-button/new-category-button.component';
 import { AddImageButtonComponent } from './admin-home-page/products-management-page/categories-list-card/done-button/add-image-button.component';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 
 @NgModule({
@@ -43,7 +44,8 @@ import { AddImageButtonComponent } from './admin-home-page/products-management-p
     MatTableModule,
     MatPaginatorModule,
     MatSortModule,
-    SharedModule
+    SharedModule,
+    MatTooltipModule
   ]
 })
 export class AdminModule { }
