@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CategoriesService } from 'src/app/core/services/categories.service';
 import { ICategory } from 'src/app/models/category.model';
+import { ICategoryPOST } from 'src/app/models/categoryPOST.model';
 
 @Component({
   selector: 'app-products-management-page',
@@ -21,6 +22,20 @@ export class ProductsManagementPageComponent implements OnInit{
       next: (response: ICategory[]) => this.categories = response,
       error: (err: Error) => console.error("Error retrieving categories", err),
       complete: () => console.log("Categories retrieved successfuly")
+    });
+  }
+
+  addCategory(category: ICategoryPOST) {
+    this.categoriesService.addCategory(category).subscribe({
+      next: (response) => {
+        console.log(response.status);
+      },
+      error: (err: Error) => {
+        console.error(`Error submitting category: ${err.message}`);
+      },
+      complete: () => {
+        console.log("Submit new category completed");
+      }
     });
   }
 }

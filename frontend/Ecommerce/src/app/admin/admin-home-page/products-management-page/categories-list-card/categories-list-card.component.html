@@ -18,7 +18,7 @@
         <app-new-category-button *ngIf="!addCategoryEnabled; else cancelAddCategoryButton" (click)="toggleAddCategory()"></app-new-category-button>
         <ng-template #cancelAddCategoryButton>
             <button mat-button color="primary" (click)="toggleAddCategory()">Cancel</button>
-            <button mat-button color="primary" (click)="toggleAddCategory()">Add category</button>
+            <button mat-button color="primary" type="submit" form="addCategoryForm" (click)="submitCategory()">Add category</button>
         </ng-template>
     </mat-card-actions>
 </mat-card>
