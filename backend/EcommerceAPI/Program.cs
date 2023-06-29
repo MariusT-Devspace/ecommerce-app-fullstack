@@ -8,6 +8,7 @@ using Serilog.Sinks.MSSqlServer;
 using System.Text.Json.Serialization;
 using EcommerceAPI.DataAccess;
 using EcommerceAPI.Extensions;
+using Microsoft.AspNetCore.Authentication.Cookies;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -143,12 +144,13 @@ if (builder.Environment.IsDevelopment())
 else
     Environment.SetEnvironmentVariable("Issuer", "https://wishlist-api.azurewebsites.net");
 
+
 // CORS Configuration
 builder.Services.AddCors(options =>
 {
     options.AddPolicy(name: "CorsPolicy", builder =>
     {
-        builder.AllowAnyOrigin();
+        //builder.AllowAnyOrigin();
         builder.WithOrigins("https://localhost:4200");
         builder.AllowAnyMethod();
         builder.AllowAnyHeader();

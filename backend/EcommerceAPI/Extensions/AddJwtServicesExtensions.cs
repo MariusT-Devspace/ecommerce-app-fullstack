@@ -4,6 +4,7 @@ using Microsoft.IdentityModel.Tokens;
 using Serilog;
 using EcommerceAPI.Models;
 using ILogger = Serilog.ILogger;
+using Microsoft.AspNetCore.Authentication.Cookies;
 
 namespace EcommerceAPI.Extensions
 {
@@ -33,9 +34,9 @@ namespace EcommerceAPI.Extensions
             .AddJwtBearer(options =>
             {
                 if (environment.IsDevelopment())
-                    options.RequireHttpsMetadata = true;
-                else
                     options.RequireHttpsMetadata = false;
+                else
+                    options.RequireHttpsMetadata = true;
 
                 options.SaveToken = true;
 
@@ -51,7 +52,18 @@ namespace EcommerceAPI.Extensions
                     ValidateLifetime = bindJwtSettings.ValidateLifeTime,
                     ClockSkew = TimeSpan.FromDays(1)
                 };
+                options.Events = new()
+                {
+                    OnMessageReceived = context =>
+                    {
+                        // Get the token from a cookie
+                        context.Token = context.Request.Cookies["auth_token"];
+
+                        return Task.CompletedTask;
+                    }
+                };
             });
+            
         }
     }
 }

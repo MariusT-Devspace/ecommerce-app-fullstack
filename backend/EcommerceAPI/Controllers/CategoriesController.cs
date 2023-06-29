@@ -7,6 +7,7 @@ using EcommerceAPI.DataAccess;
 using EcommerceAPI.Models.DataModels;
 using EcommerceAPI.Models.DTOs.CategoryDTOs.Request;
 using EcommerceAPI.Models.DTOs.CategoryDTOs.Response;
+using Microsoft.AspNetCore.Authentication.Cookies;
 
 namespace EcommerceAPI.Controllers
 {
@@ -108,7 +109,7 @@ namespace EcommerceAPI.Controllers
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Administrator")]
-        public async Task<ActionResult<Category>> PostCategory(CategoryRequestPOST categoryRequest)
+        public async Task<ActionResult<Category>> PostCategory([FromBody] CategoryRequestPOST categoryRequest)
         {
             if (_context.Categories == null)
             {
