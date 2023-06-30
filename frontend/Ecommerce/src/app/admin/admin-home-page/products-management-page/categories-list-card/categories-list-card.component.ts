@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatIconRegistry } from '@angular/material/icon';
 import { DomSanitizer } from '@angular/platform-browser';
 import { CategoriesService } from 'src/app/core/services/categories.service';
@@ -20,12 +20,20 @@ export class CategoriesListCardComponent implements OnInit{
   newCategoryForm: FormGroup = new FormGroup({})
 
   constructor(private iconRegistry: MatIconRegistry, private sanitizer: DomSanitizer, private formBuilder: FormBuilder, private categoriesService: CategoriesService) {
-    iconRegistry.addSvgIconLiteral('add', sanitizer.bypassSecurityTrustHtml(this.ADD_ICON));
+    this.iconRegistry.addSvgIconLiteral('add', this.sanitizer.bypassSecurityTrustHtml(this.ADD_ICON));
   }
   ngOnInit(): void {
     this.newCategoryForm = this.formBuilder.group({
-      name: new FormControl('')
+      name: new FormControl('', [
+        Validators.required, 
+        Validators.minLength(3), 
+        Validators.maxLength(50),
+      ])
     })
+  }
+
+  get categoryName() {
+    return this.newCategoryForm.value.name;
   }
 
   toggleAddCategory() {
@@ -36,9 +44,11 @@ export class CategoriesListCardComponent implements OnInit{
 
   submitCategory() {
     const category: ICategoryPOST = {
-      name: this.newCategoryForm.value.name
+      name: this.categoryName
     };
-    this.onAddCategory.emit(category);
+    /* TODO Show validation errors to user */
+    if(this.newCategoryForm.valid)
+      this.onAddCategory.emit(category);
   }
 
 }
