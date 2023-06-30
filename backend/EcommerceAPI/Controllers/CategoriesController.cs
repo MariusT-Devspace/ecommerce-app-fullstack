@@ -1,13 +1,12 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using EcommerceAPI.DataAccess;
 using EcommerceAPI.Models.DataModels;
 using EcommerceAPI.Models.DTOs.CategoryDTOs.Request;
 using EcommerceAPI.Models.DTOs.CategoryDTOs.Response;
-using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Mvc;
 
 namespace EcommerceAPI.Controllers
 {
@@ -17,11 +16,16 @@ namespace EcommerceAPI.Controllers
     {
         private readonly EcommerceDBContext _context;
         private readonly IMapper _mapper;
+        private readonly ILogger<CategoriesController> _logger;
+        private readonly IHttpContextAccessor _contextAccessor;
 
-        public CategoriesController(EcommerceDBContext context, IMapper mapper)
+        public CategoriesController(EcommerceDBContext context, IMapper mapper, 
+            ILogger<CategoriesController> logger, IHttpContextAccessor contextAccessor)
         {
             _context = context;
             _mapper = mapper;
+            _logger = logger;
+            _contextAccessor = contextAccessor;
         }
 
         // GET: api/Categories
@@ -109,20 +113,38 @@ namespace EcommerceAPI.Controllers
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Administrator")]
-        public async Task<ActionResult<Category>> PostCategory([FromBody] CategoryRequestPOST categoryRequest)
+        public async Task<ActionResult<Category>> PostCategory(CategoryRequestPOST categoryRequest)
         {
+            _logger.LogInformation("API request: {@Controller} - {@ActionMethod}", nameof(CategoriesController), nameof(PostCategory));
+            _logger.LogInformation("Request info: {@Headers}", _contextAccessor.HttpContext?.Request.Headers);
+            _logger.LogInformation("Request info: {@Body}", _contextAccessor.HttpContext?.Request.Body);
+            _logger.LogInformation("Request body: {@RequestBody}", categoryRequest);
+
+
             if (_context.Categories == null)
             {
                 return NotFound();
             }
 
+            if (!ModelState.IsValid)
+            {
+                _logger.LogError("New category validation failed");
+                return BadRequest(ModelState);
+            }
+
             var category = _mapper.Map<Category>(categoryRequest);
+                _logger.LogInformation("Mapped category: {@Category}", category);
 
-            _context.Categories.Add(category);
-            await _context.SaveChangesAsync();
+                _context.Categories.Add(category);
+                await _context.SaveChangesAsync();
 
-            var categoryResponse = _mapper.Map<CategoryResponse>(category);
-            return CreatedAtAction("GetCategory", new { id = categoryResponse.Id }, categoryResponse);
+                var categoryResponse = _mapper.Map<CategoryResponse>(category);
+
+                return CreatedAtAction("GetCategory", new { id = categoryResponse.Id }, categoryResponse);
+            
+
+            
+            
         }
 
         // DELETE: api/Categories/5

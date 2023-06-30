@@ -26,6 +26,7 @@ export class CategoriesService {
       secureCookie: false,
       observe: 'response' as 'response'
     };
+    console.log("New category: ", body)
     return this.httpClient.post(addCategoryURL, body, httpOptions) as Observable<any>;
   }
 }

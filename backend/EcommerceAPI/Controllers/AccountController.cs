@@ -6,8 +6,6 @@ using EcommerceAPI.Helpers;
 using EcommerceAPI.Identity;
 using EcommerceAPI.Models.DataModels;
 using Serilog.Context;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Authorization;
 
 namespace EcommerceAPI.Controllers
 {

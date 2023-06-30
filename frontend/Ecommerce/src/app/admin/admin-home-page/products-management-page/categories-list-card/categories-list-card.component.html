@@ -9,7 +9,7 @@
         <form [formGroup]="newCategoryForm" id="addCategoryForm" *ngIf="addCategoryEnabled">
             <mat-form-field appearance="outline">
                 <mat-label>Category name</mat-label>
-                <input matInput #input maxlength="50" placeholder="Category" formControlName="categoryName">
+                <input matInput #input maxlength="50" placeholder="Category" formControlName="name" minlength="3">
             </mat-form-field>
             <app-add-image-button></app-add-image-button>
         </form>

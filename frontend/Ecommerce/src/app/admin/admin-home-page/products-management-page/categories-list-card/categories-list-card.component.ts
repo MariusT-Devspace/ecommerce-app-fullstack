@@ -24,7 +24,7 @@ export class CategoriesListCardComponent implements OnInit{
   }
   ngOnInit(): void {
     this.newCategoryForm = this.formBuilder.group({
-      categoryName: new FormControl('')
+      name: new FormControl('')
     })
   }
 
@@ -35,7 +35,9 @@ export class CategoriesListCardComponent implements OnInit{
   }
 
   submitCategory() {
-    const category: ICategoryPOST = this.newCategoryForm.value;
+    const category: ICategoryPOST = {
+      name: this.newCategoryForm.value.name
+    };
     this.onAddCategory.emit(category);
   }
 
