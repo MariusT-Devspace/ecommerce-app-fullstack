@@ -2,7 +2,6 @@
 
 <div id="products-management-container">
     <app-products-list [categories] = categories id="products-list"></app-products-list>
-    <app-categories-list-card [categories] = categories id="categories-list" (onAddCategory)="addCategory($event)"></app-categories-list-card>
+    <app-categories-list [categories] = categories id="categories-list" (onAddCategory)="addCategory($event)"></app-categories-list>
 </div>
 
-<!-- <app-categories-list></app-categories-list> -->

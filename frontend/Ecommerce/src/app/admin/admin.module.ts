@@ -11,14 +11,12 @@ import { ProductsManagementPageComponent } from './admin-page/products-managemen
 import { AddProductDialogComponent } from './admin-page/products-management-page/products-list/add-product-dialog/add-product-dialog.component';
 import { ProductsMaterialTableComponent } from './admin-page/products-management-page/products-list/material-table/products-material-table.component';
 import { ProductsListComponent } from './admin-page/products-management-page/products-list/products-list.component';
-import { CategoriesListComponent } from './admin-page/products-management-page/categories-list/categories-list.component';
-import { CategoriesMaterialTableComponent } from './admin-page/products-management-page/categories-list/material-table/categories-material-table.component';
 import { MoreButtonComponent } from './admin-page/products-management-page/more-button/more-button.component';
 import { ProductDetailDialogComponent } from './admin-page/products-management-page/products-list/product-detail-dialog/product-detail-dialog.component';
 import { EditButtonComponent } from './admin-page/products-management-page/edit-button/edit-button.component';
-import { CategoriesListCardComponent } from './admin-page/products-management-page/categories-list-card/categories-list-card.component';
-import { NewCategoryButtonComponent } from './admin-page/products-management-page/categories-list-card/new-category-button/new-category-button.component';
-import { AddImageButtonComponent } from './admin-page/products-management-page/categories-list-card/done-button/add-image-button.component';
+import { CategoriesListComponent } from './admin-page/products-management-page/categories-list/categories-list.component';
+import { NewCategoryButtonComponent } from './admin-page/products-management-page/categories-list/new-category-button/new-category-button.component';
+import { AddImageButtonComponent } from './admin-page/products-management-page/categories-list/done-button/add-image-button.component';
 import { MatTooltipModule } from '@angular/material/tooltip';
 
 
@@ -30,11 +28,9 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     AddProductDialogComponent,
     ProductsManagementPageComponent,
     CategoriesListComponent,
-    CategoriesMaterialTableComponent,
     MoreButtonComponent,
     ProductDetailDialogComponent,
     EditButtonComponent,
-    CategoriesListCardComponent,
     NewCategoryButtonComponent,
     AddImageButtonComponent
   ],

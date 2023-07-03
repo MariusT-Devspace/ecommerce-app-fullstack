@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { CategoriesService } from 'src/app/core/services/categories.service';
 import { ICategory } from 'src/app/models/category.model';
 import { ICategoryPOST } from 'src/app/models/categoryPOST.model';
-import { CategoriesListCardComponent } from './categories-list-card/categories-list-card.component';
+import { CategoriesListComponent } from './categories-list/categories-list.component';
 
 @Component({
   selector: 'app-products-management-page',
@@ -11,7 +11,7 @@ import { CategoriesListCardComponent } from './categories-list-card/categories-l
 })
 export class ProductsManagementPageComponent implements OnInit{
   categories : ICategory[] = []  
-  @ViewChild(CategoriesListCardComponent) categoriesListCardComponent!: CategoriesListCardComponent;
+  @ViewChild(CategoriesListComponent) categoriesListCardComponent!: CategoriesListComponent;
 
   constructor (private categoriesService : CategoriesService) {}
 
