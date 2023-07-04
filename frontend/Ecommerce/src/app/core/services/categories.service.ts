@@ -29,4 +29,9 @@ export class CategoriesService {
     console.log("New category: ", body)
     return this.httpClient.post(addCategoryURL, body, httpOptions) as Observable<any>;
   }
+
+  deleteCategory(id: number): Observable<any> {
+    let deleteCategoryURL = `${this.baseURL}/Categories/${id}`
+    return this.httpClient.delete(deleteCategoryURL) as Observable<any>;
+  }
 }

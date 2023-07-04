@@ -3,6 +3,8 @@ import { CategoriesService } from 'src/app/core/services/categories.service';
 import { ICategory } from 'src/app/models/category.model';
 import { ICategoryPOST } from 'src/app/models/categoryPOST.model';
 import { CategoriesListComponent } from './categories-list/categories-list.component';
+import { MatDialog } from '@angular/material/dialog';
+import { ConfirmDeleteCategoryDialogComponent } from './categories-list/confirm-delete-category-dialog/confirm-delete-category-dialog.component';
 
 @Component({
   selector: 'app-products-management-page',
@@ -13,7 +15,7 @@ export class ProductsManagementPageComponent implements OnInit{
   categories : ICategory[] = []  
   @ViewChild(CategoriesListComponent) categoriesListCardComponent!: CategoriesListComponent;
 
-  constructor (private categoriesService : CategoriesService) {}
+  constructor (private categoriesService : CategoriesService, private dialog: MatDialog) {}
 
   ngOnInit(): void {
     this.getCategories();
@@ -37,12 +39,27 @@ export class ProductsManagementPageComponent implements OnInit{
         console.log(response.status);
         this.categoriesListCardComponent.toggleAddCategory();
       },
-      error: (err: Error) => {
-        console.error(`Error submitting category: ${err.message}`);
-      },
-      complete: () => {
-        console.log("Submit new category completed");
-      }
+      error: (err: Error) => console.error(`Error submitting category: ${err.message}`),
+      complete: () => console.log("Submit new category completed")
     });
+  }
+
+  deleteCategory(category: ICategory) {
+    let dialogRef = this.dialog.open(ConfirmDeleteCategoryDialogComponent, {
+      data: { categoryName: category.name }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if(result == true) {
+        this.categoriesService.deleteCategory(category.id).subscribe({
+          next: (response: any) => {
+            console.log(response.status);
+          },
+          error: (err: Error) => console.error("Could not delete category: "+err.message),
+          complete: () => console.log("Category deleted!")
+        });
+      }
+    }
+  );
   }
 }

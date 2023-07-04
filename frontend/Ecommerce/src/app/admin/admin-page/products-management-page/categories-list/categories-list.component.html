@@ -7,9 +7,9 @@
             <mat-list-item *ngFor="let category of categories">
                 <div class="categories-list-item">
                     <span class="category-name">{{category.name}}</span>
-                    <div>
+                    <div class="actions">
                         <app-edit-button></app-edit-button>
-                        <app-delete-button></app-delete-button>
+                        <app-delete-button (click)="deleteCategory(category)"></app-delete-button>
                     </div>
                     
                 </div>

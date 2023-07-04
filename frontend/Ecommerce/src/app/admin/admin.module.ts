@@ -19,6 +19,7 @@ import { NewCategoryButtonComponent } from './admin-page/products-management-pag
 import { AddImageButtonComponent } from './admin-page/products-management-page/categories-list/add-image-button/add-image-button.component';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { DeleteButtonComponent } from './admin-page/products-management-page/delete-button/delete-button.component';
+import { ConfirmDeleteCategoryDialogComponent } from './admin-page/products-management-page/categories-list/confirm-delete-category-dialog/confirm-delete-category-dialog.component';
 
 
 @NgModule({
@@ -35,6 +36,7 @@ import { DeleteButtonComponent } from './admin-page/products-management-page/del
     NewCategoryButtonComponent,
     AddImageButtonComponent,
     DeleteButtonComponent,
+    ConfirmDeleteCategoryDialogComponent,
   ],
   imports: [
     CommonModule,
