@@ -7,7 +7,11 @@
             <mat-list-item *ngFor="let category of categories">
                 <div class="categories-list-item">
                     <span class="category-name">{{category.name}}</span>
-                    <app-edit-button></app-edit-button>
+                    <div>
+                        <app-edit-button></app-edit-button>
+                        <app-delete-button></app-delete-button>
+                    </div>
+                    
                 </div>
             </mat-list-item>
         </mat-list>

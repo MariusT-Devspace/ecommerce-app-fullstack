@@ -18,6 +18,7 @@ import { CategoriesListComponent } from './admin-page/products-management-page/c
 import { NewCategoryButtonComponent } from './admin-page/products-management-page/categories-list/new-category-button/new-category-button.component';
 import { AddImageButtonComponent } from './admin-page/products-management-page/categories-list/add-image-button/add-image-button.component';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { DeleteButtonComponent } from './admin-page/products-management-page/delete-button/delete-button.component';
 
 
 @NgModule({
@@ -32,7 +33,8 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     ProductDetailDialogComponent,
     EditButtonComponent,
     NewCategoryButtonComponent,
-    AddImageButtonComponent
+    AddImageButtonComponent,
+    DeleteButtonComponent,
   ],
   imports: [
     CommonModule,
