@@ -3,6 +3,7 @@
 <div id="products-management-container">
     <app-products-list [categories] = categories id="products-list"></app-products-list>
     <app-categories-list [categories] = categories id="categories-list" 
-    (onAddCategory)="addCategory($event)" (onDeleteCategory)="deleteCategory($event)"></app-categories-list>
+    (onAddCategory)="addCategory($event)" (onDeleteCategory)="deleteCategory($event)"
+    (onEditCategory)="editCategory($event)"></app-categories-list>
 </div>
 

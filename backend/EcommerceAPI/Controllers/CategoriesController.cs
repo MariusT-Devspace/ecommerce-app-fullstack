@@ -67,7 +67,7 @@ namespace EcommerceAPI.Controllers
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Administrator")]
-        public async Task<IActionResult> PutCategory(int id, CategoryRequestPUT categoryDTO)
+        public async Task<IActionResult> PutCategory(int id, [FromBody] CategoryRequestPUT categoryDTO)
         {
             if (_context.Categories == null)
             {

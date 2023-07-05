@@ -1,21 +1,41 @@
-<mat-card class="categories-list-card">
+<mat-card [ngClass]="{
+    'categories-list-card': true, 
+    'categories-list-card-edit': isEditMode,
+    'categories-list-card-add': isAddCategoryMode
+}"
+>
     <mat-card-header>
         <mat-card-title>Categories</mat-card-title>
     </mat-card-header>
-    <mat-card-content>
+    <mat-card-content class="card-content">
         <mat-list role="list">
-            <mat-list-item *ngFor="let category of categories">
-                <div class="categories-list-item">
-                    <span class="category-name">{{category.name}}</span>
-                    <div class="actions">
-                        <app-edit-button></app-edit-button>
-                        <app-delete-button (click)="deleteCategory(category)"></app-delete-button>
-                    </div>
+            <mat-list-item *ngFor="let category of categories; index as i" [class]="isEditMode && i == editIndex ? 'categories-list-item-edit' : 'categories-list-item'">
+                <div class = "categories-list-item-content">
+                    <form [formGroup]="categoryForm" id="editCategoryForm" *ngIf="isEditMode && i == editIndex; else categoryName">
+                        <mat-form-field appearance="outline" value="category.name">
+                            <mat-label>Category name</mat-label>
+                            <input matInput type="text" placeholder="Category" formControlName="name" value="Clothing">
+                        </mat-form-field>
+                        <app-add-image-button></app-add-image-button>
+                    </form>
+                    <ng-template #categoryName>
+                        <span class="category-name">{{category.name}}</span>
+                    </ng-template>
                     
+                    <div class="actions actions-edit" *ngIf="isEditMode && i == editIndex; else actions">
+                        <app-cancel-button (click)="disableEditMode()"></app-cancel-button>
+                        <app-done-button (click)="editCategory(category.id)"></app-done-button>
+                    </div>
+                    <ng-template #actions>
+                        <div class="actions">
+                            <app-edit-button (click)="enableEditMode(i, category.name)" [isDisabled]="isAddCategoryMode"></app-edit-button>
+                            <app-delete-button (click)="deleteCategory(category)" [isDisabled]="isAddCategoryMode"></app-delete-button>
+                        </div>
+                    </ng-template>
                 </div>
             </mat-list-item>
         </mat-list>
-        <form [formGroup]="newCategoryForm" id="addCategoryForm" *ngIf="addCategoryEnabled">
+        <form [formGroup]="categoryForm" id="addCategoryForm" *ngIf="isAddCategoryMode">
             <mat-form-field appearance="outline">
                 <mat-label>Category name</mat-label>
                 <input matInput #input type="text" placeholder="Category" formControlName="name">
@@ -24,10 +44,12 @@
         </form>
     </mat-card-content>
     <mat-card-actions>
-        <app-new-category-button *ngIf="!addCategoryEnabled; else cancelAddCategoryButton" (click)="toggleAddCategory()"></app-new-category-button>
-        <ng-template #cancelAddCategoryButton>
-            <button mat-button color="primary" (click)="toggleAddCategory()">Cancel</button>
-            <button mat-button color="primary" type="submit" form="addCategoryForm" (click)="submitCategory()">Add category</button>
+        <ng-template [ngIf]="isEditMode == false">
+            <app-new-category-button *ngIf="!isAddCategoryMode; else cancelAddCategoryButton" (click)="toggleAddCategory()"></app-new-category-button>
+            <ng-template #cancelAddCategoryButton>
+                <button mat-button color="primary" (click)="toggleAddCategory()">Cancel</button>
+                <button mat-button color="primary" type="submit" form="addCategoryForm" (click)="submitCategory()">Add category</button>
+            </ng-template>
         </ng-template>
     </mat-card-actions>
 </mat-card>

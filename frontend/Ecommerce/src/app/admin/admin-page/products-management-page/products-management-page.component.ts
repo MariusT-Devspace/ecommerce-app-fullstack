@@ -33,7 +33,6 @@ export class ProductsManagementPageComponent implements OnInit{
   }
 
   addCategory(category: ICategoryPOST) {
-    console.log("New category: ", category)
     this.categoriesService.addCategory(category).subscribe({
       next: (response: any) => {
         console.log(response.status);
@@ -41,7 +40,18 @@ export class ProductsManagementPageComponent implements OnInit{
         this.getCategories();
       },
       error: (err: Error) => console.error(`Error submitting category: ${err.message}`),
-      complete: () => console.log("Submit new category completed")
+      complete: () => console.log("Category added successfuly")
+    });
+  }
+
+  editCategory(category: ICategory) {
+    this.categoriesService.editCategory(category).subscribe({
+      next: (response: any) => { 
+        this.categoriesListCardComponent.disableEditMode();
+        this.getCategories();
+      },
+      error: (err: Error) => console.error(`Error editing category: ${err.message}` ),
+      complete: () => console.log("Category updated successfuly")
     });
   }
 
@@ -53,9 +63,7 @@ export class ProductsManagementPageComponent implements OnInit{
     dialogRef.afterClosed().subscribe(result => {
       if(result == true) {
         this.categoriesService.deleteCategory(category.id).subscribe({
-          next: (response: any) => {
-            this.getCategories();
-          },
+          next: (response: any) => this.getCategories(),
           error: (err: Error) => console.error("Could not delete category: "+err.message),
           complete: () => console.log("Category deleted!")
         });

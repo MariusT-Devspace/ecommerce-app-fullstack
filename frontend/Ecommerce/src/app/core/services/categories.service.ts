@@ -21,13 +21,18 @@ export class CategoriesService {
 
   addCategory(body: ICategoryPOST): Observable<any> {
     let addCategoryURL = `${this.baseURL}/Categories`;
-    const httpOptions = {
+    /* const httpOptions = {
       withCredentials: true, 
       secureCookie: false,
       observe: 'response' as 'response'
     };
-    console.log("New category: ", body)
-    return this.httpClient.post(addCategoryURL, body, httpOptions) as Observable<any>;
+    return this.httpClient.post(addCategoryURL, body, httpOptions) as Observable<any>; */
+    return this.httpClient.post(addCategoryURL, body) as Observable<any>;
+  }
+
+  editCategory(category: ICategory): Observable<any> {
+    let editCategoryURL = `${this.baseURL}/Categories/${category.id}`;
+    return this.httpClient.put(editCategoryURL, category) as Observable<any>
   }
 
   deleteCategory(id: number): Observable<any> {
