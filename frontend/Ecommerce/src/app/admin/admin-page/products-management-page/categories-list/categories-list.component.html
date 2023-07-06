@@ -1,9 +1,4 @@
-<mat-card [ngClass]="{
-    'categories-list-card': true, 
-    'categories-list-card-edit': isEditMode,
-    'categories-list-card-add': isAddCategoryMode
-}"
->
+<mat-card class="categories-list-card">
     <mat-card-header>
         <mat-card-title>Categories</mat-card-title>
     </mat-card-header>
@@ -43,13 +38,11 @@
             <app-add-image-button></app-add-image-button>
         </form>
     </mat-card-content>
-    <mat-card-actions>
-        <ng-template [ngIf]="isEditMode == false">
-            <app-new-category-button *ngIf="!isAddCategoryMode; else cancelAddCategoryButton" (click)="toggleAddCategory()"></app-new-category-button>
-            <ng-template #cancelAddCategoryButton>
-                <button mat-button color="primary" (click)="toggleAddCategory()">Cancel</button>
-                <button mat-button color="primary" type="submit" form="addCategoryForm" (click)="submitCategory()">Add category</button>
-            </ng-template>
+    <mat-card-actions *ngIf="isEditMode == false">
+        <app-new-category-button *ngIf="!isAddCategoryMode; else cancelAddCategoryButton" (click)="toggleAddCategory()"></app-new-category-button>
+        <ng-template #cancelAddCategoryButton>
+            <button mat-button color="primary" (click)="toggleAddCategory()">Cancel</button>
+            <button mat-button color="primary" type="submit" form="addCategoryForm" (click)="submitCategory()">Add category</button>
         </ng-template>
     </mat-card-actions>
 </mat-card>
