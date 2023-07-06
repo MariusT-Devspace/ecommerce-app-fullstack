@@ -2,6 +2,8 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { IProductPOST } from 'src/app/models/productPOST.model';
 import { environment } from '../../../environment/environment'
+import { IProduct } from 'src/app/models/product.model';
+import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -9,6 +11,7 @@ import { environment } from '../../../environment/environment'
 export class ProductsService {
 
   baseURL = `${environment.apiHost}/api/Products`
+  productsSubject$ = new BehaviorSubject<IProduct[]>([]);
 
   constructor(private httpClient: HttpClient ) { }
 

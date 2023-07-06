@@ -22,13 +22,14 @@ export class ProductsMaterialTableComponent implements AfterViewInit {
   displayedColumns = ['id', 'title', 'isAvailable', 'actions'];
 
   @Output() onOpenDialog = new EventEmitter<number>;
+  @Output() onGetProducts = new EventEmitter();
 
   constructor(private productsService: ProductsService) {
     this.dataSource = new MaterialTableDataSource(productsService);
   }
 
   ngAfterViewInit(): void {
-    this.dataSource.getProducts();
+    this.onGetProducts.emit();
     this.dataSource.sort = this.sort;
     this.dataSource.paginator = this.paginator;
     this.table.dataSource = this.dataSource;

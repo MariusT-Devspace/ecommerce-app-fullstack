@@ -14,6 +14,7 @@ import { IProductPOST } from 'src/app/models/productPOST.model';
 })
 export class ProductsListComponent {
   @Input() categories: ICategory[] = []
+  @Output() onGetProducts = new EventEmitter();
   @Output() onAddProduct = new EventEmitter<IProductPOST>();
 
   breakpoint$ = this.breakpointObserver.observe(Breakpoints.Handset)
@@ -24,7 +25,11 @@ export class ProductsListComponent {
   selectedProductId: number | undefined;
 
   constructor(private breakpointObserver: BreakpointObserver, public dialog: MatDialog) { 
-    }
+  }
+
+  getProducts() {
+    this.onGetProducts.emit();
+  }
 
   openAddProductDialog(): void {
     let enterAnimationDuration = '300ms';

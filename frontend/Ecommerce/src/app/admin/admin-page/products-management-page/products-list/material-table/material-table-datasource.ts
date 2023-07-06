@@ -23,8 +23,6 @@ export class MaterialTableDataSource extends DataSource<IProduct> {
   paginator: MatPaginator | undefined;
   sort: MatSort | undefined;
 
-  private productsSubject$ = new BehaviorSubject<IProduct[]>([]);
-
   constructor(private productsService: ProductsService) {
     super();
   }
@@ -42,7 +40,7 @@ export class MaterialTableDataSource extends DataSource<IProduct> {
       //   .pipe(map(() => {
       //     return this.getPagedData(this.getSortedData([...this.data ]));
       //   }));
-      return this.productsSubject$.asObservable();
+      return this.productsService.productsSubject$.asObservable();
     } else {
       throw Error('Please set the paginator and sort on the data source before connecting.');
     }
@@ -53,14 +51,6 @@ export class MaterialTableDataSource extends DataSource<IProduct> {
    * any open connections or free any held resources that were set up during connect.
    */
   disconnect(): void {}
-
-  getProducts() {
-    this.productsService.getProducts().subscribe({
-      next: (response: IProduct[]) => this.productsSubject$.next(response),
-      error: (err: Error) => console.error("Could not retrieve products" + err.message),
-      complete: () => console.log("Products retrieved successfully")
-    });
-  }
 
   /**
    * Paginate the data (client-side). If you're using server-side pagination,

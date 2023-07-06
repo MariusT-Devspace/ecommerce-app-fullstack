@@ -25,7 +25,8 @@ export class CategoriesListComponent implements OnInit{
 
   /* TODO: Implement pagination or scrolling */
 
-  constructor(private iconRegistry: MatIconRegistry, private sanitizer: DomSanitizer, private formBuilder: FormBuilder, private categoriesService: CategoriesService) {
+  constructor(private iconRegistry: MatIconRegistry, private sanitizer: DomSanitizer, 
+    private formBuilder: FormBuilder, private categoriesService: CategoriesService) {
     this.iconRegistry.addSvgIconLiteral('add', this.sanitizer.bypassSecurityTrustHtml(this.ADD_ICON));
   }
 

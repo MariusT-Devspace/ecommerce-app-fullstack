@@ -1,7 +1,7 @@
 <h1>Manage products and categories here</h1>
 
 <div id="products-management-container">
-    <app-products-list [categories] = categories id="products-list" (onAddProduct)="addProduct($event)"></app-products-list>
+    <app-products-list [categories] = categories id="products-list" (onGetProducts)="getProducts()" (onAddProduct)="addProduct($event)"></app-products-list>
     <app-categories-list [categories] = categories id="categories-list" 
     (onAddCategory)="addCategory($event)" (onDeleteCategory)="deleteCategory($event)"
     (onEditCategory)="editCategory($event)"></app-categories-list>
