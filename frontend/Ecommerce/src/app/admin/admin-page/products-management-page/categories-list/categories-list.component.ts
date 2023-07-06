@@ -23,9 +23,12 @@ export class CategoriesListComponent implements OnInit{
   isEditMode: boolean = false;
   editIndex: number = -1;
 
+  /* TODO: Implement pagination or scrolling */
+
   constructor(private iconRegistry: MatIconRegistry, private sanitizer: DomSanitizer, private formBuilder: FormBuilder, private categoriesService: CategoriesService) {
     this.iconRegistry.addSvgIconLiteral('add', this.sanitizer.bypassSecurityTrustHtml(this.ADD_ICON));
   }
+
   ngOnInit(): void {
     this.categoryForm = this.formBuilder.group({
       name: new FormControl('', [
@@ -68,13 +71,13 @@ export class CategoriesListComponent implements OnInit{
     const category: ICategoryPOST = {
       name: this.categoryName
     };
-    /* TODO Show validation errors to user */
+    /* TODO: Show validation errors to user */
     if(this.categoryForm.valid)
       this.onAddCategory.emit(category);
   }
 
   editCategory(id: number) {
-    /* TODO Show validation errors to user */
+    /* TODO: Show validation errors to user */
     if(this.categoryForm.valid){
       const category: ICategory = {
         id: id,

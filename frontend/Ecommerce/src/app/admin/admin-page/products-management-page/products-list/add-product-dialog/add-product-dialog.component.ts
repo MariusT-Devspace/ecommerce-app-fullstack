@@ -22,10 +22,9 @@ export class AddProductDialogComponent implements OnInit{
       price: new FormControl('', [Validators.pattern("^\d+\.\d{2}$")]),
       picture: new FormControl('', [Validators.required]),
       isAvailable: new FormControl('', [Validators.required]),
-      categoryId: new FormControl('')
+      categoryId: new FormControl('', [Validators.required])
     });
 
-    
   }
 
   
