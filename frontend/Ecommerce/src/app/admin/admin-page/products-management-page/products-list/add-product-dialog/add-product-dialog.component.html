@@ -15,7 +15,7 @@
   
       <mat-form-field appearance="fill">
         <mat-label>Enter the price</mat-label>
-        <input matInput #input placeholder="Price" formControlName="price">
+        <input matInput #input type="number" placeholder="Price" formControlName="price">
       </mat-form-field>
   
       <mat-form-field appearance="fill">
@@ -24,21 +24,21 @@
       </mat-form-field>
   
       <label id="example-radio-group-label">Is the product available?</label>
-      <mat-radio-group aria-label="Select an option">
-        <mat-radio-button [value]=true>Yes</mat-radio-button>
+      <mat-radio-group aria-label="Select an option" formControlName="isAvailable">
         <mat-radio-button [value]=false>No</mat-radio-button>
+        <mat-radio-button [value]=true>Yes</mat-radio-button>
       </mat-radio-group>
   
       <mat-form-field appearance="fill">
         <mat-label>Select the category</mat-label>
-          <mat-select>
-            <mat-option *ngFor="let category of data.categories" [value]="category.name">{{category.name}}</mat-option>
+          <mat-select formControlName="category">
+            <mat-option *ngFor="let category of data.categories" [value]="category.id">{{category.name}}</mat-option>
           </mat-select>
-  </mat-form-field>
+      </mat-form-field>
     </form>
   </div>
   <div mat-dialog-actions align="end">
     <button mat-button mat-dialog-close>Cancel</button>
-    <button mat-button mat-dialog-close cdkFocusInitial>Add product</button>
+    <button mat-button cdkFocusInitial (click)="submitProduct()">Add product</button>
   </div>
 </div>

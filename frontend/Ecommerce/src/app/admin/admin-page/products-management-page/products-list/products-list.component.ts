@@ -1,10 +1,11 @@
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
-import { Component, Input } from '@angular/core';
-import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { map } from 'rxjs';
 import { AddProductDialogComponent } from './add-product-dialog/add-product-dialog.component';
 import { ProductDetailDialogComponent } from './product-detail-dialog/product-detail-dialog.component';
 import { ICategory } from 'src/app/models/category.model';
+import { IProductPOST } from 'src/app/models/productPOST.model';
 
 @Component({
   selector: 'app-products-list',
@@ -12,15 +13,14 @@ import { ICategory } from 'src/app/models/category.model';
   styleUrls: ['./products-list.component.sass']
 })
 export class ProductsListComponent {
-  @Input() categories : ICategory[] = []
+  @Input() categories: ICategory[] = []
+  @Output() onAddProduct = new EventEmitter<IProductPOST>();
 
   breakpoint$ = this.breakpointObserver.observe(Breakpoints.Handset)
               .pipe(
                 map(result => result.matches ? 'handset' : 'desktop')
               );
 
-  _addProductDialogRef: MatDialogRef<AddProductDialogComponent> | undefined;
-  _productDetailDialogRef: MatDialogRef<ProductDetailDialogComponent> | undefined;
   selectedProductId: number | undefined;
 
   constructor(private breakpointObserver: BreakpointObserver, public dialog: MatDialog) { 
@@ -38,7 +38,7 @@ export class ProductsListComponent {
       }
     });
 
-    this._addProductDialogRef = this.dialog.open(AddProductDialogComponent, {
+    const addProductDialogRef = this.dialog.open(AddProductDialogComponent, {
       width: '250px',
       enterAnimationDuration,
       exitAnimationDuration,
@@ -47,6 +47,15 @@ export class ProductsListComponent {
       data: {
         categories: this.categories
       }
+    });
+
+    addProductDialogRef.componentInstance.onAddProduct.subscribe({
+      next: (result: IProductPOST) => { 
+        this.onAddProduct.emit(result),
+        this.dialog.closeAll();
+      },
+      error: (err: Error) => console.error(`Error submitting new product: ${err.message}`),
+      complete: () => {}
     });
   }
 
@@ -63,7 +72,7 @@ export class ProductsListComponent {
       }
     });
 
-    this._productDetailDialogRef = this.dialog.open(ProductDetailDialogComponent, {
+    const productDetailDialogRef = this.dialog.open(ProductDetailDialogComponent, {
       width: '250px',
       enterAnimationDuration,
       exitAnimationDuration,

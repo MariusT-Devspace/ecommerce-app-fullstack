@@ -5,6 +5,8 @@ import { ICategoryPOST } from 'src/app/models/categoryPOST.model';
 import { CategoriesListComponent } from './categories-list/categories-list.component';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmDeleteCategoryDialogComponent } from './categories-list/confirm-delete-category-dialog/confirm-delete-category-dialog.component';
+import { IProductPOST } from 'src/app/models/productPOST.model';
+import { ProductsService } from 'src/app/core/services/products.service';
 
 @Component({
   selector: 'app-products-management-page',
@@ -15,7 +17,7 @@ export class ProductsManagementPageComponent implements OnInit{
   categories : ICategory[] = []  
   @ViewChild(CategoriesListComponent) categoriesListCardComponent!: CategoriesListComponent;
 
-  constructor (private categoriesService : CategoriesService, private dialog: MatDialog) {}
+  constructor (private categoriesService : CategoriesService, private productsService: ProductsService, private dialog: MatDialog) {}
 
   ngOnInit(): void {
     this.getCategories();
@@ -70,5 +72,13 @@ export class ProductsManagementPageComponent implements OnInit{
       }
     }
   );
+  }
+
+  addProduct(product: IProductPOST) {
+    this.productsService.addProduct(product).subscribe({
+      next: (response: any) => {},
+      error: (err: Error) => console.error(`Error adding product: ${err.message}`),
+      complete: () => console.log("Product added successfully")
+    });
   }
 }

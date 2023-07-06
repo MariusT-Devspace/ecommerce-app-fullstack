@@ -24,6 +24,6 @@ export class ProductsService {
 
   addProduct(body: IProductPOST) {
     let url = `${this.baseURL}`;
-    return this.httpClient.post(url, body, { withCredentials: true } );
+    return this.httpClient.post(url, body);
   }
 }
