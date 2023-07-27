@@ -9,6 +9,7 @@ using System.Text.Json.Serialization;
 using EcommerceAPI.DataAccess;
 using EcommerceAPI.Extensions;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using System.Runtime.InteropServices;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -83,7 +84,12 @@ if (builder.Environment.IsProduction())
 else
 {
     // Connection with local SQL Server
-    const string LOCALCONNECTIONNAME = "EcommerceDbLocal";
+    string LOCALCONNECTIONNAME = String.Empty;
+    if (System.Runtime.InteropServices.RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+        LOCALCONNECTIONNAME = "EcommerceDbLocalWindows";
+    else
+        LOCALCONNECTIONNAME = "EcommerceDbLocalUbuntuDocker";
+
     var localConnectionString = builder.Configuration.GetConnectionString(LOCALCONNECTIONNAME);
     connectionString = localConnectionString;
 }
