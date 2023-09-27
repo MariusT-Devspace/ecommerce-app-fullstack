@@ -17,6 +17,8 @@ export class ProductsListComponent {
   @Output() onGetProducts = new EventEmitter();
   @Output() onAddProduct = new EventEmitter<IProductPOST>();
 
+  imgWidth = 0
+
   breakpoint$ = this.breakpointObserver.observe(Breakpoints.Handset)
               .pipe(
                 map(result => result.matches ? 'handset' : 'desktop')
@@ -36,6 +38,7 @@ export class ProductsListComponent {
     let exitAnimationDuration = '150ms';
     let disableClose = true;
     let minWidth = 350;
+
     this.breakpoint$.subscribe({
       next: (v) => { 
         if (v === 'desktop')
@@ -72,8 +75,12 @@ export class ProductsListComponent {
     let minWidth = 350;
     this.breakpoint$.subscribe({
       next: (v) => { 
-        if (v === 'desktop')
+        if (v === 'desktop') {
           minWidth = 500;
+          this.imgWidth = 250;
+        } else {
+          this.imgWidth = 150;
+        }
       }
     });
 
@@ -85,7 +92,8 @@ export class ProductsListComponent {
       minWidth,
       data: {
         productId: selectedProductId,
-        categories: this.categories
+        categories: this.categories,
+        imgWidth: this.imgWidth
       }
     });
   }

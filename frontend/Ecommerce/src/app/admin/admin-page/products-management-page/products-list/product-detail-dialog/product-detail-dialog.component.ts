@@ -21,7 +21,8 @@ export class ProductDetailDialogComponent implements OnInit {
     private formBuilder: FormBuilder,
     @Inject(MAT_DIALOG_DATA) public data: {
       productId: number,
-      categories: ICategory[]
+      categories: ICategory[],
+      imgWidth: number
     }, private productsService: ProductsService) {
       this.productsService.getProductById(this.data.productId).subscribe({
         next: (response: IProduct) => { 
