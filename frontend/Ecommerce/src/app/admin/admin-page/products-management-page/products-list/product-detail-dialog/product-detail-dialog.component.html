@@ -58,7 +58,7 @@
         
             <mat-form-field appearance="fill">
               <mat-label>Category</mat-label>
-                <mat-select [disabled]="!isEditMode">
+                <mat-select [(value)]="categoryName" [disabled]="!isEditMode">
                   <mat-option>None</mat-option>
                   <mat-option *ngFor="let category of data.categories" [value]="category.name">{{category.name}}</mat-option>
                 </mat-select>
