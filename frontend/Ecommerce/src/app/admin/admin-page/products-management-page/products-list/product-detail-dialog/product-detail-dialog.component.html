@@ -58,9 +58,9 @@
         
             <mat-form-field appearance="fill">
               <mat-label>Category</mat-label>
-                <mat-select [(value)]="categoryName" [disabled]="!isEditMode">
+                <mat-select [disabled]="!isEditMode" formControlName="categoryId">
                   <mat-option>None</mat-option>
-                  <mat-option *ngFor="let category of data.categories" [value]="category.name">{{category.name}}</mat-option>
+                  <mat-option *ngFor="let category of data.categories" [value]="category.id">{{category.name}}</mat-option>
                 </mat-select>
             </mat-form-field>
           </form>
