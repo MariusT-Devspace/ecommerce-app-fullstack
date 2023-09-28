@@ -21,7 +21,7 @@
           <img src="{{product!.picture}}" [width]="pictureWidth | async" alt="product picture"/>
     
           <h3>Is available</h3>
-          <span>{{product!.isAvailable}}</span>
+          <span>{{product!.isAvailable ? 'Yes' : 'No'}}</span>
     
           <h3>Category</h3>
           <span>{{product!.categoryId}}</span>
