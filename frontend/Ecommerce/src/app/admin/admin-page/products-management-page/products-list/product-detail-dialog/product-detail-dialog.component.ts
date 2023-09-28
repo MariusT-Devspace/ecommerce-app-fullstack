@@ -1,9 +1,11 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { ProductsService } from 'src/app/core/services/products.service';
 import { ICategory } from 'src/app/models/category.model';
 import { IProduct } from 'src/app/models/product.model';
+import { BehaviorSubject, map } from 'rxjs';
 
 @Component({
   selector: 'app-product-detail-dialog',
@@ -17,13 +19,19 @@ export class ProductDetailDialogComponent implements OnInit {
   isProductRetrieved: boolean = false;
   isLoading: boolean = true;
 
+  breakpoint$ = this.breakpointObserver.observe(Breakpoints.Handset)
+              .pipe(
+                map(result => result.matches ? 'handset' : 'desktop')
+              );
+
+  pictureWidth = new BehaviorSubject<Number>(0)
+
   constructor(public productDetailDialogRef: MatDialogRef<ProductDetailDialogComponent>, 
     private formBuilder: FormBuilder,
     @Inject(MAT_DIALOG_DATA) public data: {
       productId: number,
-      categories: ICategory[],
-      imgWidth: number
-    }, private productsService: ProductsService) {
+      categories: ICategory[]
+    }, private productsService: ProductsService, private breakpointObserver: BreakpointObserver) {
       this.productsService.getProductById(this.data.productId).subscribe({
         next: (response: IProduct) => { 
           this.product = response;
@@ -49,6 +57,19 @@ export class ProductDetailDialogComponent implements OnInit {
           console.log("Finished retrieving product");
         }
       });
+
+      this.breakpoint$.subscribe({
+        next: (v) => {
+          if (v === 'desktop') {
+            productDetailDialogRef.updateSize('500px')
+            this.pictureWidth.next(250)
+          } else {
+            productDetailDialogRef.updateSize('350px')
+            this.pictureWidth.next(150)
+          }
+          
+        }
+      })
     }
 
   ngOnInit(): void {

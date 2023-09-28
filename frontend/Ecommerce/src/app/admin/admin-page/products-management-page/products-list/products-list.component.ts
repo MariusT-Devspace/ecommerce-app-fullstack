@@ -17,8 +17,6 @@ export class ProductsListComponent {
   @Output() onGetProducts = new EventEmitter();
   @Output() onAddProduct = new EventEmitter<IProductPOST>();
 
-  imgWidth = 0
-
   breakpoint$ = this.breakpointObserver.observe(Breakpoints.Handset)
               .pipe(
                 map(result => result.matches ? 'handset' : 'desktop')
@@ -77,9 +75,8 @@ export class ProductsListComponent {
       next: (v) => { 
         if (v === 'desktop') {
           minWidth = 500;
-          this.imgWidth = 250;
         } else {
-          this.imgWidth = 150;
+          minWidth = 350;
         }
       }
     });
@@ -93,7 +90,6 @@ export class ProductsListComponent {
       data: {
         productId: selectedProductId,
         categories: this.categories,
-        imgWidth: this.imgWidth
       }
     });
   }
