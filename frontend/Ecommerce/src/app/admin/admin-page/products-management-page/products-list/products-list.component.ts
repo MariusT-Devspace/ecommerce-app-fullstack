@@ -70,23 +70,12 @@ export class ProductsListComponent {
     let enterAnimationDuration = '300ms';
     let exitAnimationDuration = '150ms';
     let disableClose = true;
-    let minWidth = 350;
-    this.breakpoint$.subscribe({
-      next: (v) => { 
-        if (v === 'desktop') {
-          minWidth = 500;
-        } else {
-          minWidth = 350;
-        }
-      }
-    });
 
     const productDetailDialogRef = this.dialog.open(ProductDetailDialogComponent, {
       width: '250px',
       enterAnimationDuration,
       exitAnimationDuration,
       disableClose,
-      minWidth,
       data: {
         productId: selectedProductId,
         categories: this.categories,

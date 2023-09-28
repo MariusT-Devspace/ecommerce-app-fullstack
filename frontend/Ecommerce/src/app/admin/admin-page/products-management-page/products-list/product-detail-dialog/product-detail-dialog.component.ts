@@ -61,11 +61,11 @@ export class ProductDetailDialogComponent implements OnInit {
       this.breakpoint$.subscribe({
         next: (v) => {
           if (v === 'desktop') {
-            productDetailDialogRef.updateSize('500px')
-            this.pictureWidth.next(250)
+            productDetailDialogRef.updateSize('500px');
+            this.pictureWidth.next(250);
           } else {
-            productDetailDialogRef.updateSize('350px')
-            this.pictureWidth.next(150)
+            productDetailDialogRef.updateSize('350px');
+            this.pictureWidth.next(150);
           }
           
         }
