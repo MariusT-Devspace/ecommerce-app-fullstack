@@ -18,6 +18,7 @@ export class ProductDetailDialogComponent implements OnInit {
   product: IProduct | undefined;
   isProductRetrieved: boolean = false;
   isLoading: boolean = true;
+  categoryName: string | undefined
 
   breakpoint$ = this.breakpointObserver.observe(Breakpoints.Handset)
               .pipe(
@@ -45,6 +46,10 @@ export class ProductDetailDialogComponent implements OnInit {
             isAvailable: new FormControl(this.product.isAvailable, [Validators.required]),
             categoryId: new FormControl(this.product.categoryId, [Validators.required]),
           });
+
+          this.categoryName = data.categories.find(category => category.id == this.product?.categoryId) 
+                          ? data.categories.find(category => category.id == this.product?.categoryId)?.name 
+                          : "None";
   
         },
         error: (err: Error) => {
@@ -70,6 +75,8 @@ export class ProductDetailDialogComponent implements OnInit {
           
         }
       })
+
+
     }
 
   ngOnInit(): void {
