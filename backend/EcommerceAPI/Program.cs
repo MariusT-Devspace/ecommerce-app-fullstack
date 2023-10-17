@@ -8,7 +8,6 @@ using Serilog.Sinks.MSSqlServer;
 using System.Text.Json.Serialization;
 using EcommerceAPI.DataAccess;
 using EcommerceAPI.Extensions;
-using Microsoft.AspNetCore.Authentication.Cookies;
 using System.Runtime.InteropServices;
 
 var builder = WebApplication.CreateBuilder(args);

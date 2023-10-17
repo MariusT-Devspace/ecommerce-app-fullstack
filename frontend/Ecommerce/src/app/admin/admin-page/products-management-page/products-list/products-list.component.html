@@ -3,7 +3,7 @@
         <mat-card-title>Products</mat-card-title>
     </mat-card-header>
     <mat-card-content>
-        <app-products-material-table (onOpenDialog)="openProductDetailDialog($event)" (onGetProducts)="getProducts()"></app-products-material-table>
+        <app-products-material-table [categories] = categories (onOpenDialog)="openProductDetailDialog($event)" (onGetProducts)="getProducts()"></app-products-material-table>
     </mat-card-content>
     <mat-card-actions>
         <button mat-raised-button color="primary" type="button" (click)="openAddProductDialog()">Add product</button>        
