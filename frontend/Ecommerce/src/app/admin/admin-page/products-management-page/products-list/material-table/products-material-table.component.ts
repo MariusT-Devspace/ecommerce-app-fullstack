@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, EventEmitter, Input, Output, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTable } from '@angular/material/table';
@@ -15,7 +15,7 @@ import { ICategory } from 'src/app/models/category.model';
   templateUrl: './products-material-table.component.html',
   styleUrls: ['./products-material-table.component.css']
 })
-export class ProductsMaterialTableComponent implements AfterViewInit {
+export class ProductsMaterialTableComponent implements OnInit, AfterViewInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
   @ViewChild(MatTable) table!: MatTable<IProduct>;
@@ -32,25 +32,41 @@ export class ProductsMaterialTableComponent implements AfterViewInit {
   
   breakpoints = Breakpoints
 
-  showIsAvailable$ = new BehaviorSubject<boolean>(this.breakpointObserver.isMatched('(min-width: 447px)'))
-  showCategory$ = new BehaviorSubject<boolean>(this.breakpointObserver.isMatched('(min-width: 632px)'))
-  displayedColumns$ = new BehaviorSubject<Array<String>>(this.displayedColumnsReduced)
-  //displayedColumns = this.displayedColumnsXSmall
-/*   showIsAvailable = false
-  showCategory = false */
+  // showIsAvailableBreakpoint$ = new BehaviorSubject<string>('(min-width: 447px)');
+  // showCategoryBreakpoint$ = new BehaviorSubject<string>('(min-width: 632px)');
+
+  showIsAvailableBreakpoint = '(min-width: 447px)'
+  showCategoryBreakpointPortrait = '(min-width: 772px) and (orientation: portrait)'
+  showCategoryBreakpointLandscape = '(min-width: 632px) and (orientation: landscape)'
+
+  showIsAvailable$ = new BehaviorSubject<boolean>(this.breakpointObserver.isMatched(this.showIsAvailableBreakpoint))
+  showCategory$ = new BehaviorSubject<boolean>(this.breakpointObserver.isMatched(this.showCategoryBreakpointPortrait) || 
+                                                this.breakpointObserver.isMatched(this.showCategoryBreakpointLandscape)
+                                              )
+  
+  displayedColumns$ = new BehaviorSubject<Array<String>>(
+                        this.showCategory$.value 
+                        ? this.displayedColumnsWithExtraInfo
+                        : this.showIsAvailable$.value
+                          ? this.displayedColumnsWithAvailability
+                          : this.displayedColumnsReduced
+                      )
 
 
 
-  //breakpoint$ = this.breakpointObserver.observe([ Breakpoints.XSmall ])
-/*               .pipe(
-                map(result => result.matches ? 'Handset' : '')
-              );  */
+  orientation$ = this.breakpointObserver.observe([ '(orientation: portrait)' ])
+              .pipe(
+                map(result => result.matches ? 'Portrait' : 'Landscape')
+              ); 
   //breakpointObserver: BreakpointObserver | undefined
 
 
   constructor(private productsService: ProductsService, private breakpointObserver: BreakpointObserver) {
     this.dataSource = new MaterialTableDataSource(productsService);
 
+    
+  }
+  ngOnInit(): void {
     fromEvent(window, 'resize').subscribe({
       next: () => { 
         //this.showIsAvailable$.next(this.breakpointObserver.isMatched('(min-width: 390px)'))
@@ -77,8 +93,10 @@ export class ProductsMaterialTableComponent implements AfterViewInit {
           }
         });
 
-        this.showIsAvailable$.next(this.breakpointObserver.isMatched('(min-width: 447px)'))
-        this.showCategory$.next(this.breakpointObserver.isMatched('(min-width: 632px)'))
+        this.showIsAvailable$.next(this.breakpointObserver.isMatched(this.showIsAvailableBreakpoint))
+        this.showCategory$.next(this.breakpointObserver.isMatched(this.showCategoryBreakpointPortrait) || 
+                                this.breakpointObserver.isMatched(this.showCategoryBreakpointLandscape)
+                              )
       }
     })  
   }
