@@ -5,29 +5,29 @@
     <mat-card-content class="card-content">
         <mat-list role="list">
             <mat-list-item *ngFor="let category of categories; index as i" [class]="isEditMode && i == editIndex ? 'categories-list-item-edit' : 'categories-list-item'">
-                <div class = "categories-list-item-content">
-                    <form [formGroup]="categoryForm" id="editCategoryForm" *ngIf="isEditMode && i == editIndex; else categoryName">
+                <div class="categories-list-item-content" *ngIf="isEditMode && i == editIndex; else displayMode">
+                    <form [formGroup]="categoryForm" id="editCategoryForm" >
                         <mat-form-field appearance="outline" value="category.name">
                             <mat-label>Category name</mat-label>
                             <input matInput type="text" placeholder="Category" formControlName="name" value="Clothing">
                         </mat-form-field>
                         <app-add-image-button></app-add-image-button>
                     </form>
-                    <ng-template #categoryName>
-                        <span class="category-name">{{category.name}}</span>
-                    </ng-template>
-                    
-                    <div class="actions actions-edit" *ngIf="isEditMode && i == editIndex; else actions">
+                    <div class="actions">
                         <app-cancel-button (click)="disableEditMode()"></app-cancel-button>
                         <app-done-button (click)="editCategory(category.id)"></app-done-button>
                     </div>
-                    <ng-template #actions>
+                </div>
+                    
+                <ng-template #displayMode>
+                    <div class="categories-list-item-content">
+                        <span class="category-name">{{category.name}}</span>
                         <div class="actions">
                             <app-edit-button (click)="enableEditMode(i, category.name)" [isDisabled]="isAddCategoryMode"></app-edit-button>
                             <app-delete-button (click)="deleteCategory(category)" [isDisabled]="isAddCategoryMode"></app-delete-button>
                         </div>
-                    </ng-template>
-                </div>
+                    </div>
+                </ng-template>
             </mat-list-item>
         </mat-list>
         <form [formGroup]="categoryForm" id="addCategoryForm" *ngIf="isAddCategoryMode">
