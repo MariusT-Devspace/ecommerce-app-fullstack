@@ -30,19 +30,21 @@ export class ProductsMaterialTableComponent implements OnInit, AfterViewInit {
   displayedColumnsWithAvailability = ['id', 'title', 'isAvailable', 'actions'];
   displayedColumnsWithExtraInfo = ['id', 'title', 'isAvailable', 'category', 'actions'];
   
-  breakpoints = Breakpoints
-
-  // showIsAvailableBreakpoint$ = new BehaviorSubject<string>('(min-width: 447px)');
-  // showCategoryBreakpoint$ = new BehaviorSubject<string>('(min-width: 632px)');
-
-  showIsAvailableBreakpoint = '(min-width: 447px)'
+  showIsAvailableBreakpointPortrait = '(min-width: 447px) and (max-width: 600px) and (orientation: portrait)'
+  showIsAvailableBreakpointLandscape = '(min-width: 447px) and (orientation: landscape)'
   showCategoryBreakpointPortrait = '(min-width: 772px) and (orientation: portrait)'
   showCategoryBreakpointLandscape = '(min-width: 632px) and (orientation: landscape)'
 
-  showIsAvailable$ = new BehaviorSubject<boolean>(this.breakpointObserver.isMatched(this.showIsAvailableBreakpoint))
-  showCategory$ = new BehaviorSubject<boolean>(this.breakpointObserver.isMatched(this.showCategoryBreakpointPortrait) || 
-                                                this.breakpointObserver.isMatched(this.showCategoryBreakpointLandscape)
-                                              )
+  showIsAvailable$ = new BehaviorSubject<boolean>(
+                      this.breakpointObserver.isMatched(this.showIsAvailableBreakpointPortrait) || 
+                      this.breakpointObserver.isMatched(this.showIsAvailableBreakpointLandscape) ||
+                      this.breakpointObserver.isMatched(this.showCategoryBreakpointPortrait)
+                    )
+
+  showCategory$ = new BehaviorSubject<boolean>(
+                    this.breakpointObserver.isMatched(this.showCategoryBreakpointPortrait) || 
+                    this.breakpointObserver.isMatched(this.showCategoryBreakpointLandscape)
+                  )
   
   displayedColumns$ = new BehaviorSubject<Array<String>>(
                         this.showCategory$.value 
@@ -52,20 +54,10 @@ export class ProductsMaterialTableComponent implements OnInit, AfterViewInit {
                           : this.displayedColumnsReduced
                       )
 
-
-
-  orientation$ = this.breakpointObserver.observe([ '(orientation: portrait)' ])
-              .pipe(
-                map(result => result.matches ? 'Portrait' : 'Landscape')
-              ); 
-  //breakpointObserver: BreakpointObserver | undefined
-
-
   constructor(private productsService: ProductsService, private breakpointObserver: BreakpointObserver) {
     this.dataSource = new MaterialTableDataSource(productsService);
-
-    
   }
+  
   ngOnInit(): void {
     fromEvent(window, 'resize').subscribe({
       next: () => { 
@@ -93,10 +85,16 @@ export class ProductsMaterialTableComponent implements OnInit, AfterViewInit {
           }
         });
 
-        this.showIsAvailable$.next(this.breakpointObserver.isMatched(this.showIsAvailableBreakpoint))
-        this.showCategory$.next(this.breakpointObserver.isMatched(this.showCategoryBreakpointPortrait) || 
-                                this.breakpointObserver.isMatched(this.showCategoryBreakpointLandscape)
-                              )
+        this.showIsAvailable$.next(
+          this.breakpointObserver.isMatched(this.showIsAvailableBreakpointPortrait) || 
+          this.breakpointObserver.isMatched(this.showIsAvailableBreakpointLandscape) ||
+          this.breakpointObserver.isMatched(this.showCategoryBreakpointPortrait)
+        )
+
+        this.showCategory$.next(
+          this.breakpointObserver.isMatched(this.showCategoryBreakpointPortrait) || 
+          this.breakpointObserver.isMatched(this.showCategoryBreakpointLandscape)
+        )
       }
     })  
   }
