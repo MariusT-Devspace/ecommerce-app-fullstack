@@ -1,6 +1,6 @@
 import { HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { IAuthenticated } from '../models/authenticated.model';
 import { UserRole } from '../models/token.model';
 import { LoginService } from './login.service';
@@ -10,7 +10,8 @@ import { LoginService } from './login.service';
 })
 export class AuthUtilsService {
 
-  constructor(private loginService: LoginService, private router: Router) { }
+  constructor(private loginService: LoginService, 
+    private router: Router, private activatedRoute: ActivatedRoute) { }
 
   navigateToHome() {
     console.log("navigateToHome()");
@@ -26,7 +27,7 @@ export class AuthUtilsService {
           console.log("You are logged in");
           this.loginService.userRole = JSON.parse(localStorage.getItem("user_info")!).role as UserRole
           if (this.loginService.userRole == UserRole.Administrator)
-            this.router.navigate(['admin']);
+            this.router.navigate(['../admin'], {relativeTo: this.activatedRoute});
           else
             this.router.navigate(['']);
         }

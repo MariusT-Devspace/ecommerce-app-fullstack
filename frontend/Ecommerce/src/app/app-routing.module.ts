@@ -4,20 +4,30 @@ import { UserRole } from './core/auth/models/token.model';
 import { HomePageComponent } from './home/home-page/home-page.component'
 import { authGuard } from './core/auth/guards/auth.guard';
 import { roleGuard } from './core/auth/guards/role.guard';
+import { MatNavigationComponent } from './core/mat-navigation/mat-navigation.component';
 
 const routes: Routes = [
   {
-    path: 'admin',
-    loadChildren: () =>
-      import("./admin/admin.module").then(m =>
-        m.AdminModule)
-  },
-  {
     path: '',
-    pathMatch: 'full',
-    component: HomePageComponent,
-    canActivate: [authGuard('auth/login'), roleGuard(UserRole.User, 'admin')],
+    component: MatNavigationComponent,
+    canActivate: [authGuard('auth/login')],
+    children: [
+      {
+        path: 'admin',
+        loadChildren: () =>
+          import("./admin/admin.module").then(m =>
+            m.AdminModule)
+      },
+      {
+        path: '',
+        pathMatch: 'full',
+        component: HomePageComponent,
+        canActivate: [roleGuard(UserRole.User, 'admin')],
+      }
+    ]
   }
+
+  
 ];
 
 @NgModule({
