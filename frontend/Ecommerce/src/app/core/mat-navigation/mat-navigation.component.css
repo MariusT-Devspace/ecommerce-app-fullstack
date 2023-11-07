@@ -10,6 +10,11 @@
   background: inherit;
 }
 
+.active-link::before {
+  background-color: #000000;
+  opacity: 0.12;
+}
+
 .mat-toolbar.mat-primary {
   position: sticky;
   top: 0;
