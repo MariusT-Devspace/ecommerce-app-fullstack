@@ -20,7 +20,11 @@ export class MatNavigationComponent implements OnInit {
       shareReplay()
     );
 
-  constructor(private breakpointObserver: BreakpointObserver, private loginService: LoginService, private router: Router) {
+  constructor(
+    private breakpointObserver: BreakpointObserver, 
+    private loginService: LoginService, 
+    private router: Router
+    ) {
     this._loginService = loginService;
   }
 
