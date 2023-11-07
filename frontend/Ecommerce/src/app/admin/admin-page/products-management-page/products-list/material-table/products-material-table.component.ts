@@ -30,21 +30,15 @@ export class ProductsMaterialTableComponent implements OnInit, AfterViewInit {
   displayedColumnsWithAvailability = ['id', 'title', 'isAvailable', 'actions'];
   displayedColumnsWithExtraInfo = ['id', 'title', 'isAvailable', 'category', 'actions'];
   
-  showIsAvailableBreakpointPortrait = '(min-width: 447px) and (max-width: 600px) and (orientation: portrait)'
-  showIsAvailableBreakpointLandscape = '(min-width: 447px) and (orientation: landscape)'
-  showCategoryBreakpointPortrait = '(min-width: 772px) and (orientation: portrait)'
-  showCategoryBreakpointLandscape = '(min-width: 632px) and (orientation: landscape)'
+  showIsAvailableBreakpoint = '(min-width: 447px)'
+  showCategoryBreakpoint = '(min-width: 632px)'
 
   showIsAvailable$ = new BehaviorSubject<boolean>(
-                      this.breakpointObserver.isMatched(this.showIsAvailableBreakpointPortrait) || 
-                      this.breakpointObserver.isMatched(this.showIsAvailableBreakpointLandscape) ||
-                      this.breakpointObserver.isMatched(this.showCategoryBreakpointPortrait)
+                      this.breakpointObserver.isMatched(this.showIsAvailableBreakpoint) ||
+                      this.breakpointObserver.isMatched(this.showCategoryBreakpoint)
                     )
 
-  showCategory$ = new BehaviorSubject<boolean>(
-                    this.breakpointObserver.isMatched(this.showCategoryBreakpointPortrait) || 
-                    this.breakpointObserver.isMatched(this.showCategoryBreakpointLandscape)
-                  )
+  showCategory$ = new BehaviorSubject<boolean>(this.breakpointObserver.isMatched(this.showCategoryBreakpoint))
   
   displayedColumns$ = new BehaviorSubject<Array<String>>(
                         this.showCategory$.value 
@@ -86,15 +80,11 @@ export class ProductsMaterialTableComponent implements OnInit, AfterViewInit {
         });
 
         this.showIsAvailable$.next(
-          this.breakpointObserver.isMatched(this.showIsAvailableBreakpointPortrait) || 
-          this.breakpointObserver.isMatched(this.showIsAvailableBreakpointLandscape) ||
-          this.breakpointObserver.isMatched(this.showCategoryBreakpointPortrait)
+          this.breakpointObserver.isMatched(this.showIsAvailableBreakpoint) ||
+          this.breakpointObserver.isMatched(this.showCategoryBreakpoint)
         )
 
-        this.showCategory$.next(
-          this.breakpointObserver.isMatched(this.showCategoryBreakpointPortrait) || 
-          this.breakpointObserver.isMatched(this.showCategoryBreakpointLandscape)
-        )
+        this.showCategory$.next(this.breakpointObserver.isMatched(this.showCategoryBreakpoint))
       }
     })  
   }

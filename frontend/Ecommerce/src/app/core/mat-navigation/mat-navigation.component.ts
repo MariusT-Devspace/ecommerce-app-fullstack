@@ -14,7 +14,7 @@ export class MatNavigationComponent implements OnInit {
 
   _loginService: LoginService;
 
-  isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset)
+  isHandset$: Observable<boolean> = this.breakpointObserver.observe([Breakpoints.XSmall, Breakpoints.Small])
     .pipe(
       map(result => result.matches),
       shareReplay()
