@@ -23,6 +23,8 @@ import { ConfirmDeleteCategoryDialogComponent } from './admin-page/products-mana
 import { DoneButtonComponent } from './admin-page/products-management-page/categories-list/done-button/done-button.component';
 import { CancelButtonComponent } from './admin-page/products-management-page/categories-list/cancel-button/cancel-button.component';
 import { UsersPageComponent } from './admin-page/users-page/users-page.component';
+import { UsersListComponent } from './admin-page/users-page/users-list/users-list.component';
+import { MaterialTableComponent } from './admin-page/users-page/users-list/material-table/material-table.component';
 
 
 @NgModule({
@@ -43,6 +45,8 @@ import { UsersPageComponent } from './admin-page/users-page/users-page.component
     DoneButtonComponent,
     CancelButtonComponent,
     UsersPageComponent,
+    UsersListComponent,
+    MaterialTableComponent,
   ],
   imports: [
     CommonModule,
