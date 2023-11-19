@@ -19,7 +19,7 @@ const routes: Routes = [
       },
       {
         path: 'users',
-        component:UsersPageComponent
+        component: UsersPageComponent
       },
       {
         path: '',
