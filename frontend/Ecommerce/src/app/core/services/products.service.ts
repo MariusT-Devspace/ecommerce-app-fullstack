@@ -10,7 +10,7 @@ import { BehaviorSubject } from 'rxjs';
 })
 export class ProductsService {
 
-  baseURL = `${environment.apiHost}/api/Products`
+  private baseURL = `${environment.apiHost}/api/Products`
   productsSubject$ = new BehaviorSubject<IProduct[]>([]);
 
   constructor(private httpClient: HttpClient ) { }
