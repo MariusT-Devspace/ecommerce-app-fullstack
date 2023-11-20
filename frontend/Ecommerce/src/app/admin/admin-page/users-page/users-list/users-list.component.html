@@ -3,7 +3,7 @@
         <mat-card-title>Users</mat-card-title>
     </mat-card-header>
     <mat-card-content>
-        <app-material-table></app-material-table>
+        <app-material-table (onGetUsers)="getUsers()"></app-material-table>
     </mat-card-content>
     <mat-card-actions>
         <!--<button mat-raised-button color="primary" type="button">Add product</button> -->       

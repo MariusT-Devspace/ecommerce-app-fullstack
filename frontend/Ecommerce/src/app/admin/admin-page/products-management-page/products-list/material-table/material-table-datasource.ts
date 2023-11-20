@@ -6,13 +6,6 @@ import { Observable, of as observableOf, merge, BehaviorSubject } from 'rxjs';
 import { ProductsService } from 'src/app/core/services/products.service';
 import { IProduct } from 'src/app/models/product.model';
 
-// TODO: Replace this with your own data model type
-export interface MaterialTableItem {
-  name: string;
-  id: number;
-}
-
-
 /**
  * Data source for the MaterialTable view. This class should
  * encapsulate all logic for fetching and manipulating the displayed data
@@ -56,7 +49,7 @@ export class MaterialTableDataSource extends DataSource<IProduct> {
    * Paginate the data (client-side). If you're using server-side pagination,
    * this would be replaced by requesting the appropriate data from the server.
    */
-  private getPagedData(data: MaterialTableItem[]): MaterialTableItem[] {
+  private getPagedData(data: IProduct[]): IProduct[] {
     if (this.paginator) {
       const startIndex = this.paginator.pageIndex * this.paginator.pageSize;
       return data.splice(startIndex, this.paginator.pageSize);
@@ -69,7 +62,7 @@ export class MaterialTableDataSource extends DataSource<IProduct> {
    * Sort the data (client-side). If you're using server-side sorting,
    * this would be replaced by requesting the appropriate data from the server.
    */
-  private getSortedData(data: MaterialTableItem[]): MaterialTableItem[] {
+  private getSortedData(data: IProduct[]): IProduct[] {
     if (!this.sort || !this.sort.active || this.sort.direction === '') {
       return data;
     }
@@ -77,7 +70,7 @@ export class MaterialTableDataSource extends DataSource<IProduct> {
     return data.sort((a, b) => {
       const isAsc = this.sort?.direction === 'asc';
       switch (this.sort?.active) {
-        case 'name': return compare(a.name, b.name, isAsc);
+        case 'title': return compare(a.title, b.title, isAsc);
         case 'id': return compare(+a.id, +b.id, isAsc);
         default: return 0;
       }
