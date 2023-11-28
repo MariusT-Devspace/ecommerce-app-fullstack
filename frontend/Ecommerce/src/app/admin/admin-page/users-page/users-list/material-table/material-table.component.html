@@ -1,12 +1,65 @@
 <div>
-  <table mat-table class="full-width-table" matSort aria-label="Elements">
-    <ng-container [matColumnDef]="column" *ngFor="let column of displayedColumns.columnsName; let i=index">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header>{{displayedColumns.columnsTitle[i]}}</th>
-      <td mat-cell *matCellDef="let row">{{row[column]}}</td>
+  <table mat-table class="full-width-table" matSort aria-label="Elements"
+  [ngClass]="(displayedColumns$ | async) == displayedColumnsCompact
+                ? 'hideHeader'
+                : ''
+                ">
+
+    <!-- Data -->
+    <ng-container [matColumnDef]="column" 
+    *ngFor="let column of (displayedColumns$ | async)!.columnsName; let i=index">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header >
+      <span>
+        {{(displayedColumns$ | async)!.columnsTitle[i]}}
+      </span>
+      </th>
+      <td mat-cell *matCellDef="let row">
+
+        <ng-template [ngIf]="(displayedColumns$ | async) != displayedColumnsCompact &&
+        (displayedColumns$ | async) != displayedColumnsReduced && 
+        (displayedColumns$ | async) != displayedColumnsWithName" 
+          [ngIfElse]="reducedTemplate">
+            {{
+              column == 'role'
+              ? UserRole[row['role']]
+              : row[column]
+            }}
+        </ng-template>
+
+        <ng-template #reducedTemplate>
+          <div class="reduced-template">
+            <div>
+              {{
+                column == 'name'
+                ? row['firstName'] + ' ' + row['lastName']
+                : row[column]
+              }}
+            </div>
+            <div *ngIf="i == ((displayedColumns$ | async)!.columnsName.length - 1)">
+              <span>
+                <small *ngIf="(displayedColumns$ | async) == displayedColumnsCompact">
+                  {{row['userName']}}
+                </small>
+                <small>
+                  <em>{{UserRole[row['role']]}}</em>
+                </small>
+              </span>
+            </div>
+          </div>
+        </ng-template>
     </ng-container>
 
-    <tr mat-header-row *matHeaderRowDef="displayedColumns.columnsName"></tr>
-    <tr mat-row *matRowDef="let row; columns: displayedColumns.columnsName;"></tr>
+    <!-- Actions -->
+    <ng-container matColumnDef="actions">
+      <th mat-header-cell *matHeaderCellDef></th>
+      <td mat-cell *matCellDef="let row">
+        <app-more-button></app-more-button>
+      </td>
+    </ng-container>
+    
+
+    <tr mat-header-row *matHeaderRowDef="(displayedColumnsWithActions$ | async)!.columnsName"></tr>
+    <tr mat-row *matRowDef="let row; columns: (displayedColumnsWithActions$ | async)!.columnsName;"></tr>
   </table>
 
   <mat-paginator #paginator

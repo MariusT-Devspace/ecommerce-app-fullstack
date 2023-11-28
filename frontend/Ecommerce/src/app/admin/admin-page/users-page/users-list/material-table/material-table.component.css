@@ -1,3 +1,41 @@
 .full-width-table {
   width: 100%;
 }
+
+.reduced-template {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.reduced-template div:last-child span {
+  display: flex;
+  flex-direction: column;
+  justify-content: stretch;
+  width: 100%;
+  gap: 2px;
+}
+
+:host ::ng-deep .hideHeader thead{
+  display: none;
+}
+
+.reduced-template div:last-child span small:last-child {
+  color: #C0C0C0
+}
+
+.mdc-data-table__cell:first-child, .mdc-data-table__header-cell:first-child {
+  padding: 0 0 0 16px;
+}
+
+.mdc-data-table__cell:last-child, .mdc-data-table__header-cell:last-child {
+  padding: 0;
+  width: 48px;
+}
+
+@media only screen and (min-width: 560px) {
+  .mdc-data-table__cell:first-child, .mdc-data-table__header-cell:first-child,
+  .mdc-data-table__cell:last-child, .mdc-data-table__header-cell:last-child {
+    padding: 0 16px;
+  }
+}

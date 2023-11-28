@@ -5,6 +5,15 @@ import { MatSort } from '@angular/material/sort';
 import { MaterialTableDataSource } from './material-table-datasource';
 import { IUser } from 'src/app/models/user.model';
 import { UsersService } from 'src/app/core/services/users.service';
+import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
+import { BreakpointObserver } from '@angular/cdk/layout';
+import { fromEvent } from 'rxjs/internal/observable/fromEvent';
+import { UserRole } from 'src/app/core/auth/models/token.model';
+
+interface DisplayedColumns {
+  columnsName: string[],
+  columnsTitle: string[]
+}
 
 @Component({
   selector: 'app-material-table',
@@ -19,15 +28,43 @@ export class MaterialTableComponent implements AfterViewInit {
 
   @Output() onGetUsers = new EventEmitter();
 
+  UserRole = UserRole
+
   /** Columns displayed in the table. Columns IDs can be added, removed, or reordered. */
-  displayedColumns = {
-    columnsName : ['userName', 'firstName', 'lastName', 'email', 'role', 'createdOn', 'updatedOn'],
-    columnsTitle : ['Username', 'First Name', 'Last Name', 'Email', 'Role', 'Created On', 'Updated On']
+
+  displayedColumnsCompact: DisplayedColumns = {
+    columnsName : ['email'],
+    columnsTitle : ['Email']
   };
 
+  displayedColumnsReduced: DisplayedColumns = {
+    columnsName : ['userName', 'email'],
+    columnsTitle : ['Username', 'Email']
+  };
 
+  displayedColumnsWithName: DisplayedColumns = {
+    columnsName : ['userName', 'name', 'email'],
+    columnsTitle : ['Username', 'Name', 'Email']
+  };
 
-  constructor(private usersService: UsersService) {
+  displayedColumnsReducedBreakpoint = '(min-width: 442px)';
+  displayedColumnsWithNameBreakpoint = '(min-width: 560px)';
+  
+  displayedColumns$ = new BehaviorSubject<DisplayedColumns>(
+    this.breakpointObserver.isMatched(this.displayedColumnsWithNameBreakpoint)
+    ? this.displayedColumnsWithName
+    : this.breakpointObserver.isMatched(this.displayedColumnsReducedBreakpoint)
+    ? this.displayedColumnsReduced
+    : this.displayedColumnsCompact
+  );
+
+  displayedColumnsWithActions$ = new BehaviorSubject<DisplayedColumns>({
+        columnsName: [...this.displayedColumns$.value.columnsName, 'actions'],
+        columnsTitle: [...this.displayedColumns$.value.columnsTitle, '']
+      }
+    );
+
+  constructor(private usersService: UsersService, private breakpointObserver: BreakpointObserver) {
     this.dataSource = new MaterialTableDataSource(this.usersService);
   }
 
@@ -36,5 +73,21 @@ export class MaterialTableComponent implements AfterViewInit {
     this.dataSource.sort = this.sort;
     this.dataSource.paginator = this.paginator;
     this.table.dataSource = this.dataSource;
+
+    fromEvent(window, 'resize').subscribe({
+      next: () => {
+        this.displayedColumns$.next(
+          this.breakpointObserver.isMatched(this.displayedColumnsWithNameBreakpoint)
+          ? this.displayedColumnsWithName
+          : this.breakpointObserver.isMatched(this.displayedColumnsReducedBreakpoint)
+          ? this.displayedColumnsReduced
+          : this.displayedColumnsCompact
+        );
+        this.displayedColumnsWithActions$.next({
+          columnsName: [...this.displayedColumns$.value.columnsName, 'actions'],
+          columnsTitle: [...this.displayedColumns$.value.columnsTitle, '']
+        });
+      }
+    });
   }
 }

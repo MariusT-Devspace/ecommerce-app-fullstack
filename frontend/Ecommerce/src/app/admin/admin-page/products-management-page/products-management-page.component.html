@@ -1,6 +1,6 @@
 
 <div id="products-management-container">
-    <h1>Manage products and categories here</h1>
+    <h1>Manage products and categories</h1>
     <div id="management-cards">
         <app-products-list [categories] = categories id="products-list" (onGetProducts)="getProducts()" (onAddProduct)="addProduct($event)"></app-products-list>
         <app-categories-list [categories] = categories id="categories-list" 

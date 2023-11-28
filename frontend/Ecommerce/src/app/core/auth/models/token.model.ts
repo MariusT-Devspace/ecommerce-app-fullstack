@@ -2,6 +2,7 @@ export enum UserRole {
     Administrator,
     User
   }
+  
 export interface IToken {
     userId:         string;
     userName:       string;
