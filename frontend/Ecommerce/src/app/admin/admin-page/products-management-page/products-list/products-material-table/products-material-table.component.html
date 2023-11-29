@@ -1,0 +1,42 @@
+<div>
+  <table mat-table class="full-width-table" matSort aria-label="Elements">
+    
+    <!-- Data -->
+    <ng-container [matColumnDef]="column"
+    *ngFor="let column of (displayedColumns$ | async)!.columnsName; let i=index">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>
+        {{(displayedColumns$ | async)!.columnsTitle[i]}}
+      </th>
+      <td mat-cell *matCellDef="let row">
+        {{
+          column == 'isAvailable'
+          ? (row[column] ? "Yes" : "No")
+          : column == 'category'
+          ? getCategoryById(row[column])
+          : row[column]
+        }}
+      </td>
+    </ng-container>
+
+    <!-- Actions -->
+    <ng-container matColumnDef="actions">
+      <th mat-header-cell *matHeaderCellDef></th>
+      <td mat-cell *matCellDef="let row">
+        <app-more-button (click)="openProductDetailDialog(row.id)"></app-more-button>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="(displayedColumnsWithActions$ | async)!.columnsName"></tr>
+    <tr mat-row *matRowDef="let row; columns: (displayedColumnsWithActions$ | async)!.columnsName;"></tr>
+    
+  </table>
+
+  <mat-paginator #paginator
+      [length]="dataSource.data.length"
+      [pageIndex]="0"
+      [pageSize]="10"
+      [pageSizeOptions]="[5, 10, 20]"
+      aria-label="Select page">
+  </mat-paginator>
+</div>
+

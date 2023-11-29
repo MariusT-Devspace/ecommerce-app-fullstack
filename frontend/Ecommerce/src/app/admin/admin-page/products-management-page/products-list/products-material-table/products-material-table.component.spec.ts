@@ -6,7 +6,7 @@ import { MatTableModule } from '@angular/material/table';
 
 import { ProductsMaterialTableComponent } from './products-material-table.component';
 
-describe('MaterialTableComponent', () => {
+describe('ProductsMaterialTableComponent', () => {
   let component: ProductsMaterialTableComponent;
   let fixture: ComponentFixture<ProductsMaterialTableComponent>;
 

@@ -18,9 +18,9 @@ export class ProductsListComponent {
   @Output() onAddProduct = new EventEmitter<IProductPOST>();
 
   breakpoint$ = this.breakpointObserver.observe(Breakpoints.Handset)
-              .pipe(
-                map(result => result.matches ? 'handset' : 'desktop')
-              );
+    .pipe(
+      map(result => result.matches ? 'handset' : 'desktop')
+    );
 
   selectedProductId: number | undefined;
 

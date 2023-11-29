@@ -9,11 +9,7 @@ import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
 import { BreakpointObserver } from '@angular/cdk/layout';
 import { fromEvent } from 'rxjs/internal/observable/fromEvent';
 import { UserRole } from 'src/app/core/auth/models/token.model';
-
-interface DisplayedColumns {
-  columnsName: string[],
-  columnsTitle: string[]
-}
+import { DisplayedColumns } from '../../../displayed-columns.model';
 
 @Component({
   selector: 'app-material-table',
@@ -33,18 +29,18 @@ export class UsersMaterialTableComponent implements AfterViewInit {
   /** Columns displayed in the table. Columns IDs can be added, removed, or reordered. */
 
   displayedColumnsCompact: DisplayedColumns = {
-    columnsName : ['email'],
-    columnsTitle : ['Email']
+    columnsName: ['email'],
+    columnsTitle: ['Email']
   };
 
   displayedColumnsReduced: DisplayedColumns = {
-    columnsName : ['userName', 'email'],
-    columnsTitle : ['Username', 'Email']
+    columnsName: ['userName', 'email'],
+    columnsTitle: ['Username', 'Email']
   };
 
   displayedColumnsWithName: DisplayedColumns = {
-    columnsName : ['userName', 'name', 'email'],
-    columnsTitle : ['Username', 'Name', 'Email']
+    columnsName: ['userName', 'name', 'email'],
+    columnsTitle: ['Username', 'Name', 'Email']
   };
 
   displayedColumnsReducedBreakpoint = '(min-width: 442px)';
@@ -57,12 +53,10 @@ export class UsersMaterialTableComponent implements AfterViewInit {
     ? this.displayedColumnsReduced
     : this.displayedColumnsCompact
   );
-
   displayedColumnsWithActions$ = new BehaviorSubject<DisplayedColumns>({
-        columnsName: [...this.displayedColumns$.value.columnsName, 'actions'],
-        columnsTitle: [...this.displayedColumns$.value.columnsTitle, '']
-      }
-    );
+    columnsName: [...this.displayedColumns$.value.columnsName, 'actions'],
+    columnsTitle: [...this.displayedColumns$.value.columnsTitle, '']
+  });
 
   constructor(private usersService: UsersService, private breakpointObserver: BreakpointObserver) {
     this.dataSource = new MaterialTableDataSource(this.usersService);

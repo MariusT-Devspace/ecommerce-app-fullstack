@@ -9,7 +9,7 @@ import { MatSortModule } from '@angular/material/sort';
 import { SharedModule } from '../shared/shared.module';
 import { ProductsManagementPageComponent } from './admin-page/products-management-page/products-management-page.component';
 import { AddProductDialogComponent } from './admin-page/products-management-page/products-list/add-product-dialog/add-product-dialog.component';
-import { ProductsMaterialTableComponent } from './admin-page/products-management-page/products-list/material-table/products-material-table.component';
+import { ProductsMaterialTableComponent } from './admin-page/products-management-page/products-list/products-material-table/products-material-table.component';
 import { ProductsListComponent } from './admin-page/products-management-page/products-list/products-list.component';
 import { MoreButtonComponent } from './admin-page/more-button/more-button.component';
 import { ProductDetailDialogComponent } from './admin-page/products-management-page/products-list/product-detail-dialog/product-detail-dialog.component';

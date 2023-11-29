@@ -1,14 +1,15 @@
 <div>
   <table mat-table class="full-width-table" matSort aria-label="Elements"
   [ngClass]="(displayedColumns$ | async) == displayedColumnsCompact
-                ? 'hideHeader'
-                : ''
-                ">
+              ? 'hideHeader'
+              : ''
+            "
+  >
 
     <!-- Data -->
     <ng-container [matColumnDef]="column" 
     *ngFor="let column of (displayedColumns$ | async)!.columnsName; let i=index">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header >
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>
       <span>
         {{(displayedColumns$ | async)!.columnsTitle[i]}}
       </span>
