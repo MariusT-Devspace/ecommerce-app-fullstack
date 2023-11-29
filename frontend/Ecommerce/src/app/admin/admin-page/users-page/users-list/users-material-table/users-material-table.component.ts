@@ -17,10 +17,10 @@ interface DisplayedColumns {
 
 @Component({
   selector: 'app-material-table',
-  templateUrl: './material-table.component.html',
-  styleUrls: ['./material-table.component.css']
+  templateUrl: './users-material-table.component.html',
+  styleUrls: ['./users-material-table.component.css']
 })
-export class MaterialTableComponent implements AfterViewInit {
+export class UsersMaterialTableComponent implements AfterViewInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
   @ViewChild(MatTable) table!: MatTable<IUser>;

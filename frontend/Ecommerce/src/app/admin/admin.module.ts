@@ -24,7 +24,7 @@ import { DoneButtonComponent } from './admin-page/products-management-page/categ
 import { CancelButtonComponent } from './admin-page/products-management-page/categories-list/cancel-button/cancel-button.component';
 import { UsersPageComponent } from './admin-page/users-page/users-page.component';
 import { UsersListComponent } from './admin-page/users-page/users-list/users-list.component';
-import { MaterialTableComponent } from './admin-page/users-page/users-list/material-table/material-table.component';
+import { UsersMaterialTableComponent } from './admin-page/users-page/users-list/users-material-table/users-material-table.component';
 
 
 @NgModule({
@@ -46,7 +46,7 @@ import { MaterialTableComponent } from './admin-page/users-page/users-list/mater
     CancelButtonComponent,
     UsersPageComponent,
     UsersListComponent,
-    MaterialTableComponent,
+    UsersMaterialTableComponent,
   ],
   imports: [
     CommonModule,
