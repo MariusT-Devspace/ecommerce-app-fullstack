@@ -2,10 +2,14 @@
 <div id="products-management-container">
     <h1>Manage products and categories</h1>
     <div id="management-cards">
-        <app-products-list [categories] = categories id="products-list" (onGetProducts)="getProducts()" (onAddProduct)="addProduct($event)"></app-products-list>
+        <app-products-list [categories] = categories id="products-list" 
+            (onGetProducts)="getProducts()" 
+            (onAddProduct)="addProduct($event)"
+            (onUpdateProduct)="updateProduct($event)"></app-products-list>
         <app-categories-list [categories] = categories id="categories-list" 
-        (onAddCategory)="addCategory($event)" (onDeleteCategory)="deleteCategory($event)"
-        (onEditCategory)="editCategory($event)"></app-categories-list>
+            (onAddCategory)="addCategory($event)" 
+            (onDeleteCategory)="deleteCategory($event)"
+            (onEditCategory)="editCategory($event)"></app-categories-list>
     </div>
 </div>
 

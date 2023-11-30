@@ -4,6 +4,7 @@ import { IProductPOST } from 'src/app/models/productPOST.model';
 import { environment } from '../../../environment/environment'
 import { IProduct } from 'src/app/models/product.model';
 import { BehaviorSubject } from 'rxjs';
+import { IProductPUT } from 'src/app/models/productPUT.model';
 
 @Injectable({
   providedIn: 'root'
@@ -28,5 +29,10 @@ export class ProductsService {
   addProduct(body: IProductPOST) {
     let url = `${this.baseURL}`;
     return this.httpClient.post(url, body);
+  }
+
+  updateProduct(productPUT: IProductPUT) {
+    let url = `${this.baseURL}/${productPUT.id}`
+    return this.httpClient.put(url, productPUT);
   }
 }

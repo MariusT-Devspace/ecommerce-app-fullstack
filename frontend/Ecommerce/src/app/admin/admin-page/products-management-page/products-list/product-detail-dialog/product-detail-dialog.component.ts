@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, EventEmitter, Inject, Output } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
@@ -6,13 +6,16 @@ import { ProductsService } from 'src/app/core/services/products.service';
 import { ICategory } from 'src/app/models/category.model';
 import { IProduct } from 'src/app/models/product.model';
 import { BehaviorSubject, map } from 'rxjs';
+import { IProductPUT } from 'src/app/models/productPUT.model';
 
 @Component({
   selector: 'app-product-detail-dialog',
   templateUrl: './product-detail-dialog.component.html',
   styleUrls: ['./product-detail-dialog.component.sass']
 })
-export class ProductDetailDialogComponent implements OnInit {
+export class ProductDetailDialogComponent {
+  @Output() onUpdateProduct = new EventEmitter<IProductPUT>();
+
   productDetailForm: FormGroup = new FormGroup({});
   isEditMode: boolean = false;
   product: IProduct | undefined;
@@ -74,14 +77,8 @@ export class ProductDetailDialogComponent implements OnInit {
           }
           
         }
-      })
-
-
+      });
     }
-
-  ngOnInit(): void {
-    
-  }
 
   enableEditMode(): void {
     this.isEditMode = true;
@@ -91,6 +88,11 @@ export class ProductDetailDialogComponent implements OnInit {
     this.isEditMode = false;
   }
 
-  saveProduct() {
+  updateProduct() {
+    const productPUT: IProductPUT = {
+      id: this.product!.id, 
+      ...this.productDetailForm.value
+    }
+    this.onUpdateProduct.emit(productPUT);
   }
 }

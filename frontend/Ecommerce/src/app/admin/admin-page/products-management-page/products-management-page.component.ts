@@ -8,6 +8,7 @@ import { ConfirmDeleteCategoryDialogComponent } from './categories-list/confirm-
 import { IProductPOST } from 'src/app/models/productPOST.model';
 import { ProductsService } from 'src/app/core/services/products.service';
 import { IProduct } from 'src/app/models/product.model';
+import { IProductPUT } from 'src/app/models/productPUT.model';
 
 @Component({
   selector: 'app-products-management-page',
@@ -71,8 +72,7 @@ export class ProductsManagementPageComponent implements OnInit{
           complete: () => console.log("Category deleted!")
         });
       }
-    }
-  );
+    });
   }
 
   getProducts() {
@@ -88,6 +88,14 @@ export class ProductsManagementPageComponent implements OnInit{
       next: (response: any) => this.getProducts(),
       error: (err: Error) => console.error(`Error adding product: ${err.message}`),
       complete: () => console.log("Product added successfully")
+    });
+  }
+
+  updateProduct(productPUT: IProductPUT) {
+    this.productsService.updateProduct(productPUT).subscribe({
+      next: (response: any) => this.getProducts(),
+      error: (err: Error) => console.error(`Error updating product: ${err.message}`),
+      complete: () => console.log("Product updated successfully")
     });
   }
 }

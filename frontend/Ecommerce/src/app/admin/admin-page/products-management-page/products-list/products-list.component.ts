@@ -6,6 +6,7 @@ import { AddProductDialogComponent } from './add-product-dialog/add-product-dial
 import { ProductDetailDialogComponent } from './product-detail-dialog/product-detail-dialog.component';
 import { ICategory } from 'src/app/models/category.model';
 import { IProductPOST } from 'src/app/models/productPOST.model';
+import { IProductPUT } from 'src/app/models/productPUT.model';
 
 @Component({
   selector: 'app-products-list',
@@ -16,6 +17,7 @@ export class ProductsListComponent {
   @Input() categories: ICategory[] = []
   @Output() onGetProducts = new EventEmitter();
   @Output() onAddProduct = new EventEmitter<IProductPOST>();
+  @Output() onUpdateProduct = new EventEmitter<IProductPUT>();
 
   breakpoint$ = this.breakpointObserver.observe(Breakpoints.Handset)
     .pipe(
@@ -29,6 +31,10 @@ export class ProductsListComponent {
 
   getProducts() {
     this.onGetProducts.emit();
+  }
+
+  updateProduct(productPUT: IProductPUT) {
+    this.onUpdateProduct.emit(productPUT);
   }
 
   openAddProductDialog(): void {
@@ -57,7 +63,7 @@ export class ProductsListComponent {
 
     addProductDialogRef.componentInstance.onAddProduct.subscribe({
       next: (result: IProductPOST) => { 
-        this.onAddProduct.emit(result),
+        this.onAddProduct.emit(result);
         this.dialog.closeAll();
       },
       error: (err: Error) => console.error(`Error submitting new product: ${err.message}`),
@@ -80,6 +86,15 @@ export class ProductsListComponent {
         productId: selectedProductId,
         categories: this.categories,
       }
+    });
+
+    productDetailDialogRef.componentInstance.onUpdateProduct.subscribe({
+      next: (result: IProductPUT) => { 
+        this.onUpdateProduct.emit(result);
+        this.dialog.closeAll();
+      },
+      error: (err: Error) => console.error(`Error updating product: ${err.message}`),
+      complete: () => {}
     });
   }
 

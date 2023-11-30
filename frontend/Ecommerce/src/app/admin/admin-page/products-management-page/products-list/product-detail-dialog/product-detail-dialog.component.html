@@ -85,7 +85,7 @@
     <button *ngIf="!isEditMode; else editModeActions" mat-button mat-dialog-close>Back</button>
     <ng-template #editModeActions>
       <button mat-button (click)="disableEditMode()">Cancel</button>
-      <button mat-button cdkFocusInitial (click)="saveProduct()">Save product</button>
+      <button mat-button cdkFocusInitial (click)="updateProduct()">Save product</button>
     </ng-template>
     
   </div>
