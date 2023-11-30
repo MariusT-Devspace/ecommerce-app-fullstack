@@ -12,7 +12,7 @@
           column == 'isAvailable'
           ? (row[column] ? "Yes" : "No")
           : column == 'category'
-          ? getCategoryById(row[column])
+          ? getCategoryById(row['categoryId'])
           : row[column]
         }}
       </td>
