@@ -1,8 +1,9 @@
-<mat-card class="products-list-card">
-    <mat-card-content>
-        <app-material-table (onGetUsers)="getUsers()"></app-material-table>
-    </mat-card-content>
-    <mat-card-actions>
-        <!--<button mat-raised-button color="primary" type="button">Add product</button> -->       
-    </mat-card-actions>
+<mat-card class="users-list-card">
+  <mat-card-content>
+    <app-material-table
+      (onGetUsers)="getUsers()"
+      (onOpenUserDetailDialog)="openUserDetailDialog($event)"
+    ></app-material-table>
+  </mat-card-content>
+  <mat-card-actions> </mat-card-actions>
 </mat-card>

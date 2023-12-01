@@ -23,6 +23,7 @@ export class UsersMaterialTableComponent implements AfterViewInit {
   dataSource: MaterialTableDataSource;
 
   @Output() onGetUsers = new EventEmitter();
+  @Output() onOpenUserDetailDialog = new EventEmitter<IUser>();
 
   UserRole = UserRole
 
@@ -83,5 +84,9 @@ export class UsersMaterialTableComponent implements AfterViewInit {
         });
       }
     });
+  }
+
+  openUserDetailDialog(user: IUser) {
+    this.onOpenUserDetailDialog.emit(user);
   }
 }

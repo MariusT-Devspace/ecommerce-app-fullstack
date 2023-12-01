@@ -26,8 +26,7 @@ export class ProductsListComponent {
 
   selectedProductId: number | undefined;
 
-  constructor(private breakpointObserver: BreakpointObserver, public dialog: MatDialog) { 
-  }
+  constructor(private breakpointObserver: BreakpointObserver, public dialog: MatDialog) {}
 
   getProducts() {
     this.onGetProducts.emit();
@@ -78,7 +77,6 @@ export class ProductsListComponent {
     let disableClose = true;
 
     const productDetailDialogRef = this.dialog.open(ProductDetailDialogComponent, {
-      width: '250px',
       enterAnimationDuration,
       exitAnimationDuration,
       disableClose,
