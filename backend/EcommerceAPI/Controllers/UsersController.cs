@@ -34,7 +34,7 @@ namespace EcommerceAPI.Controllers
         // GET: api/Users/5
         [HttpGet("{id}")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Administrator")]
-        public async Task<ActionResult<User>> GetUser(int id)
+        public async Task<ActionResult<User>> GetUser(string id)
         {
             if (_context.Users == null)
             {
@@ -103,7 +103,7 @@ namespace EcommerceAPI.Controllers
         // DELETE: api/Users/5
         [HttpDelete("{id}")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Administrator")]
-        public async Task<IActionResult> DeleteUser(int id)
+        public async Task<IActionResult> DeleteUser(string id)
         {
             if (_context.Users == null)
             {
