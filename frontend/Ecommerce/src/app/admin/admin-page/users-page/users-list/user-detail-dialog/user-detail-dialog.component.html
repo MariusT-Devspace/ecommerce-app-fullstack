@@ -1,30 +1,70 @@
 <div class="content-wrapper">
+  <div class="dialog-header">
+    <h1 mat-dialog-title class="dialog-title">{{ user.userName }}</h1>
+    <span class="role"><em>{{ UserRole[user.role] }}</em></span>
+  </div>
 	<mat-dialog-content>
-    <div class="dialog-header">
-      <h1 mat-dialog-title>Product details</h1>
-    </div>
+    <div class="dialog-content">
+      <div class="layout handset-layout"
+      *ngIf="layout === Layout.Handset; else desktopLayout">
+      <div class="item">
+        <h3>First Name</h3>
+        <span>{{ user.firstName }}</span>
+      </div>
+        
+      <div class="item">
+        <h3>Last Name</h3>
+        <span>{{ user.lastName }}</span>
+      </div>
+        
+      <div class="item">
+        <h3>Email</h3>
+        <span>{{ user.email }}</span>
+      </div>
+        
+      <div class="item">
+        <h3>Created On</h3>
+        <span>{{ formatDate(user.createdOn, 'yyyy-MM-dd', this._locale) }}</span>
+      </div>
+        
+      <div class="item">
+        <h3>Updated On</h3>
+        <span>{{ formatDate(user.updatedOn, 'yyyy-MM-dd', this._locale) }}</span>
+      </div>
+        
+      </div>
 
-    <div id="dialog-content">
-      <h3>Username</h3>
-      <span>{{ user.userName }}</span>
-
-      <h3>First Name</h3>
-      <span>{{ user.firstName }}</span>
-
-      <h3>Last Name</h3>
-      <span>{{ user.lastName }}</span>
-
-      <h3>Email</h3>
-      <span>{{ user.email }}</span>
-
-      <h3>Role</h3>
-      <span>{{ UserRole[user.role] }}</span>
-
-      <h3>Created On</h3>
-      <span>{{ user.createdOn }}</span>
-
-      <h3>Updated On</h3>
-      <span>{{ user.updatedOn }}</span>
+      <ng-template #desktopLayout>
+        <div class="layout desktop-layout">
+          <div class="row">
+            <div class="column">
+              <h3>First Name</h3>
+              <span>{{ user.firstName }}</span>
+            </div>
+            <div class="column">
+              <h3>Last Name</h3>
+              <span>{{ user.lastName }}</span>
+            </div>
+          </div>
+          <div class="row">
+            <div class="column">
+              <h3>Email</h3>
+              <span>{{ user.email }}</span>
+            </div>
+          </div>
+          <div class="row">
+            <div class="column">
+              <h3>Created On</h3>
+              <span>{{ formatDate(user.createdOn, 'yyyy-MM-dd', this._locale) }}</span>
+            </div>
+            <div class="column">
+              <h3>Updated On</h3>
+              <span>{{ formatDate(user.updatedOn, 'yyyy-MM-dd', this._locale) }}</span>
+            </div>
+          </div>
+        </div>
+      </ng-template>
+      
     </div>
   </mat-dialog-content>
 	

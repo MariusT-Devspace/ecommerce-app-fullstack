@@ -10,11 +10,7 @@ import { UserDetailDialogComponent } from './user-detail-dialog/user-detail-dial
   styleUrls: ['./users-list.component.sass']
 })
 export class UsersListComponent {
-
-  constructor(
-      private usersService: UsersService, 
-      public dialog: MatDialog
-    ) {}
+  constructor(private usersService: UsersService, public dialog: MatDialog) {}
 
   getUsers() {
     this.usersService.getUsers().subscribe({

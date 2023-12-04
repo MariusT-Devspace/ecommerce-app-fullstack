@@ -75,7 +75,6 @@ export class ProductDetailDialogComponent {
             productDetailDialogRef.updateSize('350px');
             this.pictureWidth.next(150);
           }
-          
         }
       });
     }

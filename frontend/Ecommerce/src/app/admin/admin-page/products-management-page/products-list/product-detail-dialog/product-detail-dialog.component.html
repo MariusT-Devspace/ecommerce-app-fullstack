@@ -1,13 +1,12 @@
 <div class="content-wrapper">
+  <div class="dialog-header">
+    <h1 mat-dialog-title>Product details</h1>
+    <app-edit-button *ngIf="!isEditMode && isProductRetrieved" (click)="enableEditMode()"></app-edit-button>
+  </div>
   <div mat-dialog-content>
-    <div class="dialog-header">
-      <h1 mat-dialog-title>Product details</h1>
-      <app-edit-button *ngIf="!isEditMode && isProductRetrieved" id="edit-button" (click)="enableEditMode()"></app-edit-button>
-    </div>
-
     <div *ngIf="!isLoading; else progressSpinner">
-      <div *ngIf="isProductRetrieved; else errorTemplate" id="product-template">
-        <div *ngIf="!isEditMode; else editForm" id="product-details">
+      <div *ngIf="isProductRetrieved; else errorTemplate" class="product-template">
+        <div *ngIf="!isEditMode; else editForm" class="product-details">
           <h3>Title</h3>
           <span>{{product!.title}}</span>
     
@@ -28,7 +27,7 @@
         </div>
     
         <ng-template #editForm>
-          <form *ngIf="isEditMode" [formGroup]="productDetailForm" id="productDetailForm">
+          <form *ngIf="isEditMode" [formGroup]="productDetailForm" class="productDetailForm">
 
             <mat-form-field appearance="fill">
               <mat-label>Title</mat-label>
@@ -50,8 +49,8 @@
               <input matInput #input maxlength="100" placeholder="Picture" formControlName="picture">
             </mat-form-field>
         
-            <label id="example-radio-group-label">Is available</label>
-            <mat-radio-group aria-label="Select an option" formControlName="isAvailable">
+            <label id="available-radio-group-label">Is available</label>
+            <mat-radio-group aria-labelledby="available-radio-group-labe" aria-label="Select an option" formControlName="isAvailable">
               <mat-radio-button [value]=true>Yes</mat-radio-button>
               <mat-radio-button [value]=false>No</mat-radio-button>
             </mat-radio-group>
