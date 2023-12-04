@@ -1,4 +1,4 @@
-import { Component, Inject, LOCALE_ID } from '@angular/core';
+import { Component, EventEmitter, Inject, LOCALE_ID, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { ProductDetailDialogComponent } from '../../../products-management-page/products-list/product-detail-dialog/product-detail-dialog.component';
@@ -19,6 +19,8 @@ enum Layout {
   styleUrl: './user-detail-dialog.component.sass'
 })
 export class UserDetailDialogComponent {
+  @Output() onDeleteUser = new EventEmitter<string>();
+
   user: IUser = this.data.user
   UserRole = UserRole
   Layout = Layout
@@ -53,5 +55,9 @@ export class UserDetailDialogComponent {
           }
         }
       });
+    }
+
+    deleteUser() {
+      this.onDeleteUser.emit(this.user.id);
     }
 }

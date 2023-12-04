@@ -20,12 +20,20 @@ export class UsersListComponent {
     });
   }
 
+  deleteUser(id: string) {
+    this.usersService.deleteUser(id).subscribe({
+      next: (responer: any) => this.getUsers(),
+      error: (err: Error) => console.error(`Error deleting user: ${err.message}`),
+      complete: () => console.log(`User with id ${id} deleted successfully`)
+    });
+  }
+
   openUserDetailDialog(user: IUser): void {
     let enterAnimationDuration = '300ms';
     let exitAnimationDuration = '150ms';
     let disableClose = true;
 
-    const openUserDetailDialog = this.dialog.open(UserDetailDialogComponent, {
+    const openUserDetailDialogRef = this.dialog.open(UserDetailDialogComponent, {
       width: '350px',
       enterAnimationDuration,
       exitAnimationDuration,
@@ -33,6 +41,15 @@ export class UsersListComponent {
       data: {
         user: user
       }
+    });
+
+    openUserDetailDialogRef.componentInstance.onDeleteUser.subscribe({
+      next: (userId: string) => { 
+        this.deleteUser(userId);
+        this.dialog.closeAll();
+      },
+      error: (err: Error) => console.error(`Error deleting user: ${err.message}`),
+      complete: () => {}
     });
   }
 }

@@ -20,7 +20,7 @@ export class UsersService {
     return this.httpClient.get(url);
   }
 
-  deleteUser(id: number): Observable<any> {
+  deleteUser(id: string): Observable<any> {
     let url = `${this.baseURL}/${id}`;
     return this.httpClient.delete(url)
   }
