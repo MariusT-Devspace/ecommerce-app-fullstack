@@ -7,6 +7,7 @@ using EcommerceAPI.Models.DataModels;
 
 namespace EcommerceAPI.Controllers
 {
+    [Route("[controller]")]
     [Route("api/[controller]")]
     [ApiController]
     public class UsersController : ControllerBase
@@ -18,7 +19,7 @@ namespace EcommerceAPI.Controllers
             _context = context;
         }
 
-        // GET: api/Users
+        // GET: Users
         [HttpGet]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Administrator")]
         public async Task<ActionResult<IEnumerable<User>>> GetUser()
@@ -31,7 +32,7 @@ namespace EcommerceAPI.Controllers
             return await _context.Users.ToListAsync();
         }
 
-        // GET: api/Users/5
+        // GET: Users/5
         [HttpGet("{id}")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Administrator")]
         public async Task<ActionResult<User>> GetUser(string id)
@@ -51,7 +52,7 @@ namespace EcommerceAPI.Controllers
             return user;
         }
 
-        // PUT: api/Users/5
+        // PUT: Users/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Administrator")]
@@ -83,7 +84,7 @@ namespace EcommerceAPI.Controllers
             return NoContent();
         }
 
-        // POST: api/Users
+        // POST: Users
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Administrator")]
@@ -100,7 +101,7 @@ namespace EcommerceAPI.Controllers
             return CreatedAtAction("GetUser", new { id = user.Id }, user);
         }
 
-        // DELETE: api/Users/5
+        // DELETE: Users/5
         [HttpDelete("{id}")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Administrator")]
         public async Task<IActionResult> DeleteUser(string id)

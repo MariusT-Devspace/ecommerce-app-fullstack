@@ -10,7 +10,7 @@ import { environment } from 'src/environment/environment';
 })
 export class UsersService {
 
-  private baseURL = `${environment.apiHost}/api/Users`
+  private baseURL = `${environment.apiHost}/Users`
   usersSubject$ = new BehaviorSubject<IUser[]>([]);
 
   constructor(private httpClient: HttpClient) { }

@@ -9,7 +9,7 @@ import { IToken } from '../models/token.model';
   providedIn: 'root'
 })  
 export class SignUpService {
-  url: string = `${environment.apiHost}/api/Account/Register`;
+  url: string = `${environment.apiHost}/Account/Register`;
   isLoading$ = new BehaviorSubject<boolean>(false);
 
   constructor(private httpClient: HttpClient) { }

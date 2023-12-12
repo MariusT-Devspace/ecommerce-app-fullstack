@@ -9,6 +9,7 @@ using Serilog.Context;
 
 namespace EcommerceAPI.Controllers
 {
+    [Route("[controller]")]
     [Route("api/[controller]")]
     [ApiController]
     public class AccountController : ControllerBase
@@ -128,7 +129,7 @@ namespace EcommerceAPI.Controllers
                     Response.Cookies.Append("auth_token", token, new CookieOptions
                     {
                         HttpOnly = true,
-                        SameSite = SameSiteMode.Lax,
+                        SameSite = SameSiteMode.None,
                         Secure = true
                     });
                 }

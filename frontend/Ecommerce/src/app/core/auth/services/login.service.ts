@@ -17,12 +17,12 @@ export class LoginService {
   isLoading$ = new BehaviorSubject<boolean>(false);
   userRole: UserRole | undefined;
 
-  baseURL = `${environment.apiHost}/api/Account`
+  baseURL = `${environment.apiHost}/Account`
 
   constructor(private httpClient: HttpClient) { 
     if (localStorage.getItem("user_info"))
       this.userRole = JSON.parse(localStorage.getItem("user_info")!).role
-   }
+  }
 
   get isLoggedIn(): boolean {
     console.log("isLoggedIn getter");

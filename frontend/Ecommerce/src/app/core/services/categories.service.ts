@@ -10,7 +10,7 @@ import { LoginService } from '../auth/services/login.service';
   providedIn: 'root'
 })
 export class CategoriesService {
-  private baseURL = `${environment.apiHost}/api/Categories`;
+  private baseURL = `${environment.apiHost}/Categories`;
 
   constructor(private httpClient: HttpClient, private loginService: LoginService) { }
 

@@ -9,6 +9,7 @@ using System.Text.Json.Serialization;
 using EcommerceAPI.DataAccess;
 using EcommerceAPI.Extensions;
 using System.Runtime.InteropServices;
+using EcommerceAPI.Controllers;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -21,6 +22,12 @@ if (builder.Environment.IsProduction())
 }
 
 // Add services to the container.
+
+// Set api route based on environment
+if (builder.Environment.IsProduction())
+    Environment.SetEnvironmentVariable("ApiRoute", "");
+else
+    Environment.SetEnvironmentVariable("ApiRoute", "api/");
 
 // Add Automapper service
 builder.Services.AddAutoMapper(typeof(Program));

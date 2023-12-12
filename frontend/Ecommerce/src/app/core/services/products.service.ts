@@ -11,7 +11,7 @@ import { IProductPUT } from 'src/app/models/productPUT.model';
 })
 export class ProductsService {
 
-  private baseURL = `${environment.apiHost}/api/Products`
+  private baseURL = `${environment.apiHost}/Products`
   productsSubject$ = new BehaviorSubject<IProduct[]>([]);
 
   constructor(private httpClient: HttpClient ) { }

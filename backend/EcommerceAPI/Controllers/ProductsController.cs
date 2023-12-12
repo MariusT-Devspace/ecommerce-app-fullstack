@@ -10,6 +10,7 @@ using EcommerceAPI.Models.DTOs.ProductDTOs.Response;
 
 namespace EcommerceAPI.Controllers
 {
+    [Route("[controller]")]
     [Route("api/[controller]")]
     [ApiController]
     public class ProductsController : ControllerBase
@@ -23,7 +24,7 @@ namespace EcommerceAPI.Controllers
             _mapper = mapper;
         }
 
-        // GET: api/Products
+        // GET: Products
         [HttpGet]
         public async Task<ActionResult<IEnumerable<ProductResponse>>> GetProducts()
         { 
@@ -38,7 +39,7 @@ namespace EcommerceAPI.Controllers
             return Ok(productsResponse);
         }
 
-        // GET: api/Products/5
+        // GET: Products/5
         [HttpGet("{id}")]
         public async Task<ActionResult<ProductResponse>> GetProduct(int id)
         {
@@ -58,7 +59,7 @@ namespace EcommerceAPI.Controllers
             return Ok(product);
         }
 
-        // PUT: api/Products/5
+        // PUT: Products/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Administrator")]
@@ -104,7 +105,7 @@ namespace EcommerceAPI.Controllers
             return NoContent();
         }
 
-        // POST: api/Products
+        // POST: Products
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Administrator")]
@@ -125,7 +126,7 @@ namespace EcommerceAPI.Controllers
             return CreatedAtAction("GetProduct", new { id = productResponse.Id }, productResponse);
         }
 
-        // DELETE: api/Products/5
+        // DELETE: Products/5
         [HttpDelete("{id}")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Administrator")]
         public async Task<IActionResult> DeleteProduct(int id)

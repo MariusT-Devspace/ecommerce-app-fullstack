@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace EcommerceAPI.Controllers
 {
+    [Route("[controller]")]
     [Route("api/[controller]")]
     [ApiController]
     public class CategoriesController : ControllerBase
@@ -28,7 +29,7 @@ namespace EcommerceAPI.Controllers
             _contextAccessor = contextAccessor;
         }
 
-        // GET: api/Categories
+        // GET: Categories
         [HttpGet]
         public async Task<ActionResult<IEnumerable<CategoryResponse>>> GetCategories()
         {
@@ -43,7 +44,7 @@ namespace EcommerceAPI.Controllers
             return Ok(categoriesResponse);
         }
 
-        // GET: api/Categories/5
+        // GET: Categories/5
         [HttpGet("{id}")]
         public async Task<ActionResult<CategoryResponse>> GetCategory(int id)
         {
@@ -63,7 +64,7 @@ namespace EcommerceAPI.Controllers
             return Ok(categoryResponse);
         }
 
-        // PUT: api/Categories/5
+        // PUT: Categories/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Administrator")]
@@ -109,7 +110,7 @@ namespace EcommerceAPI.Controllers
             return NoContent();
         }
 
-        // POST: api/Categories
+        // POST: Categories
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Administrator")]
@@ -147,7 +148,7 @@ namespace EcommerceAPI.Controllers
             
         }
 
-        // DELETE: api/Categories/5
+        // DELETE: Categories/5
         [HttpDelete("{id}")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Administrator")]
         public async Task<IActionResult> DeleteCategory(int id)
