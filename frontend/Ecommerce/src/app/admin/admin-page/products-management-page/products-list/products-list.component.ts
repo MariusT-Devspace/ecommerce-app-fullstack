@@ -50,7 +50,6 @@ export class ProductsListComponent {
     });
 
     const addProductDialogRef = this.dialog.open(AddProductDialogComponent, {
-      width: '250px',
       enterAnimationDuration,
       exitAnimationDuration,
       disableClose,
@@ -75,11 +74,13 @@ export class ProductsListComponent {
     let enterAnimationDuration = '300ms';
     let exitAnimationDuration = '150ms';
     let disableClose = true;
+    let maxWidth = '85vw';
 
     const productDetailDialogRef = this.dialog.open(ProductDetailDialogComponent, {
       enterAnimationDuration,
       exitAnimationDuration,
       disableClose,
+      maxWidth,
       data: {
         productId: selectedProductId,
         categories: this.categories,

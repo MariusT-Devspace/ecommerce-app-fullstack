@@ -1,6 +1,8 @@
+import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { Component, EventEmitter, Inject, OnInit, Output } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { map } from 'rxjs/internal/operators/map';
 import { ProductsService } from 'src/app/core/services/products.service';
 import { ICategory } from 'src/app/models/category.model';
 import { IProductPOST } from 'src/app/models/productPOST.model';
@@ -15,8 +17,25 @@ export class AddProductDialogComponent implements OnInit{
 
   addProductForm: FormGroup = new FormGroup({});
   
-  constructor(public addProductDialogRef: MatDialogRef<AddProductDialogComponent>, private formBuilder: FormBuilder, private productsService: ProductsService,
-              @Inject(MAT_DIALOG_DATA) public data: {categories: ICategory[]}) { }
+  breakpoint$ = this.breakpointObserver.observe(Breakpoints.XSmall)
+  .pipe(
+    map(result => result.matches ? 'handset' : 'desktop')
+  );
+
+  constructor(public addProductDialogRef: MatDialogRef<AddProductDialogComponent>, 
+    private formBuilder: FormBuilder, 
+    @Inject(MAT_DIALOG_DATA) public data: {categories: ICategory[]},
+    private breakpointObserver: BreakpointObserver) {
+      this.breakpoint$.subscribe({
+        next: (v) => {
+          if (v === 'desktop') {
+            addProductDialogRef.updateSize('500px');
+          } else {
+            addProductDialogRef.updateSize('350px');
+          }
+        }
+      });
+    }
 
   ngOnInit() {
     this.addProductForm = this.formBuilder.group({

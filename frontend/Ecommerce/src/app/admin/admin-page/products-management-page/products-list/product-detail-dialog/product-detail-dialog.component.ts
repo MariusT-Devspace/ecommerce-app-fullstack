@@ -23,7 +23,7 @@ export class ProductDetailDialogComponent {
   isLoading: boolean = true;
   categoryName: string | undefined
 
-  breakpoint$ = this.breakpointObserver.observe(Breakpoints.Handset)
+  breakpoint$ = this.breakpointObserver.observe(Breakpoints.XSmall)
               .pipe(
                 map(result => result.matches ? 'handset' : 'desktop')
               );
@@ -35,7 +35,9 @@ export class ProductDetailDialogComponent {
     @Inject(MAT_DIALOG_DATA) public data: {
       productId: number,
       categories: ICategory[]
-    }, private productsService: ProductsService, private breakpointObserver: BreakpointObserver) {
+    }, 
+    private productsService: ProductsService, 
+    private breakpointObserver: BreakpointObserver) {
       this.productsService.getProductById(this.data.productId).subscribe({
         next: (response: IProduct) => { 
           this.product = response;

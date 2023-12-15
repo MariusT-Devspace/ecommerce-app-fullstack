@@ -37,7 +37,7 @@ export class UserDetailDialogComponent {
   );
 
   constructor(
-      private userDetailDialogRef:  MatDialogRef<ProductDetailDialogComponent>,
+      public userDetailDialogRef:  MatDialogRef<UserDetailDialogComponent>,
       @Inject(MAT_DIALOG_DATA) private data: {
         user: IUser
       },
