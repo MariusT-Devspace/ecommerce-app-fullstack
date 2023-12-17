@@ -10,10 +10,10 @@ const routes: Routes = [
   {
     path: '',
     component: MatNavigationComponent,
-    canActivate: [authGuard('auth/login')],
     children: [
       {
         path: 'admin',
+        canActivate: [authGuard('auth/login'), roleGuard(UserRole.Administrator, '')],
         loadChildren: () =>
           import("./admin/admin.module").then(m =>
             m.AdminModule)
@@ -22,7 +22,6 @@ const routes: Routes = [
         path: '',
         pathMatch: 'full',
         component: HomePageComponent,
-        canActivate: [roleGuard(UserRole.User, 'admin')],
       }
     ]
   }
