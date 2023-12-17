@@ -3,6 +3,7 @@
     margin: auto
     min-width: 200px
     .card-content
+        padding: 0 6px !important
         padding-bottom: 0px
     .categories-list-item
         .categories-list-item-content
@@ -30,6 +31,16 @@
         justify-content: center
         gap: 20px
         margin-top: 20px
+
+@media only screen and (min-width: 374px)
+    .categories-list-card
+        .card-content
+            padding: 0 10px !important
+
+@media only screen and (min-width: 429px)
+    .categories-list-card
+        .card-content
+            padding: 0 16px !important
 
 @media only screen and (min-width: 472px)
     .categories-list-card
