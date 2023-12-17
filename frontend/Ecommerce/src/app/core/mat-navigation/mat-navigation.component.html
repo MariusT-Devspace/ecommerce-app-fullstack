@@ -29,7 +29,10 @@
       </button>
       <span>Online store</span>
       <span class="spacer"></span>
-      <button mat-flat-button color="primary" type="button" (click)="logOut()" *ngIf="this._loginService.isLoggedIn$ | async">Logout</button>
+      <button mat-flat-button color="primary" type="button" (click)="logOut()" *ngIf="this._loginService.isLoggedIn$ | async; else logIn">Logout</button>
+      <ng-template #logIn>
+        <button mat-flat-button color="primary" type="button" (click)="navigateToLogIn()">Login</button>
+      </ng-template>
     </mat-toolbar>
     <!-- Add Content Here -->
     <div class="content-wrapper">
