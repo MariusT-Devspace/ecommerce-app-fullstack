@@ -5,8 +5,16 @@
       [opened]="(isHandset$ | async) === false">
     <mat-toolbar>Menu</mat-toolbar>
     <mat-nav-list>
-      <a mat-list-item href="#" [routerLink]="['/admin/products']" routerLinkActive="active-link">Products</a>
-      <a mat-list-item href="#" [routerLink]="['/admin/users']" routerLinkActive="active-link">Users</a>
+      <ng-template [ngIf]="(this._loginService.userRole) == UserRole.Administrator"
+      [ngIfElse]="userNavigation">
+        <a mat-list-item href="#" [routerLink]="['/admin/products']" routerLinkActive="active-link">Products</a>
+        <a mat-list-item href="#" [routerLink]="['/admin/users']" routerLinkActive="active-link">Users</a>
+      </ng-template>
+
+      <ng-template #userNavigation>
+        
+      </ng-template>
+      
     </mat-nav-list>
   </mat-sidenav>
   <mat-sidenav-content>

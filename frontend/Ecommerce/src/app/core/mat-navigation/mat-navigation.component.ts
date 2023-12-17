@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
 import { LoginService } from '../auth/services/login.service';
 import { Router } from '@angular/router';
+import { UserRole } from '../auth/models/token.model';
 
 @Component({
   selector: 'app-navigation',
@@ -13,6 +14,7 @@ import { Router } from '@angular/router';
 export class MatNavigationComponent implements OnInit {
 
   _loginService: LoginService;
+  UserRole = UserRole
 
   isHandset$: Observable<boolean> = this.breakpointObserver.observe([Breakpoints.XSmall, Breakpoints.Small])
     .pipe(
