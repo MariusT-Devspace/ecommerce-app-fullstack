@@ -30,8 +30,7 @@ export class UserDetailDialogComponent {
   _locale = this.locale
 
   breakpoint$ = this.breakpointObserver.observe([
-    Breakpoints.XSmall,
-    Breakpoints.Small
+    Breakpoints.XSmall
   ]).pipe(
     map(result => result.matches ? 'handset' : 'desktop')
   );
