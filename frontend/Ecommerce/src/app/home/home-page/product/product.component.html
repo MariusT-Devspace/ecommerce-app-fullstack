@@ -1,0 +1,17 @@
+<mat-card class="product" [ngClass]="breakpoint | async" class="product">
+  <div class="image">
+    <img mat-card-image [src]="product.picture" alt="Photo of the product">
+  </div>
+  <div class="card-content">
+    <mat-card-content>
+      <p>
+        {{product.title}}
+      </p>
+      <mat-card-subtitle>{{product.price}}</mat-card-subtitle>
+    </mat-card-content>
+    <mat-card-actions>
+      <button mat-button color="primary">Add to wishlist</button>
+      <button mat-button>Add to cart</button>
+    </mat-card-actions>
+  </div>
+</mat-card>

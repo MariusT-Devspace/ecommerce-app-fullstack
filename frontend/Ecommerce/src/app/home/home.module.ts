@@ -3,14 +3,15 @@ import { CommonModule } from '@angular/common';
 import { HomeRoutingModule } from './home-routing.module';
 import { HomePageComponent } from './home-page/home-page.component';
 import { SharedModule } from '../shared/shared.module';
-import { ProductComponent } from './product/product.component'
+import { ProductComponent } from './home-page/product/product.component'
 import { MatButtonModule } from '@angular/material/button';
 import { HttpClientModule } from '@angular/common/http';
-import { SignUpPageComponent } from '../core/auth/components/sign-up-page/sign-up-page.component';
+import { ProductsListComponent } from './home-page/products-list/products-list.component';
 
 @NgModule({
   declarations: [
     HomePageComponent,
+    ProductsListComponent,
     ProductComponent
   ],
   imports: [
@@ -18,11 +19,10 @@ import { SignUpPageComponent } from '../core/auth/components/sign-up-page/sign-u
     HomeRoutingModule,
     MatButtonModule,
     SharedModule,
-    HttpClientModule,
+    HttpClientModule
   ],
   exports: [
     HomePageComponent,
-    ProductComponent,
     SharedModule
   ]
 })

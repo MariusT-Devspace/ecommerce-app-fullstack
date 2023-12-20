@@ -1,0 +1,7 @@
+<mat-grid-list rowHeight="380" gutterSize="3" cols="3">
+    @for (product of products; track product.id) {
+        <mat-grid-tile>
+            <app-product [product]="product"></app-product>
+        </mat-grid-tile>
+    }
+</mat-grid-list>

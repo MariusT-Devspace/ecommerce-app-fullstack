@@ -7,16 +7,6 @@ import { ProductsService } from '../../core/services/products.service';
   templateUrl: './home-page.component.html',
   styleUrls: ['./home-page.component.sass']
 })
-export class HomePageComponent implements OnInit {
-  products: IProduct[] = [];
+export class HomePageComponent {
 
-  constructor(private productsService: ProductsService){ }
-
-  ngOnInit(){
-    this.productsService.getProducts().subscribe({
-      next: (response: IProduct[]) => {this.products = response; console.log(`Product: ${response}`);},
-      error: (err: Error) => console.error("Could not retrieve product" + err.message),
-      complete: () => console.log("All products have been retrieved")
-    });
-  }
 }
