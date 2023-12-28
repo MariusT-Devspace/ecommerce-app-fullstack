@@ -12,11 +12,11 @@ import { ButtonType } from './button-type.enum';
 export class ButtonComponent implements OnInit{
   @Input() button: Button = {
     icon: undefined,
-    ariaLabel: '',
-    text: '',
     matButtonType: ButtonType.MAT_BUTTON,
     color: undefined
-  }
+  };
+
+  @Input() ariaLabel: string = '';
   
   hasIcon = false
 

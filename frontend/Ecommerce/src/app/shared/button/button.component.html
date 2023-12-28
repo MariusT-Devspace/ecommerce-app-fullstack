@@ -1,9 +1,9 @@
 @switch(button.matButtonType) {
     @case ('mat-raised-button') {
         <button mat-raised-button aria-hidden="false" 
-        attr.aria-label="{{ button.ariaLabel }}" 
+        attr.aria-label="{{ ariaLabel }}" 
         [color]="button.color !== undefined ? button.color : null">
-            {{ button.text }}
+            <ng-content></ng-content>
             @if(hasIcon) {
                 <mat-icon [svgIcon]="button.icon!.iconName"></mat-icon>
             }
@@ -12,9 +12,9 @@
     }
     @case ('mat-stroked-button') {
         <button mat-stroked-button aria-hidden="false" 
-        attr.aria-label="{{ button.ariaLabel }}" 
+        attr.aria-label="{{ ariaLabel }}" 
         [color]="button.color !== undefined ? button.color : null">
-            {{ button.text }}
+            <ng-content></ng-content>
             @if(hasIcon) {
                 <mat-icon [svgIcon]="button.icon!.iconName"></mat-icon>
             }
@@ -22,9 +22,9 @@
     }
     @case ('mat-flat-button') {
         <button mat-flat-button aria-hidden="false" 
-        attr.aria-label="{{ button.ariaLabel }}" 
+        attr.aria-label="{{ ariaLabel }}" 
         [color]="button.color !== undefined ? button.color : null">
-            {{ button.text }}
+        <ng-content></ng-content>
             @if(hasIcon) {
                 <mat-icon [svgIcon]="button.icon!.iconName"></mat-icon>
             }
@@ -32,38 +32,38 @@
     }
     @case ('mat-icon-button') {
         <button mat-icon-button aria-hidden="false" 
-        attr.aria-label="{{ button.ariaLabel }}" 
+        attr.aria-label="{{ ariaLabel }}" 
         [color]="button.color !== undefined ? button.color : null">
             <mat-icon [svgIcon]="button.icon!.iconName"></mat-icon>
         </button>
     }
     @case ('mat-fab') {
         <button mat-fab aria-hidden="false" 
-        attr.aria-label="{{ button.ariaLabel }}" 
+        attr.aria-label="{{ ariaLabel }}" 
         [color]="button.color !== undefined ? button.color : null">
             <mat-icon [svgIcon]="button.icon!.iconName"></mat-icon>
         </button>
     }
     @case ('mat-mini-fab') {
         <button mat-mini-fab aria-hidden="false" 
-        attr.aria-label="{{ button.ariaLabel }}" 
+        attr.aria-label="{{ ariaLabel }}" 
         [color]="button.color !== undefined ? button.color : null">
             <mat-icon [svgIcon]="button.icon!.iconName"></mat-icon>
         </button>
     }
     @case ('mat-extended-fab') {
         <button mat-fab extended aria-hidden="false" 
-        attr.aria-label="{{ button.ariaLabel }}" 
+        attr.aria-label="{{ ariaLabel }}" 
         [color]="button.color !== undefined ? button.color : null">
             <mat-icon [svgIcon]="button.icon!.iconName"></mat-icon>
-            {{ button.text }}
+            <ng-content></ng-content>
         </button>
     }
     @default {
         <button mat-button aria-hidden="false" 
-        attr.aria-label="{{ button.ariaLabel }}" 
+        attr.aria-label="{{ ariaLabel }}" 
         [color]="button.color !== undefined ? button.color : null">
-            {{ button.text }}
+            <ng-content></ng-content>
             @if(hasIcon) {
                 <mat-icon [svgIcon]="button.icon!.iconName"></mat-icon>
             }

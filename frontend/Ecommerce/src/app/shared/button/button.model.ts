@@ -9,8 +9,6 @@ interface Icon {
 
 export interface Button {
     icon: Icon | undefined,
-    ariaLabel: string,
-    text: string,
     matButtonType: ButtonType,
     color: ThemeColor | undefined
 }
