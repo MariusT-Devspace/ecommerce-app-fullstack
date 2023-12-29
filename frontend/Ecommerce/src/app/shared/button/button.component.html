@@ -3,7 +3,7 @@
         <button mat-raised-button aria-hidden="false" 
         attr.aria-label="{{ ariaLabel }}" 
         [color]="button.color !== undefined ? button.color : null">
-            <ng-content></ng-content>
+            <ng-container [ngTemplateOutlet]="content"></ng-container>
             @if(hasIcon) {
                 <mat-icon [svgIcon]="button.icon!.iconName"></mat-icon>
             }
@@ -14,7 +14,7 @@
         <button mat-stroked-button aria-hidden="false" 
         attr.aria-label="{{ ariaLabel }}" 
         [color]="button.color !== undefined ? button.color : null">
-            <ng-content></ng-content>
+            <ng-container [ngTemplateOutlet]="content"></ng-container>
             @if(hasIcon) {
                 <mat-icon [svgIcon]="button.icon!.iconName"></mat-icon>
             }
@@ -24,7 +24,7 @@
         <button mat-flat-button aria-hidden="false" 
         attr.aria-label="{{ ariaLabel }}" 
         [color]="button.color !== undefined ? button.color : null">
-        <ng-content></ng-content>
+            <ng-container [ngTemplateOutlet]="content"></ng-container>
             @if(hasIcon) {
                 <mat-icon [svgIcon]="button.icon!.iconName"></mat-icon>
             }
@@ -56,17 +56,21 @@
         attr.aria-label="{{ ariaLabel }}" 
         [color]="button.color !== undefined ? button.color : null">
             <mat-icon [svgIcon]="button.icon!.iconName"></mat-icon>
-            <ng-content></ng-content>
+            <ng-container [ngTemplateOutlet]="content"></ng-container>
         </button>
     }
     @default {
         <button mat-button aria-hidden="false" 
         attr.aria-label="{{ ariaLabel }}" 
         [color]="button.color !== undefined ? button.color : null">
-            <ng-content></ng-content>
+            <ng-container [ngTemplateOutlet]="content"></ng-container>
             @if(hasIcon) {
                 <mat-icon [svgIcon]="button.icon!.iconName"></mat-icon>
             }
         </button>
     }
 }
+
+<ng-template #content>
+    <ng-content></ng-content>
+</ng-template>
