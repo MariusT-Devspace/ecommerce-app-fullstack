@@ -17,12 +17,12 @@ import { MatRadioModule } from '@angular/material/radio';
 import { MatSelectModule } from '@angular/material/select';
 import { ProgressSpinnerComponent } from './progress-spinner/progress-spinner.component';
 import { MatListModule } from '@angular/material/list';
-import { ButtonComponent } from './button/button.component';
+import { IconButtonComponent } from './icon-button/icon-button.component';
 
 @NgModule({
   declarations: [
     ProgressSpinnerComponent,
-    ButtonComponent
+    IconButtonComponent
   ],
   imports: [
     CommonModule,
@@ -62,7 +62,7 @@ import { ButtonComponent } from './button/button.component';
     MatSelectModule,
     ProgressSpinnerComponent,
     MatListModule,
-    ButtonComponent
+    IconButtonComponent
   ]
 })
 export class SharedModule { }

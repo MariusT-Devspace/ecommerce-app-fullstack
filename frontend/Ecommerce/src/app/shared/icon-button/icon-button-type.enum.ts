@@ -1,4 +1,4 @@
-export enum ButtonType {
+export enum IconButtonType {
     MAT_BUTTON = 'mat-button',
     MAT_RAISED_BUTTON = 'mat-raised-button',
     MAT_STROKED_BUTTON = 'mat-stroked-button',

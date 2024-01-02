@@ -1,22 +1,22 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { MatIconRegistry } from '@angular/material/icon';
 import { DomSanitizer } from '@angular/platform-browser';
-import { Button } from './button.model';
-import { ButtonType } from './button-type.enum';
+import { IconButton } from './icon-button.model';
+import { IconButtonType } from './icon-button-type.enum';
 
 @Component({
-  selector: 'app-button',
-  templateUrl: './button.component.html',
-  styleUrl: './button.component.sass'
+  selector: 'app-icon-button',
+  templateUrl: './icon-button.component.html',
+  styleUrl: './icon-button.component.sass'
 })
-export class ButtonComponent implements OnInit{
-  @Input() button: Button = {
+export class IconButtonComponent implements OnInit{
+  @Input() button: IconButton = {
     icon: undefined,
-    matButtonType: ButtonType.MAT_BUTTON,
+    matButtonType: IconButtonType.MAT_BUTTON,
     color: undefined
   };
-
   @Input() ariaLabel: string = '';
+  @Input() disabled: boolean = false;
   
   hasIcon = false
 
