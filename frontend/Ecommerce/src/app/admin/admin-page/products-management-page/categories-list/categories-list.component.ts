@@ -1,10 +1,11 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { MatIconRegistry } from '@angular/material/icon';
-import { DomSanitizer } from '@angular/platform-browser';
-import { CategoriesService } from 'src/app/core/services/categories.service';
+import { ThemeColor } from 'src/app/constants';
 import { ICategory } from 'src/app/models/category.model';
 import { ICategoryPOST } from 'src/app/models/categoryPOST.model';
+import { IconButtonType } from 'src/app/shared/icon-button/icon-button-type.enum';
+import { IconButton } from 'src/app/shared/icon-button/icon-button.model';
+import { MaterialIcon } from 'src/app/shared/icon-button/material-icons.enum';
 
 @Component({
   selector: 'app-categories-list',
@@ -17,18 +18,51 @@ export class CategoriesListComponent implements OnInit{
   @Output() onDeleteCategory = new EventEmitter<ICategory>();
   @Output() onEditCategory = new EventEmitter<ICategory>();
 
-  ADD_ICON = `<svg xmlns="http://www.w3.org/2000/svg" height="48" viewBox="0 -960 960 960" width="48"><path d="M450-200v-250H200v-60h250v-250h60v250h250v60H510v250h-60Z"/></svg>`
   isAddCategoryMode: boolean = false;
   categoryForm: FormGroup = new FormGroup({})
   isEditMode: boolean = false;
   editIndex: number = -1;
 
+  // Icon buttons
+  newCategoryButton: IconButton = {
+    icon: { iconName: 'add', svgIcon: MaterialIcon.ADD_FILL0_W400_GRAD0_SZ20 },
+    matButtonType: IconButtonType.MAT_BUTTON,
+    color: ThemeColor.PRIMARY
+  }
+
+  editIconButton: IconButton = {
+    icon: { iconName: 'edit', svgIcon: MaterialIcon.EDIT_FILL0_W300_GRAD0_SZ20 },
+    matButtonType: IconButtonType.MAT_ICON_BUTTON,
+    color: undefined
+  }
+
+  deleteIconButton: IconButton = {
+    icon: { iconName: 'delete', svgIcon: MaterialIcon.DELETE_FILL0_W300_GRAD0_SZ20 },
+    matButtonType: IconButtonType.MAT_ICON_BUTTON,
+    color: undefined
+  }
+
+  cancelIconButton: IconButton = {
+    icon: { iconName: 'cancel', svgIcon: MaterialIcon.CLOSE_FILL0_W300_GRAD0_SZ20 },
+    matButtonType: IconButtonType.MAT_ICON_BUTTON,
+    color: undefined
+  }
+
+  doneIconButton: IconButton = {
+    icon: { iconName: 'done', svgIcon: MaterialIcon.DONE_FILL0_W300_GRAD0_SZ20 },
+    matButtonType: IconButtonType.MAT_ICON_BUTTON,
+    color: undefined
+  }
+
+  addImageIconButton: IconButton = {
+    icon: { iconName: 'addImage', svgIcon: MaterialIcon.ADD_IMAGE_FILL0_W400_GRAD0_SZ24 },
+    matButtonType: IconButtonType.MAT_ICON_BUTTON,
+    color: undefined
+  }
+
   /* TODO: Implement pagination or scrolling */
 
-  constructor(private iconRegistry: MatIconRegistry, private sanitizer: DomSanitizer, 
-    private formBuilder: FormBuilder, private categoriesService: CategoriesService) {
-    this.iconRegistry.addSvgIconLiteral('add', this.sanitizer.bypassSecurityTrustHtml(this.ADD_ICON));
-  }
+  constructor(private formBuilder: FormBuilder) {}
 
   ngOnInit(): void {
     this.categoryForm = this.formBuilder.group({

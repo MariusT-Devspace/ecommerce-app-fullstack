@@ -10,6 +10,9 @@ import { BreakpointObserver } from '@angular/cdk/layout';
 import { fromEvent } from 'rxjs/internal/observable/fromEvent';
 import { UserRole } from 'src/app/core/auth/models/token.model';
 import { DisplayedColumns } from '../../../displayed-columns.model';
+import { IconButton } from 'src/app/shared/icon-button/icon-button.model';
+import { MaterialIcon } from 'src/app/shared/icon-button/material-icons.enum';
+import { IconButtonType } from 'src/app/shared/icon-button/icon-button-type.enum';
 
 @Component({
   selector: 'app-material-table',
@@ -24,6 +27,12 @@ export class UsersMaterialTableComponent implements AfterViewInit {
 
   @Output() onGetUsers = new EventEmitter();
   @Output() onOpenUserDetailDialog = new EventEmitter<IUser>();
+
+  showDetailButton: IconButton = {
+    icon: { iconName: 'arrow-right', svgIcon: MaterialIcon.ARROW_RIGHT_FILL0_W300_GRAD0_SZ20 },
+    matButtonType: IconButtonType.MAT_ICON_BUTTON,
+    color: undefined
+  }
 
   UserRole = UserRole
 
