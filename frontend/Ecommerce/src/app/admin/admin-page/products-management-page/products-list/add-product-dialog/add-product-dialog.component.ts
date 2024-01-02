@@ -3,7 +3,6 @@ import { Component, EventEmitter, Inject, OnInit, Output } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { map } from 'rxjs/internal/operators/map';
-import { ProductsService } from 'src/app/core/services/products.service';
 import { ICategory } from 'src/app/models/category.model';
 import { IProductPOST } from 'src/app/models/productPOST.model';
 

@@ -1,26 +1,30 @@
 <div class="content-wrapper">
   <div class="dialog-header">
     <h1 mat-dialog-title>Product details</h1>
-    <app-edit-button *ngIf="!isEditMode && isProductRetrieved" (click)="enableEditMode()"></app-edit-button>
+    @if (!isEditMode && isProductRetrieved) {
+      <app-icon-button [button]="editButton" 
+      ariaLabel="Edit product"
+      (click)="enableEditMode()"></app-icon-button>
+    }
   </div>
   <div mat-dialog-content>
     <div *ngIf="!isLoading; else progressSpinner">
       <div *ngIf="isProductRetrieved; else errorTemplate" class="product-template">
         <div *ngIf="!isEditMode; else editForm" class="product-details">
           <h3>Title</h3>
-          <span>{{product!.title}}</span>
+          <span>{{ product!.title }}</span>
     
           <h3>Description</h3>
-          <span>{{product!.description}}</span>
+          <span>{{ product!.description }}</span>
     
           <h3>Price</h3>
           <span>{{product!.price}}</span>
     
           <h3>Picture</h3>
-          <img src="{{product!.picture}}" [width]="pictureWidth | async" alt="product picture"/>
+          <img src="{{ product!.picture }}" [width]="pictureWidth | async" alt="product picture"/>
     
           <h3>Is available</h3>
-          <span>{{product!.isAvailable ? 'Yes' : 'No'}}</span>
+          <span>{{ product!.isAvailable ? 'Yes' : 'No' }}</span>
     
           <h3>Category</h3>
           <span>{{categoryName}}</span>
@@ -81,11 +85,15 @@
     
   </div>
   <div mat-dialog-actions align="end">
-    <button *ngIf="!isEditMode; else editModeActions" mat-button mat-dialog-close>Back</button>
+    <button *ngIf="!isEditMode; else editModeActions"
+    mat-button ariaLabel="Go back"
+    mat-dialog-close cdkFocusInitial>Back</button>
     <ng-template #editModeActions>
-      <button mat-button (click)="disableEditMode()">Cancel</button>
-      <button mat-button cdkFocusInitial (click)="updateProduct()">Save product</button>
+      <button mat-button ariaLabel="Cancel product editing"
+      (click)="disableEditMode()">Cancel</button>
+      <button mat-flat-button color="primary"
+      ariaLabel="Update product"
+      (click)="updateProduct()">Update product</button>
     </ng-template>
-    
   </div>
 </div>

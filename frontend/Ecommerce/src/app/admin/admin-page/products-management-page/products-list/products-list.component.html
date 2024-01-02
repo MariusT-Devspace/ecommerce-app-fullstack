@@ -8,8 +8,9 @@
             (onGetProducts)="getProducts()"></app-products-material-table>
     </mat-card-content>
     <mat-card-actions>
-        <button mat-raised-button color="primary" type="button" 
-            (click)="openAddProductDialog()">Add product</button>        
+        <app-icon-button [button]="newProductButton"
+        ariaLabel="Add a new product"
+        (click)="openAddProductDialog()">New product</app-icon-button>        
     </mat-card-actions>
 </mat-card>
 

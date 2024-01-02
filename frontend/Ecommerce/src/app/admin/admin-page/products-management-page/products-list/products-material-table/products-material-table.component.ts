@@ -9,6 +9,9 @@ import { BreakpointObserver } from '@angular/cdk/layout';
 import { BehaviorSubject, fromEvent, map } from 'rxjs';
 import { ICategory } from 'src/app/models/category.model';
 import { DisplayedColumns } from '../../../displayed-columns.model';
+import { IconButton } from 'src/app/shared/icon-button/icon-button.model';
+import { MaterialIcon } from 'src/app/shared/icon-button/material-icons.enum';
+import { IconButtonType } from 'src/app/shared/icon-button/icon-button-type.enum';
 
 
 @Component({
@@ -55,6 +58,12 @@ export class ProductsMaterialTableComponent implements AfterViewInit {
     columnsTitle: [...this.displayedColumns$.value.columnsTitle, ''] 
   });
 
+  showDetailButton: IconButton = {
+    icon: { iconName: 'arrow-right', svgIcon: MaterialIcon.ARROW_RIGHT_FILL0_W300_GRAD0_SZ20 },
+    matButtonType: IconButtonType.MAT_ICON_BUTTON,
+    color: undefined
+  }
+
   constructor(private productsService: ProductsService, private breakpointObserver: BreakpointObserver) {
     this.dataSource = new MaterialTableDataSource(productsService);
   }
@@ -92,4 +101,3 @@ export class ProductsMaterialTableComponent implements AfterViewInit {
     this.onOpenDialog.emit(selectedProductId);
   }
 }
-

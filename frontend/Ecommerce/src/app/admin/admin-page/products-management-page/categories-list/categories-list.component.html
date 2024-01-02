@@ -11,11 +11,16 @@
                             <mat-label>Category name</mat-label>
                             <input matInput type="text" placeholder="Category" formControlName="name" value="Clothing">
                         </mat-form-field>
-                        <app-add-image-button></app-add-image-button>
+                        <app-icon-button [button]="addImageIconButton"
+                        ariaLabel="Add image to this category"></app-icon-button>
                     </form>
                     <div class="actions">
-                        <app-cancel-button (click)="disableEditMode()"></app-cancel-button>
-                        <app-done-button (click)="editCategory(category.id)"></app-done-button>
+                        <app-icon-button [button]="cancelIconButton"
+                        ariaLabel="Cancel category edit"
+                        (click)="disableEditMode()"></app-icon-button>
+                        <app-icon-button [button]="doneIconButton"
+                        ariaLabel="Save category"
+                        (click)="editCategory(category.id)"></app-icon-button>
                     </div>
                 </div>
                     
@@ -23,8 +28,12 @@
                     <div class="categories-list-item-content">
                         <span class="category-name">{{category.name}}</span>
                         <div class="actions">
-                            <app-edit-button (click)="enableEditMode(i, category.name)" [isDisabled]="isAddCategoryMode"></app-edit-button>
-                            <app-delete-button (click)="deleteCategory(category)" [isDisabled]="isAddCategoryMode"></app-delete-button>
+                            <app-icon-button [button]="editIconButton"
+                            [disabled]="isAddCategoryMode"
+                            (click)="enableEditMode(i, category.name)"></app-icon-button>
+                            <app-icon-button [button]="deleteIconButton"
+                            [disabled]="isAddCategoryMode"
+                            (click)="deleteCategory(category)"></app-icon-button>
                         </div>
                     </div>
                 </ng-template>
@@ -35,12 +44,16 @@
                 <mat-label>Category name</mat-label>
                 <input matInput #input type="text" placeholder="Category" formControlName="name">
             </mat-form-field>
-            <app-add-image-button></app-add-image-button>
+            <app-icon-button [button]="addImageIconButton"
+            ariaLabel="Add image to this category"></app-icon-button>
         </form>
     </mat-card-content>
     <mat-card-actions *ngIf="isEditMode == false">
-        <app-new-category-button *ngIf="!isAddCategoryMode; else cancelAddCategoryButton" (click)="toggleAddCategory()"></app-new-category-button>
-        <ng-template #cancelAddCategoryButton>
+        <app-icon-button *ngIf="!isAddCategoryMode; else newCategoryActions" 
+        [button]="newCategoryButton"
+        ariaLabel="Add new category"
+        (click)="toggleAddCategory()">New category</app-icon-button>
+        <ng-template #newCategoryActions>
             <button mat-button color="primary" (click)="toggleAddCategory()">Cancel</button>
             <button mat-button color="primary" type="submit" form="addCategoryForm" (click)="submitCategory()">Add category</button>
         </ng-template>

@@ -7,6 +7,10 @@ import { ProductDetailDialogComponent } from './product-detail-dialog/product-de
 import { ICategory } from 'src/app/models/category.model';
 import { IProductPOST } from 'src/app/models/productPOST.model';
 import { IProductPUT } from 'src/app/models/productPUT.model';
+import { IconButton } from 'src/app/shared/icon-button/icon-button.model';
+import { MaterialIcon } from 'src/app/shared/icon-button/material-icons.enum';
+import { IconButtonType } from 'src/app/shared/icon-button/icon-button-type.enum';
+import { ThemeColor } from 'src/app/constants';
 
 @Component({
   selector: 'app-products-list',
@@ -25,6 +29,12 @@ export class ProductsListComponent {
     );
 
   selectedProductId: number | undefined;
+
+  newProductButton: IconButton = {
+    icon: { iconName: 'add', svgIcon: MaterialIcon.ADD_FILL0_W400_GRAD0_SZ20 },
+    matButtonType: IconButtonType.MAT_BUTTON,
+    color: ThemeColor.PRIMARY
+  }
 
   constructor(private breakpointObserver: BreakpointObserver, public dialog: MatDialog) {}
 
