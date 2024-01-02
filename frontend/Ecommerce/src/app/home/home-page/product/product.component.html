@@ -7,6 +7,7 @@
     <span class="mat-headline-6" color="accent"> {{product.price}}€ </span>
   </mat-card-content>
   <mat-card-actions align="end">
-    <button mat-button color="primary">Add to cart</button>
+    <app-icon-button [button]="addToCartButton"
+    ariaLabel="Add product to cart">Add to cart</app-icon-button>
   </mat-card-actions>
 </mat-card>
