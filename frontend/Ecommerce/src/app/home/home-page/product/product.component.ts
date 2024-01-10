@@ -1,4 +1,5 @@
 import { Component, Input } from '@angular/core';
+import { ThemeColor } from 'src/app/constants';
 import { IProduct } from 'src/app/models/product.model';
 import { IconButtonType } from 'src/app/shared/icon-button/icon-button-type.enum';
 import { IconButton } from 'src/app/shared/icon-button/icon-button.model';
@@ -25,7 +26,7 @@ export class ProductComponent{
   addToCartButton: IconButton = {
     icon: { iconName: 'shopping-cart', svgIcon: MaterialIcon.SHOPPING_CART_FILL0_W300_GRAD0_SZ20 },
     matButtonType: IconButtonType.MAT_BUTTON,
-    color: undefined
+    color: ThemeColor.PRIMARY
   }
 
   constructor() {}
