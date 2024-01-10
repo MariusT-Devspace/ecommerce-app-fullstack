@@ -1,4 +1,4 @@
-<mat-grid-list rowHeight="380" gutterSize="3" cols="3">
+<mat-grid-list [rowHeight]="(breakpoint$ | async) === 'handset' ? 220 : 500 " gutterSize="3" cols="1">
     @for (product of products; track product.id) {
         <mat-grid-tile>
             <app-product [product]="product"></app-product>
