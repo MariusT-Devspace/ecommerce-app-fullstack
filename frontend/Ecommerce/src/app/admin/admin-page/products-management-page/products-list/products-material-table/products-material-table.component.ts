@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, EventEmitter, Input, Output, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, Input, Output, Signal, ViewChild, WritableSignal, computed, signal } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTable } from '@angular/material/table';
@@ -6,7 +6,7 @@ import { ProductsService } from 'src/app/core/services/products.service';
 import { IProduct } from 'src/app/models/product.model';
 import { MaterialTableDataSource } from './material-table-datasource';
 import { BreakpointObserver } from '@angular/cdk/layout';
-import { BehaviorSubject, fromEvent, map } from 'rxjs';
+import { fromEvent } from 'rxjs';
 import { ICategory } from 'src/app/models/category.model';
 import { DisplayedColumns } from '../../../displayed-columns.model';
 import { IconButton } from 'src/app/shared/icon-button/icon-button.model';
@@ -46,16 +46,12 @@ export class ProductsMaterialTableComponent implements AfterViewInit {
   displayedColumnsWithAvailabilityBreakpoint = '(min-width: 447px)'
   displayedColumnsWithExtraInfoBreakpoint = '(min-width: 632px)'
   
-  displayedColumns$ = new BehaviorSubject<DisplayedColumns>(
-    this.breakpointObserver.isMatched(this.displayedColumnsWithExtraInfoBreakpoint) 
-    ? this.displayedColumnsWithExtraInfo
-    : this.breakpointObserver.isMatched(this.displayedColumnsWithAvailabilityBreakpoint)
-    ? this.displayedColumnsWithAvailability
-    : this.displayedColumnsReduced
-  );
-  displayedColumnsWithActions$ = new BehaviorSubject<DisplayedColumns>({
-    columnsName: [...this.displayedColumns$.value.columnsName, 'actions'],
-    columnsTitle: [...this.displayedColumns$.value.columnsTitle, ''] 
+  displayedColumns: WritableSignal<DisplayedColumns> = signal(this.getDisplayedColumns());
+  displayedColumnsWithActions: Signal<DisplayedColumns> = computed(() => {
+    return {
+      columnsName: [...this.displayedColumns().columnsName, 'actions'],
+      columnsTitle: [...this.displayedColumns().columnsTitle, ''] 
+    }
   });
 
   showDetailButton: IconButton = {
@@ -76,17 +72,7 @@ export class ProductsMaterialTableComponent implements AfterViewInit {
 
     fromEvent(window, 'resize').subscribe({
       next: () => { 
-        this.displayedColumns$.next(
-          this.breakpointObserver.isMatched(this.displayedColumnsWithExtraInfoBreakpoint)
-          ? this.displayedColumnsWithExtraInfo
-          : this.breakpointObserver.isMatched(this.displayedColumnsWithAvailabilityBreakpoint)
-          ? this.displayedColumnsWithAvailability
-          : this.displayedColumnsReduced
-        );
-        this.displayedColumnsWithActions$.next({
-          columnsName: [...this.displayedColumns$.value.columnsName, 'actions'],
-          columnsTitle: [...this.displayedColumns$.value.columnsTitle, ''] 
-        });
+        this.displayedColumns.set(this.getDisplayedColumns());
       }
     })
   }
@@ -99,5 +85,13 @@ export class ProductsMaterialTableComponent implements AfterViewInit {
 
   openProductDetailDialog(selectedProductId: number) {
     this.onOpenDialog.emit(selectedProductId);
+  }
+
+  getDisplayedColumns(): DisplayedColumns {
+    return this.breakpointObserver.isMatched(this.displayedColumnsWithExtraInfoBreakpoint) 
+            ? this.displayedColumnsWithExtraInfo
+            : this.breakpointObserver.isMatched(this.displayedColumnsWithAvailabilityBreakpoint)
+            ? this.displayedColumnsWithAvailability
+            : this.displayedColumnsReduced
   }
 }

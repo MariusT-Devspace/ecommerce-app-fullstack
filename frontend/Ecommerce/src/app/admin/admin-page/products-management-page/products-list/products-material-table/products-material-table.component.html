@@ -3,9 +3,9 @@
     
     <!-- Data -->
     <ng-container [matColumnDef]="column"
-    *ngFor="let column of (displayedColumns$ | async)!.columnsName; let i=index">
+    *ngFor="let column of displayedColumns().columnsName; let i=index">
       <th mat-header-cell *matHeaderCellDef mat-sort-header>
-        {{(displayedColumns$ | async)!.columnsTitle[i]}}
+        {{displayedColumns().columnsTitle[i]}}
       </th>
       <td mat-cell *matCellDef="let row">
         {{
@@ -28,8 +28,8 @@
       </td>
     </ng-container>
 
-    <tr mat-header-row *matHeaderRowDef="(displayedColumnsWithActions$ | async)!.columnsName"></tr>
-    <tr mat-row *matRowDef="let row; columns: (displayedColumnsWithActions$ | async)!.columnsName;"></tr>
+    <tr mat-header-row *matHeaderRowDef="displayedColumnsWithActions().columnsName"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumnsWithActions().columnsName;"></tr>
     
   </table>
 
