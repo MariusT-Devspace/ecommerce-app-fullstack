@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, EventEmitter, Output, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, Output, Signal, ViewChild, WritableSignal, computed, signal } from '@angular/core';
 import { MatTable } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
@@ -56,16 +56,12 @@ export class UsersMaterialTableComponent implements AfterViewInit {
   displayedColumnsReducedBreakpoint = '(min-width: 442px)';
   displayedColumnsWithNameBreakpoint = '(min-width: 560px)';
   
-  displayedColumns$ = new BehaviorSubject<DisplayedColumns>(
-    this.breakpointObserver.isMatched(this.displayedColumnsWithNameBreakpoint)
-    ? this.displayedColumnsWithName
-    : this.breakpointObserver.isMatched(this.displayedColumnsReducedBreakpoint)
-    ? this.displayedColumnsReduced
-    : this.displayedColumnsCompact
-  );
-  displayedColumnsWithActions$ = new BehaviorSubject<DisplayedColumns>({
-    columnsName: [...this.displayedColumns$.value.columnsName, 'actions'],
-    columnsTitle: [...this.displayedColumns$.value.columnsTitle, '']
+  displayedColumns: WritableSignal<DisplayedColumns> = signal(this.getDisplayedColumns());
+  displayedColumnsWithActions: Signal<DisplayedColumns> = computed(() => {
+    return {
+      columnsName: [...this.displayedColumns().columnsName, 'actions'],
+      columnsTitle: [...this.displayedColumns().columnsTitle, '']
+    }
   });
 
   constructor(private usersService: UsersService, private breakpointObserver: BreakpointObserver) {
@@ -80,22 +76,20 @@ export class UsersMaterialTableComponent implements AfterViewInit {
 
     fromEvent(window, 'resize').subscribe({
       next: () => {
-        this.displayedColumns$.next(
-          this.breakpointObserver.isMatched(this.displayedColumnsWithNameBreakpoint)
-          ? this.displayedColumnsWithName
-          : this.breakpointObserver.isMatched(this.displayedColumnsReducedBreakpoint)
-          ? this.displayedColumnsReduced
-          : this.displayedColumnsCompact
-        );
-        this.displayedColumnsWithActions$.next({
-          columnsName: [...this.displayedColumns$.value.columnsName, 'actions'],
-          columnsTitle: [...this.displayedColumns$.value.columnsTitle, '']
-        });
+        this.displayedColumns.set(this.getDisplayedColumns());
       }
     });
   }
 
   openUserDetailDialog(user: IUser) {
     this.onOpenUserDetailDialog.emit(user);
+  }
+
+  getDisplayedColumns(): DisplayedColumns {
+    return this.breakpointObserver.isMatched(this.displayedColumnsWithNameBreakpoint)
+            ? this.displayedColumnsWithName
+            : this.breakpointObserver.isMatched(this.displayedColumnsReducedBreakpoint)
+            ? this.displayedColumnsReduced
+            : this.displayedColumnsCompact
   }
 }

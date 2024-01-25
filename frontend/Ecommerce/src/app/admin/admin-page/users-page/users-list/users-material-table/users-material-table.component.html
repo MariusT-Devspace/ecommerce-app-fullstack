@@ -1,6 +1,6 @@
 <div>
   <table mat-table class="full-width-table" matSort aria-label="Elements"
-  [ngClass]="(displayedColumns$ | async) == displayedColumnsCompact
+  [ngClass]="displayedColumns() == displayedColumnsCompact
               ? 'hideHeader'
               : ''
             "
@@ -8,17 +8,17 @@
 
     <!-- Data -->
     <ng-container [matColumnDef]="column" 
-    *ngFor="let column of (displayedColumns$ | async)!.columnsName; let i=index">
+    *ngFor="let column of displayedColumns().columnsName; let i=index">
       <th mat-header-cell *matHeaderCellDef mat-sort-header>
       <span>
-        {{(displayedColumns$ | async)!.columnsTitle[i]}}
+        {{displayedColumns().columnsTitle[i]}}
       </span>
       </th>
       <td mat-cell *matCellDef="let row">
 
-        <ng-template [ngIf]="(displayedColumns$ | async) != displayedColumnsCompact &&
-        (displayedColumns$ | async) != displayedColumnsReduced && 
-        (displayedColumns$ | async) != displayedColumnsWithName" 
+        <ng-template [ngIf]="displayedColumns() != displayedColumnsCompact &&
+        displayedColumns() != displayedColumnsReduced && 
+        displayedColumns() != displayedColumnsWithName" 
           [ngIfElse]="reducedTemplate">
             {{
               column == 'role'
@@ -36,9 +36,9 @@
                 : row[column]
               }}
             </div>
-            <div *ngIf="i == ((displayedColumns$ | async)!.columnsName.length - 1)">
+            <div *ngIf="i == displayedColumns().columnsName.length - 1">
               <span>
-                <small *ngIf="(displayedColumns$ | async) == displayedColumnsCompact">
+                <small *ngIf="displayedColumns() == displayedColumnsCompact">
                   {{row['userName']}}
                 </small>
                 <small>
@@ -61,8 +61,8 @@
     </ng-container>
     
 
-    <tr mat-header-row *matHeaderRowDef="(displayedColumnsWithActions$ | async)!.columnsName"></tr>
-    <tr mat-row *matRowDef="let row; columns: (displayedColumnsWithActions$ | async)!.columnsName;"></tr>
+    <tr mat-header-row *matHeaderRowDef="displayedColumnsWithActions().columnsName"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumnsWithActions().columnsName;"></tr>
   </table>
 
   <mat-paginator #paginator
