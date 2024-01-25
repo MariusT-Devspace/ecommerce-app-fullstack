@@ -1,5 +1,6 @@
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { Component, OnInit, WritableSignal, signal } from '@angular/core';
+import { fromEvent } from 'rxjs';
 import { map } from 'rxjs/internal/operators/map';
 import { ProductsService } from 'src/app/core/services/products.service';
 import { IProduct } from 'src/app/models/product.model';
@@ -17,6 +18,8 @@ export class ProductsListComponent implements OnInit{
     map(result => result.matches ? 'handset' : 'desktop')
   );
 
+  colsNum: WritableSignal<number> = signal(this.getColsNum());
+
   constructor(
     private productsService:  ProductsService,
     private breakpointObserver: BreakpointObserver
@@ -28,5 +31,19 @@ export class ProductsListComponent implements OnInit{
       error: (err: Error) => console.error("Could not retrieve product" + err.message),
       complete: () => console.log("All products have been retrieved")
     });
+
+    fromEvent(window, 'resize').subscribe({
+      next: () => {
+        this.colsNum.set(this.getColsNum());
+      }
+    });
+  }
+
+  getColsNum(): number {
+    return this.breakpointObserver.isMatched(Breakpoints.XSmall)
+            ? 1
+            : this.breakpointObserver.isMatched(Breakpoints.Small)
+            ? 2
+            : 3
   }
 }
