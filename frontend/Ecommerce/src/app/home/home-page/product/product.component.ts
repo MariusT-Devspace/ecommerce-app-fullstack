@@ -1,4 +1,6 @@
+import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { Component, Input } from '@angular/core';
+import { map } from 'rxjs';
 import { ThemeColor } from 'src/app/constants';
 import { IProduct } from 'src/app/models/product.model';
 import { IconButtonType } from 'src/app/shared/icon-button/icon-button-type.enum';
@@ -25,9 +27,14 @@ export class ProductComponent{
 
   addToCartButton: IconButton = {
     icon: { iconName: 'shopping-cart', svgIcon: MaterialIcon.SHOPPING_CART_FILL0_W300_GRAD0_SZ20 },
-    matButtonType: IconButtonType.MAT_BUTTON,
-    color: ThemeColor.PRIMARY
+    matButtonType: IconButtonType.MAT_FLAT_BUTTON,
+    color: ThemeColor.ACCENT
   }
 
-  constructor() {}
+  breakpoint$ = this.breakpointObserver.observe(Breakpoints.XSmall)
+  .pipe(
+    map(result => result.matches ? 'handset' : 'desktop')
+  );
+
+  constructor(private breakpointObserver: BreakpointObserver) {}
 }
