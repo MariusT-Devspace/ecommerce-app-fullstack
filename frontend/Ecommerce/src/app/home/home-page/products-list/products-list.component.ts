@@ -1,4 +1,4 @@
-import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
+import { BreakpointObserver } from '@angular/cdk/layout';
 import { Component, OnInit, WritableSignal, signal } from '@angular/core';
 import { fromEvent } from 'rxjs';
 import { map } from 'rxjs/internal/operators/map';
@@ -13,7 +13,7 @@ import { IProduct } from 'src/app/models/product.model';
 export class ProductsListComponent implements OnInit{
   products: WritableSignal<IProduct[]> = signal([]);
   
-  breakpoint$ = this.breakpointObserver.observe(Breakpoints.XSmall)
+  breakpoint$ = this.breakpointObserver.observe('(max-width: 590px)')
   .pipe(
     map(result => result.matches ? 'handset' : 'desktop')
   );
@@ -40,10 +40,10 @@ export class ProductsListComponent implements OnInit{
   }
 
   getColsNum(): number {
-    return this.breakpointObserver.isMatched(Breakpoints.XSmall)
-            ? 1
-            : this.breakpointObserver.isMatched(Breakpoints.Small)
+    return this.breakpointObserver.isMatched('(min-width: 602px)')
             ? 2
-            : 3
+            : this.breakpointObserver.isMatched('(min-width: 960px)')
+            ? 3
+            : 1
   }
 }

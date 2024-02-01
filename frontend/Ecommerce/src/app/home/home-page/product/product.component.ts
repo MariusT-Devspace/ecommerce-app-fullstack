@@ -1,4 +1,4 @@
-import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
+import { BreakpointObserver } from '@angular/cdk/layout';
 import { Component, Input } from '@angular/core';
 import { map } from 'rxjs';
 import { ThemeColor } from 'src/app/constants';
@@ -31,7 +31,7 @@ export class ProductComponent{
     color: ThemeColor.ACCENT
   }
 
-  breakpoint$ = this.breakpointObserver.observe(Breakpoints.XSmall)
+  breakpoint$ = this.breakpointObserver.observe('(max-width: 591px)')
   .pipe(
     map(result => result.matches ? 'handset' : 'desktop')
   );
