@@ -1,4 +1,4 @@
-<mat-card class="product">
+<mat-card class="product" [ngClass]="colsNum() > 1 ? 'desktop' : ''">
   <div class="image">
     <img mat-card-image [src]="product.picture" alt="Photo of the product">
   </div>
@@ -6,12 +6,12 @@
     <mat-card-content>
       <span class="mat-subtitle-1"> {{product.title}} </span>
       <span class="mat-headline-6" color="accent"> {{product.price}}€ </span>
-      @if ((breakpoint$ | async) === 'desktop') {
+      @if (colsNum() > 1) {
         <app-icon-button [button]="addToCartButton"
         ariaLabel="Add product to cart">Add to cart</app-icon-button>
       }
     </mat-card-content>
-    @if((breakpoint$ | async) === 'handset') {
+    @if(colsNum() === 1) {
       <mat-card-actions align="end">
         <app-icon-button [button]="addToCartButton"
         ariaLabel="Add product to cart">Add to cart</app-icon-button>
@@ -19,3 +19,5 @@
     }
   </div>
 </mat-card>
+
+

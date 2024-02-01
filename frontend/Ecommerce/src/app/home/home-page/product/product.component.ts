@@ -1,6 +1,4 @@
-import { BreakpointObserver } from '@angular/cdk/layout';
-import { Component, Input } from '@angular/core';
-import { map } from 'rxjs';
+import { Component, Input, WritableSignal, signal } from '@angular/core';
 import { ThemeColor } from 'src/app/constants';
 import { IProduct } from 'src/app/models/product.model';
 import { IconButtonType } from 'src/app/shared/icon-button/icon-button-type.enum';
@@ -13,6 +11,7 @@ import { MaterialIcon } from 'src/app/shared/icon-button/material-icons.enum';
   styleUrls: ['./product.component.sass']
 })
 export class ProductComponent{
+  @Input() colsNum: WritableSignal<number> = signal(1)
   @Input() product: IProduct = {
     id: 0,
     title: "",
@@ -31,10 +30,5 @@ export class ProductComponent{
     color: ThemeColor.ACCENT
   }
 
-  breakpoint$ = this.breakpointObserver.observe('(max-width: 591px)')
-  .pipe(
-    map(result => result.matches ? 'handset' : 'desktop')
-  );
-
-  constructor(private breakpointObserver: BreakpointObserver) {}
+  constructor() {}
 }
