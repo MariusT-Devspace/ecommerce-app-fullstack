@@ -1,6 +1,6 @@
 .product
     display: flex
-    width: 90%
+    width: 100%
     flex-direction: row
     margin-left: auto
     margin-right: auto
@@ -9,7 +9,6 @@
         justify-content: center
         align-items: center
         width: 30%
-        height: 200px
         img
             max-width: 80%
             max-height: 80%
@@ -29,21 +28,27 @@
                 -webkit-box-orient: vertical
                 -webkit-line-clamp: 3
                 overflow: hidden
-                //white-space: nowrap
                 text-overflow: ellipsis
             span:first-child
                 margin-bottom: 10px
+            .add-to-cart-button-desktop
+                display: none
         mat-card-actions
             width: 100%
 
-.desktop
-    width: 250px
-    flex-direction: column
-    .image
-        width: 100%
-    .content
-        width: 100%
-        mat-card-content
-            padding: 20px
-            margin: 0 auto
-            height: 150px
+@media only screen and (min-width: 424px)
+    .product
+        flex-direction: column
+        .image
+            width: 100%
+            aspect-ratio: 1/1.1
+        .content
+            width: 100%
+            mat-card-content
+                padding: 10px
+                margin: 0 auto
+                height: 150px
+                .add-to-cart-button-desktop
+                    display: block
+            mat-card-actions
+                display: none

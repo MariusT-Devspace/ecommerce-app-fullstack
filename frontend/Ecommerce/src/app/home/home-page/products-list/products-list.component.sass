@@ -1,11 +1,28 @@
-app-product
-    width: 100% !important
+.product-list
+    display: flex
+    flex-direction: column
+    align-items: stretch
+    width: 100%
+    gap: 10px
 
-@media only screen and (min-width: 600px)
-    mat-grid-list
-        width: 530px
-        margin-left: auto
-        margin-right: auto
-        mat-grid-tile
-            margin-left: auto
-            margin-right: auto
+@media only screen and (min-width: 424px)
+    .product-list
+        display: flex
+        flex-direction: row
+        justify-content: start
+        flex-wrap: wrap
+        row-gap: 20px
+        app-product
+            width: 48.5%
+
+@media only screen and (min-width: 580px)
+    app-product
+        width: 32% !important
+
+@media only screen and (min-width: 1100px)
+    app-product
+        width: 23.5% !important
+
+@media only screen and (min-width: 1354px)
+    app-product
+        width: 19% !important

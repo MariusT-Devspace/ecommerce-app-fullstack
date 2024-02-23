@@ -1,7 +1,21 @@
-<mat-grid-list [rowHeight]="colsNum() === 1 ? 220 : 400 " gutterSize="3" [cols]="colsNum()">
+<div class="product-list">
     @for (product of products(); track product.id) {
-        <mat-grid-tile>
-            <app-product [colsNum]="colsNum" [product]="product"></app-product>
-        </mat-grid-tile>
+        <app-product [product]="product"></app-product>
     }
-</mat-grid-list>
+    <!-- Duplicate products for development purposes -->
+    <!-- TODO Remove duplicated products -->
+    @for (product of products(); track product.id) {
+        <app-product [product]="product"></app-product>
+    }
+    @for (product of products(); track product.id) {
+        <app-product [product]="product"></app-product>
+    }
+    @for (product of products(); track product.id) {
+        <app-product [product]="product"></app-product>
+    }
+    @for (product of products(); track product.id) {
+        <app-product [product]="product"></app-product>
+    }
+</div>
+    
+    
