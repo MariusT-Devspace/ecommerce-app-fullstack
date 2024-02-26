@@ -3,10 +3,10 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { ProductsService } from 'src/app/core/services/products.service';
-import { ICategory } from 'src/app/models/category.model';
-import { IProduct } from 'src/app/models/product.model';
+import { Category } from 'src/app/models/category.model';
+import { Product } from 'src/app/models/product.model';
 import { BehaviorSubject, map } from 'rxjs';
-import { IProductPUT } from 'src/app/models/productPUT.model';
+import { ProductPUT } from 'src/app/models/productPUT.model';
 import { IconButton } from 'src/app/shared/icon-button/icon-button.model';
 import { MaterialIcon } from 'src/app/shared/icon-button/material-icons.enum';
 import { IconButtonType } from 'src/app/shared/icon-button/icon-button-type.enum';
@@ -17,11 +17,11 @@ import { IconButtonType } from 'src/app/shared/icon-button/icon-button-type.enum
   styleUrls: ['./product-detail-dialog.component.sass']
 })
 export class ProductDetailDialogComponent {
-  @Output() onUpdateProduct = new EventEmitter<IProductPUT>();
+  @Output() onUpdateProduct = new EventEmitter<ProductPUT>();
 
   productDetailForm: FormGroup = new FormGroup({});
   isEditMode: boolean = false;
-  product: IProduct | undefined;
+  product: Product | undefined;
   isProductRetrieved: boolean = false;
   isLoading: boolean = true;
   categoryName: string | undefined
@@ -44,12 +44,12 @@ export class ProductDetailDialogComponent {
     private formBuilder: FormBuilder,
     @Inject(MAT_DIALOG_DATA) public data: {
       productId: number,
-      categories: ICategory[]
+      categories: Category[]
     }, 
     private productsService: ProductsService, 
     private breakpointObserver: BreakpointObserver) {
     this.productsService.getProductById(this.data.productId).subscribe({
-      next: (response: IProduct) => { 
+      next: (response: Product) => { 
         this.product = response;
         this.isProductRetrieved = true;
 
@@ -102,7 +102,7 @@ export class ProductDetailDialogComponent {
   }
 
   updateProduct() {
-    const productPUT: IProductPUT = {
+    const productPUT: ProductPUT = {
       id: this.product!.id, 
       ...this.productDetailForm.value
     }

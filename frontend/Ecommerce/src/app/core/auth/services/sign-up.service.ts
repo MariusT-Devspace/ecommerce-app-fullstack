@@ -2,8 +2,8 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { environment } from '../../../../environment/environment';
-import { ISignUp } from '../models/sign-up.model';
-import { IToken } from '../models/token.model';
+import { SignUp } from '../models/sign-up.model';
+import { Token } from '../models/token.model';
 
 @Injectable({
   providedIn: 'root'
@@ -14,7 +14,7 @@ export class SignUpService {
 
   constructor(private httpClient: HttpClient) { }
   
-  signUp(requestBody: ISignUp): Observable<IToken>{
-    return this.httpClient.post(this.url, requestBody) as Observable<IToken>; 
+  signUp(requestBody: SignUp): Observable<Token>{
+    return this.httpClient.post(this.url, requestBody) as Observable<Token>; 
   }
 }

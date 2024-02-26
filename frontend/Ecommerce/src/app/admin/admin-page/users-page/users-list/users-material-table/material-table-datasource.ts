@@ -3,7 +3,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { map } from 'rxjs/operators';
 import { Observable, of as observableOf, merge } from 'rxjs';
-import { IUser } from 'src/app/models/user.model';
+import { User } from 'src/app/models/user.model';
 import { UsersService } from 'src/app/core/services/users.service';
 
 /**
@@ -11,8 +11,8 @@ import { UsersService } from 'src/app/core/services/users.service';
  * encapsulate all logic for fetching and manipulating the displayed data
  * (including sorting, pagination, and filtering).
  */
-export class MaterialTableDataSource extends DataSource<IUser> {
-  data: IUser[] = [];
+export class MaterialTableDataSource extends DataSource<User> {
+  data: User[] = [];
   paginator: MatPaginator | undefined;
   sort: MatSort | undefined;
 
@@ -25,7 +25,7 @@ export class MaterialTableDataSource extends DataSource<IUser> {
    * the returned stream emits new items.
    * @returns A stream of the items to be rendered.
    */
-  connect(): Observable<IUser[]> {
+  connect(): Observable<User[]> {
     if (this.paginator && this.sort) {
       // Combine everything that affects the rendered data into one update
       // stream for the data-table to consume.
@@ -49,7 +49,7 @@ export class MaterialTableDataSource extends DataSource<IUser> {
    * Paginate the data (client-side). If you're using server-side pagination,
    * this would be replaced by requesting the appropriate data from the server.
    */
-  private getPagedData(data: IUser[]): IUser[] {
+  private getPagedData(data: User[]): User[] {
     if (this.paginator) {
       const startIndex = this.paginator.pageIndex * this.paginator.pageSize;
       return data.splice(startIndex, this.paginator.pageSize);
@@ -62,7 +62,7 @@ export class MaterialTableDataSource extends DataSource<IUser> {
    * Sort the data (client-side). If you're using server-side sorting,
    * this would be replaced by requesting the appropriate data from the server.
    */
-  private getSortedData(data: IUser[]): IUser[] {
+  private getSortedData(data: User[]): User[] {
     if (!this.sort || !this.sort.active || this.sort.direction === '') {
       return data;
     }

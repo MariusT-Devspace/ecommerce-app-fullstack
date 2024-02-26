@@ -1,4 +1,4 @@
-export interface IProductPUT {
+export interface ProductPUT {
     id:          number;
     title:       string;
     description: string;

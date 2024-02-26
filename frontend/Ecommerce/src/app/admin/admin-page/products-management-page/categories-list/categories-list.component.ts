@@ -1,8 +1,8 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ThemeColor } from 'src/app/constants';
-import { ICategory } from 'src/app/models/category.model';
-import { ICategoryPOST } from 'src/app/models/categoryPOST.model';
+import { Category } from 'src/app/models/category.model';
+import { CategoryPOST } from 'src/app/models/categoryPOST.model';
 import { IconButtonType } from 'src/app/shared/icon-button/icon-button-type.enum';
 import { IconButton } from 'src/app/shared/icon-button/icon-button.model';
 import { MaterialIcon } from 'src/app/shared/icon-button/material-icons.enum';
@@ -13,10 +13,10 @@ import { MaterialIcon } from 'src/app/shared/icon-button/material-icons.enum';
   styleUrls: ['./categories-list.component.sass']
 })
 export class CategoriesListComponent implements OnInit{
-  @Input() categories : ICategory[] = []
-  @Output() onAddCategory = new EventEmitter<ICategoryPOST>();
-  @Output() onDeleteCategory = new EventEmitter<ICategory>();
-  @Output() onEditCategory = new EventEmitter<ICategory>();
+  @Input() categories : Category[] = []
+  @Output() onAddCategory = new EventEmitter<CategoryPOST>();
+  @Output() onDeleteCategory = new EventEmitter<Category>();
+  @Output() onEditCategory = new EventEmitter<Category>();
 
   isAddCategoryMode: boolean = false;
   categoryForm: FormGroup = new FormGroup({})
@@ -103,7 +103,7 @@ export class CategoriesListComponent implements OnInit{
   }
 
   submitCategory() {
-    const category: ICategoryPOST = {
+    const category: CategoryPOST = {
       name: this.categoryName
     };
     /* TODO: Show validation errors to user */
@@ -114,7 +114,7 @@ export class CategoriesListComponent implements OnInit{
   editCategory(id: number) {
     /* TODO: Show validation errors to user */
     if(this.categoryForm.valid){
-      const category: ICategory = {
+      const category: Category = {
         id: id,
         name: this.categoryName
       }
@@ -122,7 +122,7 @@ export class CategoriesListComponent implements OnInit{
     }
   }
 
-  deleteCategory(category: ICategory) {
+  deleteCategory(category: Category) {
     this.onDeleteCategory.emit(category);
   }
 

@@ -1,7 +1,7 @@
 import { HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { IAuthenticated } from '../models/authenticated.model';
+import { Authenticated } from '../models/authenticated.model';
 import { UserRole } from '../models/token.model';
 import { LoginService } from './login.service';
 
@@ -16,7 +16,7 @@ export class AuthUtilsService {
   navigateToHome() {
     console.log("navigateToHome()");
     this.loginService.checkTokenCookie().subscribe({
-      next: (response: HttpResponse<IAuthenticated>) => {
+      next: (response: HttpResponse<Authenticated>) => {
         console.log("navigateToHome() - next");
         // Check token
         this.loginService.isLoggedIn = response.body?.authenticated;

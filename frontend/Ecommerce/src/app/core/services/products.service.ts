@@ -1,10 +1,10 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { IProductPOST } from 'src/app/models/productPOST.model';
+import { ProductPOST } from 'src/app/models/productPOST.model';
 import { environment } from '../../../environment/environment'
-import { IProduct } from 'src/app/models/product.model';
+import { Product } from 'src/app/models/product.model';
 import { BehaviorSubject } from 'rxjs';
-import { IProductPUT } from 'src/app/models/productPUT.model';
+import { ProductPUT } from 'src/app/models/productPUT.model';
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +12,7 @@ import { IProductPUT } from 'src/app/models/productPUT.model';
 export class ProductsService {
 
   private baseURL = `${environment.apiHost}/Products`
-  productsSubject$ = new BehaviorSubject<IProduct[]>([]);
+  productsSubject$ = new BehaviorSubject<Product[]>([]);
 
   constructor(private httpClient: HttpClient ) { }
 
@@ -26,12 +26,12 @@ export class ProductsService {
     return this.httpClient.get(url);
   }
 
-  addProduct(body: IProductPOST) {
+  addProduct(body: ProductPOST) {
     let url = `${this.baseURL}`;
     return this.httpClient.post(url, body);
   }
 
-  updateProduct(productPUT: IProductPUT) {
+  updateProduct(productPUT: ProductPUT) {
     let url = `${this.baseURL}/${productPUT.id}`
     return this.httpClient.put(url, productPUT);
   }

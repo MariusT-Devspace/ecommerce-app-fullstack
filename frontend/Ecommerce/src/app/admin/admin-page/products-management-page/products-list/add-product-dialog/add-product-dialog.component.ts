@@ -3,8 +3,8 @@ import { Component, EventEmitter, Inject, OnInit, Output } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { map } from 'rxjs/internal/operators/map';
-import { ICategory } from 'src/app/models/category.model';
-import { IProductPOST } from 'src/app/models/productPOST.model';
+import { Category } from 'src/app/models/category.model';
+import { ProductPOST } from 'src/app/models/productPOST.model';
 
 @Component({
   selector: 'app-add-product-dialog',
@@ -12,7 +12,7 @@ import { IProductPOST } from 'src/app/models/productPOST.model';
   styleUrls: ['./add-product-dialog.component.sass']
 })
 export class AddProductDialogComponent implements OnInit{
-  @Output() onAddProduct = new EventEmitter<IProductPOST>();
+  @Output() onAddProduct = new EventEmitter<ProductPOST>();
 
   addProductForm: FormGroup = new FormGroup({});
   
@@ -23,7 +23,7 @@ export class AddProductDialogComponent implements OnInit{
 
   constructor(public addProductDialogRef: MatDialogRef<AddProductDialogComponent>, 
     private formBuilder: FormBuilder, 
-    @Inject(MAT_DIALOG_DATA) public data: {categories: ICategory[]},
+    @Inject(MAT_DIALOG_DATA) public data: {categories: Category[]},
     private breakpointObserver: BreakpointObserver) {
       this.breakpoint$.subscribe({
         next: (v) => {
@@ -49,7 +49,7 @@ export class AddProductDialogComponent implements OnInit{
   }
 
   submitProduct() {
-      const product: IProductPOST = {
+      const product: ProductPOST = {
         title: this.addProductForm.value.title,
         description: this.addProductForm.value.description,
         price: this.addProductForm.value.price,

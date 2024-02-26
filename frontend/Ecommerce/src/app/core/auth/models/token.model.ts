@@ -3,7 +3,7 @@ export enum UserRole {
     User
   }
   
-export interface IToken {
+export interface Token {
     userId:         string;
     userName:       string;
     firstName:      string;

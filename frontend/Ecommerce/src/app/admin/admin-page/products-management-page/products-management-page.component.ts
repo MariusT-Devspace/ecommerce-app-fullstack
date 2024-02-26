@@ -1,14 +1,14 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { CategoriesService } from 'src/app/core/services/categories.service';
-import { ICategory } from 'src/app/models/category.model';
-import { ICategoryPOST } from 'src/app/models/categoryPOST.model';
+import { Category } from 'src/app/models/category.model';
+import { CategoryPOST } from 'src/app/models/categoryPOST.model';
 import { CategoriesListComponent } from './categories-list/categories-list.component';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmDeleteCategoryDialogComponent } from './categories-list/confirm-delete-category-dialog/confirm-delete-category-dialog.component';
-import { IProductPOST } from 'src/app/models/productPOST.model';
+import { ProductPOST } from 'src/app/models/productPOST.model';
 import { ProductsService } from 'src/app/core/services/products.service';
-import { IProduct } from 'src/app/models/product.model';
-import { IProductPUT } from 'src/app/models/productPUT.model';
+import { Product } from 'src/app/models/product.model';
+import { ProductPUT } from 'src/app/models/productPUT.model';
 
 @Component({
   selector: 'app-products-management-page',
@@ -16,7 +16,7 @@ import { IProductPUT } from 'src/app/models/productPUT.model';
   styleUrls: ['./products-management-page.component.sass']
 })
 export class ProductsManagementPageComponent implements OnInit{
-  categories : ICategory[] = []  
+  categories : Category[] = []  
   @ViewChild(CategoriesListComponent) categoriesListCardComponent!: CategoriesListComponent;
 
   constructor (private categoriesService : CategoriesService, private productsService: ProductsService, private dialog: MatDialog) {}
@@ -27,7 +27,7 @@ export class ProductsManagementPageComponent implements OnInit{
 
   getCategories() {
     this.categoriesService.getCategories().subscribe({
-      next: (response: ICategory[]) => {
+      next: (response: Category[]) => {
         this.categories = response
         console.log(this.categories)
       },
@@ -36,7 +36,7 @@ export class ProductsManagementPageComponent implements OnInit{
     });
   }
 
-  addCategory(category: ICategoryPOST) {
+  addCategory(category: CategoryPOST) {
     this.categoriesService.addCategory(category).subscribe({
       next: (response: any) => {
         console.log(response.status);
@@ -48,7 +48,7 @@ export class ProductsManagementPageComponent implements OnInit{
     });
   }
 
-  editCategory(category: ICategory) {
+  editCategory(category: Category) {
     this.categoriesService.editCategory(category).subscribe({
       next: (response: any) => { 
         this.categoriesListCardComponent.disableEditMode();
@@ -59,7 +59,7 @@ export class ProductsManagementPageComponent implements OnInit{
     });
   }
 
-  deleteCategory(category: ICategory) {
+  deleteCategory(category: Category) {
     let dialogRef = this.dialog.open(ConfirmDeleteCategoryDialogComponent, {
       data: { categoryName: category.name }
     });
@@ -77,13 +77,13 @@ export class ProductsManagementPageComponent implements OnInit{
 
   getProducts() {
     this.productsService.getProducts().subscribe({
-      next: (response: IProduct[]) => this.productsService.productsSubject$.next(response),
+      next: (response: Product[]) => this.productsService.productsSubject$.next(response),
       error: (err: Error) => console.error("Could not retrieve products" + err.message),
       complete: () => console.log("Products retrieved successfully")
     });
   }
 
-  addProduct(product: IProductPOST) {
+  addProduct(product: ProductPOST) {
     this.productsService.addProduct(product).subscribe({
       next: (response: any) => this.getProducts(),
       error: (err: Error) => console.error(`Error adding product: ${err.message}`),
@@ -91,7 +91,7 @@ export class ProductsManagementPageComponent implements OnInit{
     });
   }
 
-  updateProduct(productPUT: IProductPUT) {
+  updateProduct(productPUT: ProductPUT) {
     this.productsService.updateProduct(productPUT).subscribe({
       next: (response: any) => this.getProducts(),
       error: (err: Error) => console.error(`Error updating product: ${err.message}`),

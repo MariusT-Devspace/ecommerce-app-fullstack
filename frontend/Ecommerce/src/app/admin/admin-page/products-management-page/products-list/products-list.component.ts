@@ -4,9 +4,9 @@ import { MatDialog } from '@angular/material/dialog';
 import { map } from 'rxjs';
 import { AddProductDialogComponent } from './add-product-dialog/add-product-dialog.component';
 import { ProductDetailDialogComponent } from './product-detail-dialog/product-detail-dialog.component';
-import { ICategory } from 'src/app/models/category.model';
-import { IProductPOST } from 'src/app/models/productPOST.model';
-import { IProductPUT } from 'src/app/models/productPUT.model';
+import { Category } from 'src/app/models/category.model';
+import { ProductPOST } from 'src/app/models/productPOST.model';
+import { ProductPUT } from 'src/app/models/productPUT.model';
 import { IconButton } from 'src/app/shared/icon-button/icon-button.model';
 import { MaterialIcon } from 'src/app/shared/icon-button/material-icons.enum';
 import { IconButtonType } from 'src/app/shared/icon-button/icon-button-type.enum';
@@ -18,10 +18,10 @@ import { ThemeColor } from 'src/app/constants';
   styleUrls: ['./products-list.component.sass']
 })
 export class ProductsListComponent {
-  @Input() categories: ICategory[] = []
+  @Input() categories: Category[] = []
   @Output() onGetProducts = new EventEmitter();
-  @Output() onAddProduct = new EventEmitter<IProductPOST>();
-  @Output() onUpdateProduct = new EventEmitter<IProductPUT>();
+  @Output() onAddProduct = new EventEmitter<ProductPOST>();
+  @Output() onUpdateProduct = new EventEmitter<ProductPUT>();
 
   breakpoint$ = this.breakpointObserver.observe(Breakpoints.Handset)
     .pipe(
@@ -42,7 +42,7 @@ export class ProductsListComponent {
     this.onGetProducts.emit();
   }
 
-  updateProduct(productPUT: IProductPUT) {
+  updateProduct(productPUT: ProductPUT) {
     this.onUpdateProduct.emit(productPUT);
   }
 
@@ -63,7 +63,7 @@ export class ProductsListComponent {
     });
 
     addProductDialogRef.componentInstance.onAddProduct.subscribe({
-      next: (result: IProductPOST) => { 
+      next: (result: ProductPOST) => { 
         this.onAddProduct.emit(result);
         this.dialog.closeAll();
       },
@@ -91,7 +91,7 @@ export class ProductsListComponent {
     });
 
     productDetailDialogRef.componentInstance.onUpdateProduct.subscribe({
-      next: (result: IProductPUT) => { 
+      next: (result: ProductPUT) => { 
         this.onUpdateProduct.emit(result);
         this.dialog.closeAll();
       },

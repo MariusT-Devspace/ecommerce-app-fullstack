@@ -1,3 +1,3 @@
-export interface IAuthenticated {
+export interface Authenticated {
     "authenticated": boolean
 }

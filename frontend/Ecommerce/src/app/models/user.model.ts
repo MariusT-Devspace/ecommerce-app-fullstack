@@ -1,6 +1,6 @@
 import { UserRole } from "../core/auth/models/token.model";
 
-export interface IUser {
+export interface User {
     id:        string,
     userName:  string,
     firstName: string,

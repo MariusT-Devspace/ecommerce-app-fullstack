@@ -1,3 +1,3 @@
-export interface ICategoryPOST {
+export interface CategoryPOST {
     name: string
 }

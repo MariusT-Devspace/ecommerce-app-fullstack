@@ -3,7 +3,7 @@ import { MatTable } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MaterialTableDataSource } from './material-table-datasource';
-import { IUser } from 'src/app/models/user.model';
+import { User } from 'src/app/models/user.model';
 import { UsersService } from 'src/app/core/services/users.service';
 import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
 import { BreakpointObserver } from '@angular/cdk/layout';
@@ -22,11 +22,11 @@ import { IconButtonType } from 'src/app/shared/icon-button/icon-button-type.enum
 export class UsersMaterialTableComponent implements AfterViewInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
-  @ViewChild(MatTable) table!: MatTable<IUser>;
+  @ViewChild(MatTable) table!: MatTable<User>;
   dataSource: MaterialTableDataSource;
 
   @Output() onGetUsers = new EventEmitter();
-  @Output() onOpenUserDetailDialog = new EventEmitter<IUser>();
+  @Output() onOpenUserDetailDialog = new EventEmitter<User>();
 
   showDetailButton: IconButton = {
     icon: { iconName: 'arrow-right', svgIcon: MaterialIcon.ARROW_RIGHT_FILL0_W300_GRAD0_SZ20 },
@@ -81,7 +81,7 @@ export class UsersMaterialTableComponent implements AfterViewInit {
     });
   }
 
-  openUserDetailDialog(user: IUser) {
+  openUserDetailDialog(user: User) {
     this.onOpenUserDetailDialog.emit(user);
   }
 

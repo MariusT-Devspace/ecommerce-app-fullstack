@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Output } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder } from '@angular/forms';
-import { ILogin } from '../../../models/login.model';
+import { Login } from '../../../models/login.model';
 import { LoginService } from '../../../services/login.service';
 
 @Component({
@@ -10,12 +10,12 @@ import { LoginService } from '../../../services/login.service';
 })
 export class LoginFormComponent {
   loginForm: FormGroup = new FormGroup({});
-  loginValues: ILogin | undefined;
+  loginValues: Login | undefined;
 
   hide = true;
   showProgressBar = false;
 
-  @Output() onLogIn = new EventEmitter<ILogin>();
+  @Output() onLogIn = new EventEmitter<Login>();
 
   constructor(private formBuilder: FormBuilder, private loginService: LoginService) {
     this.loginService.isLoading$.subscribe({next: (v) => this.showProgressBar = v})

@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { ThemeColor } from 'src/app/constants';
-import { IProduct } from 'src/app/models/product.model';
+import { Product } from 'src/app/models/product.model';
 import { IconButtonType } from 'src/app/shared/icon-button/icon-button-type.enum';
 import { IconButton } from 'src/app/shared/icon-button/icon-button.model';
 import { MaterialIcon } from 'src/app/shared/icon-button/material-icons.enum';
@@ -11,7 +11,7 @@ import { MaterialIcon } from 'src/app/shared/icon-button/material-icons.enum';
   styleUrls: ['./product.component.sass']
 })
 export class ProductComponent{
-  @Input() product: IProduct = {
+  @Input() product: Product = {
     id: 0,
     title: "",
     description: "",

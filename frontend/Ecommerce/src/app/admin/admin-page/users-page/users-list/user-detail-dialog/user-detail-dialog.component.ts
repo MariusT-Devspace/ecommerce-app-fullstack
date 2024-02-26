@@ -2,7 +2,7 @@ import { Component, EventEmitter, Inject, LOCALE_ID, Output } from '@angular/cor
 import { CommonModule } from '@angular/common';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { ProductDetailDialogComponent } from '../../../products-management-page/products-list/product-detail-dialog/product-detail-dialog.component';
-import { IUser } from 'src/app/models/user.model';
+import { User } from 'src/app/models/user.model';
 import { UserRole } from 'src/app/core/auth/models/token.model';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { map } from 'rxjs/internal/operators/map';
@@ -21,7 +21,7 @@ enum Layout {
 export class UserDetailDialogComponent {
   @Output() onDeleteUser = new EventEmitter<string>();
 
-  user: IUser = this.data.user
+  user: User = this.data.user
   UserRole = UserRole
   Layout = Layout
   layout: Layout | undefined
@@ -38,7 +38,7 @@ export class UserDetailDialogComponent {
   constructor(
       public userDetailDialogRef:  MatDialogRef<UserDetailDialogComponent>,
       @Inject(MAT_DIALOG_DATA) private data: {
-        user: IUser
+        user: User
       },
       private breakpointObserver: BreakpointObserver,
       @Inject(LOCALE_ID) private locale: string

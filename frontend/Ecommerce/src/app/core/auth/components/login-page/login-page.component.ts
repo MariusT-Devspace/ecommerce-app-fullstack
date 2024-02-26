@@ -1,9 +1,9 @@
 import { HttpResponse } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { IAuthenticated } from '../../models/authenticated.model';
-import { ILogin } from '../../models/login.model';
-import { IToken, UserRole } from '../../models/token.model';
+import { Authenticated } from '../../models/authenticated.model';
+import { Login } from '../../models/login.model';
+import { Token, UserRole } from '../../models/token.model';
 import { AuthUtilsService } from '../../services/auth-utils.service';
 import { LoginService } from '../../services/login.service';
 
@@ -17,12 +17,12 @@ export class LoginPageComponent{
   constructor(private loginService: LoginService, private router: Router, private authUtilsService: AuthUtilsService) { 
   }
 
-  logIn(requestBody: ILogin){
+  logIn(requestBody: Login){
     console.log("logIn()");
     this.loginService.isLoading$.next(true);
     this.loginService.logIn(requestBody).subscribe(
       {
-        next: (response: IToken) => {
+        next: (response: Token) => {
           console.log("logIn() - next");
           // Set token
           console.log("Login data: ", requestBody);
@@ -37,13 +37,13 @@ export class LoginPageComponent{
     );
   }
 
-  async setToken(tokenResponse: IToken) {
+  async setToken(tokenResponse: Token) {
     console.log("setToken()");
     this.loginService.isLoading$.next(true);
     this.loginService.setToken(tokenResponse.token).subscribe({
-      next: (response: HttpResponse<IAuthenticated>) => {
+      next: (response: HttpResponse<Authenticated>) => {
         console.log("setToken() - next");
-        const userInfo: IToken = {
+        const userInfo: Token = {
           userId: tokenResponse.userId,
           userName: tokenResponse.userName,
           firstName: tokenResponse.firstName,

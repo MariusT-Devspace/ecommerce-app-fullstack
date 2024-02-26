@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { UsersService } from 'src/app/core/services/users.service';
-import { IUser } from 'src/app/models/user.model';
+import { User } from 'src/app/models/user.model';
 import { UserDetailDialogComponent } from './user-detail-dialog/user-detail-dialog.component';
 
 @Component({
@@ -14,7 +14,7 @@ export class UsersListComponent {
 
   getUsers() {
     this.usersService.getUsers().subscribe({
-      next: (response: IUser[]) => this.usersService.usersSubject$.next(response),
+      next: (response: User[]) => this.usersService.usersSubject$.next(response),
       error: (err: Error) => console.error("Could not retrieve users" + err.message),
       complete: () => console.log("Users retrieved successfully")
     });
@@ -28,7 +28,7 @@ export class UsersListComponent {
     });
   }
 
-  openUserDetailDialog(user: IUser): void {
+  openUserDetailDialog(user: User): void {
     let enterAnimationDuration = '300ms';
     let exitAnimationDuration = '150ms';
     let disableClose = true;

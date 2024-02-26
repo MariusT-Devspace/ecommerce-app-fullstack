@@ -1,6 +1,6 @@
 import { Component, Inject } from '@angular/core';
-import { ISignUp } from '../../models/sign-up.model';
-import { IToken } from '../../models/token.model';
+import { SignUp } from '../../models/sign-up.model';
+import { Token } from '../../models/token.model';
 import { LoginService } from '../../services/login.service';
 import { SignUpService } from '../../services/sign-up.service';
 import { LoginPageComponent } from '../login-page/login-page.component';
@@ -19,10 +19,10 @@ export class SignUpPageComponent {
     this.loginService.isLoading$.subscribe({next: (v) => this.showConfirmationPage = v});
   }
 
-  signUp(requestBody: ISignUp){
+  signUp(requestBody: SignUp){
     this.signUpService.signUp(requestBody).subscribe(
       {
-        next: (response: IToken) => {
+        next: (response: Token) => {
           console.log("signUp() - next");
           console.log("Received token: ", response.token);
           this.loginPageComponent.setToken(response);

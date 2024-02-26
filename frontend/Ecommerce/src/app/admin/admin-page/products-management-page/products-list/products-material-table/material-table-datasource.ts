@@ -4,15 +4,15 @@ import { MatSort } from '@angular/material/sort';
 import { map } from 'rxjs/operators';
 import { Observable, of as observableOf, merge, BehaviorSubject } from 'rxjs';
 import { ProductsService } from 'src/app/core/services/products.service';
-import { IProduct } from 'src/app/models/product.model';
+import { Product } from 'src/app/models/product.model';
 
 /**
  * Data source for the MaterialTable view. This class should
  * encapsulate all logic for fetching and manipulating the displayed data
  * (including sorting, pagination, and filtering).
  */
-export class MaterialTableDataSource extends DataSource<IProduct> {
-  data: IProduct[] = [];
+export class MaterialTableDataSource extends DataSource<Product> {
+  data: Product[] = [];
   paginator: MatPaginator | undefined;
   sort: MatSort | undefined;
 
@@ -25,7 +25,7 @@ export class MaterialTableDataSource extends DataSource<IProduct> {
    * the returned stream emits new items.
    * @returns A stream of the items to be rendered.
    */
-  connect(collectionViewer: CollectionViewer): Observable<IProduct[]> {
+  connect(collectionViewer: CollectionViewer): Observable<Product[]> {
     if (this.paginator && this.sort) {
       // Combine everything that affects the rendered data into one update
       // stream for the data-table to consume.
@@ -49,7 +49,7 @@ export class MaterialTableDataSource extends DataSource<IProduct> {
    * Paginate the data (client-side). If you're using server-side pagination,
    * this would be replaced by requesting the appropriate data from the server.
    */
-  private getPagedData(data: IProduct[]): IProduct[] {
+  private getPagedData(data: Product[]): Product[] {
     if (this.paginator) {
       const startIndex = this.paginator.pageIndex * this.paginator.pageSize;
       return data.splice(startIndex, this.paginator.pageSize);
@@ -62,7 +62,7 @@ export class MaterialTableDataSource extends DataSource<IProduct> {
    * Sort the data (client-side). If you're using server-side sorting,
    * this would be replaced by requesting the appropriate data from the server.
    */
-  private getSortedData(data: IProduct[]): IProduct[] {
+  private getSortedData(data: Product[]): Product[] {
     if (!this.sort || !this.sort.active || this.sort.direction === '') {
       return data;
     }

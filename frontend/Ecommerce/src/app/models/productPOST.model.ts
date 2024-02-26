@@ -1,4 +1,4 @@
-export interface IProductPOST {
+export interface ProductPOST {
     title:       string;
     description: string;
     price:       number;

@@ -2,9 +2,9 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { environment } from 'src/environment/environment';
-import { IAuthenticated } from '../models/authenticated.model';
-import { ILogin } from '../models/login.model';
-import { IToken, UserRole } from '../models/token.model';
+import { Authenticated } from '../models/authenticated.model';
+import { Login } from '../models/login.model';
+import { Token, UserRole } from '../models/token.model';
 import { HttpResponse } from '@angular/common/http';
 
 @Injectable({
@@ -46,9 +46,9 @@ export class LoginService {
   }
 
 
-  logIn(requestBody: ILogin): Observable<IToken> {
+  logIn(requestBody: Login): Observable<Token> {
     let loginURL = `${this.baseURL}/Login`;
-    return this.httpClient.post(loginURL, requestBody) as Observable<IToken>;
+    return this.httpClient.post(loginURL, requestBody) as Observable<Token>;
   }
 
   setToken(token: string): Observable<any> {
@@ -57,7 +57,7 @@ export class LoginService {
     return this.httpClient.post(setTokenURL, {}, { headers: { 'Authorization': "Bearer " + token }}) as Observable<any>;
   }
 
-  checkTokenCookie():  Observable<HttpResponse<IAuthenticated>>{
+  checkTokenCookie():  Observable<HttpResponse<Authenticated>>{
     console.log("checkTokenCookie()");
     let checkTokenCookieURL = `${this.baseURL}/CheckCookie`;
     const httpOptions = {
@@ -65,7 +65,7 @@ export class LoginService {
       secureCookie: false,
       observe: 'response' as 'response'
     };  
-    return this.httpClient.get<IAuthenticated>(checkTokenCookieURL, httpOptions) as Observable<HttpResponse<IAuthenticated>>;
+    return this.httpClient.get<Authenticated>(checkTokenCookieURL, httpOptions) as Observable<HttpResponse<Authenticated>>;
   }
 
   logOut(): Observable<any> {

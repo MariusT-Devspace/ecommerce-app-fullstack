@@ -1,8 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { ICategory } from 'src/app/models/category.model';
-import { ICategoryPOST } from 'src/app/models/categoryPOST.model';
+import { Category } from 'src/app/models/category.model';
+import { CategoryPOST } from 'src/app/models/categoryPOST.model';
 import { environment } from 'src/environment/environment';
 import { LoginService } from '../auth/services/login.service';
 
@@ -14,12 +14,12 @@ export class CategoriesService {
 
   constructor(private httpClient: HttpClient, private loginService: LoginService) { }
 
-  getCategories(): Observable<ICategory[]> {
+  getCategories(): Observable<Category[]> {
     let getCategoriesURL = `${this.baseURL}`;
-    return this.httpClient.get(getCategoriesURL) as Observable<ICategory[]>;
+    return this.httpClient.get(getCategoriesURL) as Observable<Category[]>;
   }
 
-  addCategory(body: ICategoryPOST): Observable<any> {
+  addCategory(body: CategoryPOST): Observable<any> {
     let addCategoryURL = `${this.baseURL}`;
     /* const httpOptions = {
       withCredentials: true, 
@@ -30,7 +30,7 @@ export class CategoriesService {
     return this.httpClient.post(addCategoryURL, body) as Observable<any>;
   }
 
-  editCategory(category: ICategory): Observable<any> {
+  editCategory(category: Category): Observable<any> {
     let editCategoryURL = `${this.baseURL}/${category.id}`;
     return this.httpClient.put(editCategoryURL, category) as Observable<any>
   }

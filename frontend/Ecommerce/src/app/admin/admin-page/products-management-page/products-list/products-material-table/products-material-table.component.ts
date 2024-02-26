@@ -3,11 +3,11 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTable } from '@angular/material/table';
 import { ProductsService } from 'src/app/core/services/products.service';
-import { IProduct } from 'src/app/models/product.model';
+import { Product } from 'src/app/models/product.model';
 import { MaterialTableDataSource } from './material-table-datasource';
 import { BreakpointObserver } from '@angular/cdk/layout';
 import { fromEvent } from 'rxjs';
-import { ICategory } from 'src/app/models/category.model';
+import { Category } from 'src/app/models/category.model';
 import { DisplayedColumns } from '../../../displayed-columns.model';
 import { IconButton } from 'src/app/shared/icon-button/icon-button.model';
 import { MaterialIcon } from 'src/app/shared/icon-button/material-icons.enum';
@@ -22,10 +22,10 @@ import { IconButtonType } from 'src/app/shared/icon-button/icon-button-type.enum
 export class ProductsMaterialTableComponent implements AfterViewInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
-  @ViewChild(MatTable) table!: MatTable<IProduct>;
+  @ViewChild(MatTable) table!: MatTable<Product>;
   dataSource: MaterialTableDataSource;
 
-  @Input() categories: ICategory[] = []
+  @Input() categories: Category[] = []
   @Output() onOpenDialog = new EventEmitter<number>;
   @Output() onGetProducts = new EventEmitter();
 
