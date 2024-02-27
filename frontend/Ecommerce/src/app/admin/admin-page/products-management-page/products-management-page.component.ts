@@ -27,10 +27,7 @@ export class ProductsManagementPageComponent implements OnInit{
 
   getCategories() {
     this.categoriesService.getCategories().subscribe({
-      next: (response: Category[]) => {
-        this.categories = response
-        console.log(this.categories)
-      },
+      next: (response: Category[]) => this.categories = response,
       error: (err: Error) => console.error("Error retrieving categories", err),
       complete: () => console.log("Categories retrieved successfuly")
     });
@@ -39,7 +36,6 @@ export class ProductsManagementPageComponent implements OnInit{
   addCategory(category: CategoryPOST) {
     this.categoriesService.addCategory(category).subscribe({
       next: (response: any) => {
-        console.log(response.status);
         this.categoriesListCardComponent.toggleAddCategory();
         this.getCategories();
       },

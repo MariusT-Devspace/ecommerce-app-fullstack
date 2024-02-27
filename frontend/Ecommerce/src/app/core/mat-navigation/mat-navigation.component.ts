@@ -5,6 +5,8 @@ import { map, shareReplay } from 'rxjs/operators';
 import { LoginService } from '../auth/services/login.service';
 import { Router } from '@angular/router';
 import { UserRole } from '../auth/models/token.model';
+import { CategoriesService } from '../services/categories.service';
+import { Category } from 'src/app/models/category.model';
 
 @Component({
   selector: 'app-navigation',
@@ -14,7 +16,9 @@ import { UserRole } from '../auth/models/token.model';
 export class MatNavigationComponent implements OnInit {
 
   _loginService: LoginService;
-  UserRole = UserRole
+  _categoriesService: CategoriesService;
+  UserRole = UserRole;
+  categories: Category[] = []
 
   isHandset$: Observable<boolean> = this.breakpointObserver.observe([Breakpoints.XSmall, Breakpoints.Small])
     .pipe(
@@ -25,15 +29,18 @@ export class MatNavigationComponent implements OnInit {
   constructor(
     private breakpointObserver: BreakpointObserver, 
     private loginService: LoginService, 
-    private router: Router
+    private router: Router,
+    private categoriesService: CategoriesService
     ) {
     this._loginService = loginService;
+    this._categoriesService = categoriesService;
   }
 
   ngOnInit(): void {
     console.log("Nav loaded");
     //this._loginService.isLoggedIn$.next(this._loginService.isLoggedIn);
     console.log("logged in: ", this._loginService.isLoggedIn);
+    this.getCategories();
   }
 
   logOut() {
@@ -50,6 +57,14 @@ export class MatNavigationComponent implements OnInit {
 
   navigateToLogIn() {
     this.router.navigate(['/auth/login']);
+  }
+
+  getCategories() {
+    this.categoriesService.getCategories().subscribe({
+      next: (response: Category[]) => this.categories = response,
+      error: (err: Error) => console.error("Error retrieving categories", err),
+      complete: () => console.log("Categories retrieved successfuly")
+    });
   }
 
 }

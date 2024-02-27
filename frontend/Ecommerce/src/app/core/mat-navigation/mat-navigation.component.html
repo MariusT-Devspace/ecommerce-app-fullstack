@@ -4,18 +4,20 @@
       [mode]="(isHandset$ | async) ? 'over' : 'side'"
       [opened]="(isHandset$ | async) === false">
     <mat-toolbar>Menu</mat-toolbar>
-    <mat-nav-list>
-      <ng-template [ngIf]="(this._loginService.userRole) == UserRole.Administrator"
-      [ngIfElse]="userNavigation">
+    @if(this._loginService.userRole == UserRole.Administrator) {
+      <mat-nav-list>
         <a mat-list-item href="#" [routerLink]="['/admin/products']" routerLinkActive="active-link">Products</a>
         <a mat-list-item href="#" [routerLink]="['/admin/users']" routerLinkActive="active-link">Users</a>
-      </ng-template>
-
-      <ng-template #userNavigation>
-        
-      </ng-template>
-      
-    </mat-nav-list>
+      </mat-nav-list>
+    } @else {
+      <mat-nav-list>
+        @for(category of categories; track category.id) {
+          <a mat-list-item href="#" [routerLink]="['/categories', category.name.toLowerCase()]" routerLinkActive="active-link">
+            <h3>{{category.name}}</h3>
+          </a>
+        }
+      </mat-nav-list>
+    }
   </mat-sidenav>
   <mat-sidenav-content>
     <mat-toolbar color="primary">
