@@ -4,6 +4,12 @@
 
 .sidenav {
   width: 200px;
+  padding: 0 20px 20px 20px;
+}
+
+.sidenav .section-title {
+  font-size: 1.2em;
+  margin-bottom: 40px;
 }
 
 .sidenav .mat-toolbar {
@@ -28,4 +34,10 @@
 
 .spacer {
   flex: 1 1 auto;
+}
+
+mat-toolbar-row:last-child span {
+  font-weight: 300;
+  font-size: 19px;
+  margin: 0;
 }
