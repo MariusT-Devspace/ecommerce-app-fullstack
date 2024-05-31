@@ -3,17 +3,18 @@
       [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
       [mode]="(isHandset$ | async) ? 'over' : 'side'"
       [opened]="(isHandset$ | async) === false">
-    <mat-toolbar>Menu</mat-toolbar>
+    <mat-toolbar></mat-toolbar>
     @if(this._loginService.userRole == UserRole.Administrator) {
       <mat-nav-list>
         <a mat-list-item href="#" [routerLink]="['/admin/products']" routerLinkActive="active-link">Products</a>
         <a mat-list-item href="#" [routerLink]="['/admin/users']" routerLinkActive="active-link">Users</a>
       </mat-nav-list>
     } @else {
+      <span class="section-title">Categories</span>
       <mat-nav-list>
         @for(category of categories; track category.id) {
           <a mat-list-item href="#" [routerLink]="['/categories', category.name.toLowerCase()]" routerLinkActive="active-link">
-            <h3>{{category.name}}</h3>
+            {{category.name}}
           </a>
         }
       </mat-nav-list>
