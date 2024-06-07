@@ -87,6 +87,12 @@ namespace EcommerceAPI.Controllers
                 return NotFound();
             }
 
+            var existingCategory = await _context.Categories.AnyAsync(c => c.Name == category.Name);
+            if (existingCategory)
+            {
+                return BadRequest("Category name must be unique");
+            }
+
             _mapper.Map(categoryDTO, category);
 
             _context.Entry(category).State = EntityState.Modified;
@@ -131,6 +137,12 @@ namespace EcommerceAPI.Controllers
             {
                 _logger.LogError("New category validation failed");
                 return BadRequest(ModelState);
+            }
+
+            var existingCategory = await _context.Categories.AnyAsync(c => c.Name == categoryRequest.Name);
+            if (existingCategory)
+            {
+                return BadRequest("Category name must be unique");
             }
 
             var category = _mapper.Map<Category>(categoryRequest);
