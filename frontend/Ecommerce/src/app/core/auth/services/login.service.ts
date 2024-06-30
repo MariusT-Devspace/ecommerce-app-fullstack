@@ -25,7 +25,6 @@ export class LoginService {
   }
 
   get isLoggedIn(): boolean {
-    console.log("isLoggedIn getter");
     if (this._isLoggedIn !== undefined) {
       return this._isLoggedIn as boolean;
     } else{

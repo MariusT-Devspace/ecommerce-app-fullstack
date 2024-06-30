@@ -1,10 +1,12 @@
 import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
+import { ResolveFn, RouterModule, Routes, TitleStrategy } from '@angular/router';
 import { UserRole } from './core/auth/models/token.model';
 import { HomePageComponent } from './home/home-page/home-page.component'
 import { authGuard } from './core/auth/guards/auth.guard';
 import { roleGuard } from './core/auth/guards/role.guard';
 import { MatNavigationComponent } from './core/mat-navigation/mat-navigation.component';
+import { ProductsListComponent } from './home/home-page/products-list/products-list.component';
+import { CustomTitleStrategy } from './strategies/custom-title-strategy';
 
 const routes: Routes = [
   {
@@ -19,14 +21,22 @@ const routes: Routes = [
             m.AdminModule)
       },
       {
+        path: 'c',
+        children: [
+          {
+            path: ':category',
+            component: ProductsListComponent
+          }
+        ]
+      },
+      {
         path: '',
         pathMatch: 'full',
         component: HomePageComponent,
+        title: 'Home'
       }
     ]
   }
-
-  
 ];
 
 @NgModule({

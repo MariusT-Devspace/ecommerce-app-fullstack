@@ -4,7 +4,7 @@
       [mode]="(isHandset$ | async) ? 'over' : 'side'"
       [opened]="(isHandset$ | async) === false">
     <mat-toolbar></mat-toolbar>
-    @if(this._loginService.userRole == UserRole.Administrator) {
+    @if(this._loginService.isLoggedIn && this._loginService.userRole == UserRole.Administrator) {
       <mat-nav-list>
         <a mat-list-item href="#" [routerLink]="['/admin/products']" routerLinkActive="active-link">Products</a>
         <a mat-list-item href="#" [routerLink]="['/admin/users']" routerLinkActive="active-link">Users</a>
@@ -13,7 +13,10 @@
       <span class="section-title">Categories</span>
       <mat-nav-list>
         @for(category of categories; track category.id) {
-          <a mat-list-item href="#" [routerLink]="['/categories', category.name.toLowerCase()]" routerLinkActive="active-link">
+          <a mat-list-item href="#" 
+          [routerLink]="['/c', category.name.toLowerCase()]"
+          routerLinkActive="active-link"
+          >  
             {{category.name}}
           </a>
         }
@@ -22,6 +25,7 @@
   </mat-sidenav>
   <mat-sidenav-content>
     <mat-toolbar color="primary">
+      <mat-toolbar-row class="mat-elevation-z6">
       <button
         type="button"
         aria-label="Toggle sidenav"
@@ -36,6 +40,15 @@
       <ng-template #logIn>
         <button mat-flat-button color="primary" type="button" (click)="navigateToLogIn()">Login</button>
       </ng-template>
+    </mat-toolbar-row>
+    @if(
+      this._activatedRoute.snapshot.firstChild !== null &&
+      this._activatedRoute.snapshot.firstChild !== undefined
+    ) {
+      <mat-toolbar-row>
+        <h2>{{ title() }}</h2>
+      </mat-toolbar-row>
+    }
     </mat-toolbar>
     <!-- Add Content Here -->
     <div class="content-wrapper">
