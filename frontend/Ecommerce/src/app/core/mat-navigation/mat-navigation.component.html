@@ -42,8 +42,8 @@
       </ng-template>
     </mat-toolbar-row>
     @if(
-      this._activatedRoute.snapshot.firstChild !== null &&
-      this._activatedRoute.snapshot.firstChild !== undefined
+      this._activatedRoute.snapshot.firstChild?.firstChild !== null &&
+      this._activatedRoute.snapshot.firstChild?.firstChild !== undefined
     ) {
       <mat-toolbar-row>
         <h2>{{ title() }}</h2>
