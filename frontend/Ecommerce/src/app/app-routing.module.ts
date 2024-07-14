@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { ResolveFn, RouterModule, Routes, TitleStrategy } from '@angular/router';
+import { RouterModule, Routes, TitleStrategy } from '@angular/router';
 import { UserRole } from './core/auth/models/token.model';
 import { HomePageComponent } from './home/home-page/home-page.component'
 import { authGuard } from './core/auth/guards/auth.guard';
@@ -41,6 +41,12 @@ const routes: Routes = [
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
+  providers: [
+    {
+      provide: TitleStrategy,
+      useClass: CustomTitleStrategy
+    }
+  ]
 })
 export class AppRoutingModule { }

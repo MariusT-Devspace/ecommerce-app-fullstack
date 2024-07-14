@@ -7,7 +7,8 @@ import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { UserRole } from '../auth/models/token.model';
 import { CategoriesService } from '../services/categories.service';
 import { Category } from 'src/app/models/category.model';
-import { Title } from '@angular/platform-browser';
+import { TitleManagerService } from '../services/title-manager.service';
+import { getDeepestRoute } from 'src/app/utils/route-helper';
 
 @Component({
   selector: 'app-navigation',
@@ -19,7 +20,7 @@ export class MatNavigationComponent implements OnInit {
   _loginService: LoginService;
   _categoriesService: CategoriesService;
   _activatedRoute: ActivatedRoute;
-  _titleService: Title;
+  _titleManagerService: TitleManagerService;
   UserRole = UserRole;
   categories: Category[] = [];
 
@@ -38,12 +39,12 @@ export class MatNavigationComponent implements OnInit {
     private router: Router,
     private activatedRoute: ActivatedRoute,
     private categoriesService: CategoriesService,
-    private titleService: Title
+    private titleManagerService: TitleManagerService
     ) {
     this._loginService = loginService;
     this._categoriesService = categoriesService;
     this._activatedRoute = activatedRoute;
-    this._titleService = titleService;
+    this._titleManagerService = titleManagerService;
   }
 
   ngOnInit(): void {
@@ -53,8 +54,14 @@ export class MatNavigationComponent implements OnInit {
 
     // Set title of current route on first load
     if (this._activatedRoute.snapshot.firstChild !== null &&
-      this._activatedRoute.snapshot.firstChild !== undefined)
-      this.setTitle(this.getChildRoute());
+      this._activatedRoute.snapshot.firstChild !== undefined) {
+        let route = getDeepestRoute(
+          this._activatedRoute.snapshot.firstChild
+        );
+        if (!route.routeConfig?.title)
+          this.setTitle(route.url.toString());
+      }
+      
 
     // Set title on route change
     this.router.events.pipe(
@@ -91,20 +98,10 @@ export class MatNavigationComponent implements OnInit {
     });
   }
 
-  private getChildRoute(): string {
-    let route = this._activatedRoute.snapshot;
-    while (route.firstChild != undefined &&
-      route.firstChild != null) {
-      route = route.firstChild;
-    }
-    return route.url.toString()
-  }
-
-
   setTitle(title: string) {
     const titleUppercase = title.slice(0, 1).toUpperCase() + title.slice(1);
     this.title.set(titleUppercase);
-    this._titleService.setTitle(titleUppercase);
+    this._titleManagerService.setTitle(titleUppercase);
   }
 }
 
