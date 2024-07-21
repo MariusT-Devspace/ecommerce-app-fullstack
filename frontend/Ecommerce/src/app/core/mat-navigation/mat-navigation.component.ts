@@ -68,7 +68,8 @@ export class MatNavigationComponent implements OnInit {
       filter((event): event is NavigationEnd => event instanceof NavigationEnd),
       map((event: NavigationEnd) => event.urlAfterRedirects)).subscribe(
         (url: string) => {
-          this.setTitle(url.split("/")[url.split("/").length - 1]);
+          let urlSegments = url.split("/");
+          this.setTitle(urlSegments[urlSegments.length - 1]);
         }
       )
     this.getCategories();
