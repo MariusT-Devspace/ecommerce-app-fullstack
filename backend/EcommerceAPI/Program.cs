@@ -9,7 +9,8 @@ using System.Text.Json.Serialization;
 using EcommerceAPI.DataAccess;
 using EcommerceAPI.Extensions;
 using System.Runtime.InteropServices;
-using EcommerceAPI.Controllers;
+using EcommerceAPI.Services.Interfaces;
+using EcommerceAPI.Services.Classes;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -105,6 +106,9 @@ else
     
 
 builder.Services.AddDbContext<EcommerceDBContext>(options => options.UseSqlServer(connectionString));
+
+// Add Custom Services 
+builder.Services.AddScoped<IProductsService, ProductsService>();
 
 
 // Configure Serilog

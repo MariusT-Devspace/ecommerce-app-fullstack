@@ -39,8 +39,6 @@
 
   <ItemGroup>
     <Folder Include="Models\DTOs\RatingDTOs\" />
-    <Folder Include="Services\Classes\" />
-    <Folder Include="Services\Interfaces\" />
   </ItemGroup>
 
 </Project>
