@@ -184,7 +184,7 @@ namespace EcommerceAPI.Controllers
 
         private bool CategoryExists(int id)
         {
-            return _context.Categories!.Any(e => e.Id == id);
+            return _context.Categories!.Any(category => category.Id == id);
         }
     }
 }

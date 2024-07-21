@@ -125,7 +125,7 @@ namespace EcommerceAPI.Controllers
 
         private bool UserExists(string id)
         {
-            return _context.Users!.Any(e => e.Id == id);
+            return _context.Users!.Any(user => user.Id == id);
         }
     }
 }

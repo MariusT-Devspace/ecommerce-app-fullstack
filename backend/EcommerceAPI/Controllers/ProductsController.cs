@@ -7,6 +7,7 @@ using EcommerceAPI.DataAccess;
 using EcommerceAPI.Models.DataModels;
 using EcommerceAPI.Models.DTOs.ProductDTOs.Request;
 using EcommerceAPI.Models.DTOs.ProductDTOs.Response;
+using EcommerceAPI.Services.Interfaces;
 
 namespace EcommerceAPI.Controllers
 {
@@ -17,11 +18,16 @@ namespace EcommerceAPI.Controllers
     {
         private readonly EcommerceDBContext _context;
         private readonly IMapper _mapper;
+        private IProductsService _productsService;
 
-        public ProductsController(EcommerceDBContext context, IMapper mapper)
+        public ProductsController(
+            EcommerceDBContext context, 
+            IMapper mapper,
+            IProductsService productsService)
         {
             _context = context;
             _mapper = mapper;
+            _productsService = productsService;
         }
 
         // GET: Products
@@ -57,6 +63,23 @@ namespace EcommerceAPI.Controllers
 
             var productResponse = _mapper.Map<ProductResponse>(product);
             return Ok(product);
+        }
+
+        // GET: Products/category/electronics
+        [HttpGet("category/{categoryName}")]
+        public async Task<ActionResult<IEnumerable<ProductResponse>>> GetProductsByCategory(string categoryName)
+        {
+            if (_context.Products == null)
+                return NotFound();
+
+            if (!CategoryExists(categoryName))
+                return NotFound($"Category {categoryName} not found");
+
+            var products = await _productsService.GetProductsByCategoryAsync(categoryName);
+            var productsResponse = _mapper.Map<IEnumerable<ProductResponse>>(products);
+
+            return Ok(productsResponse);
+                
         }
 
         // PUT: Products/5
@@ -150,7 +173,12 @@ namespace EcommerceAPI.Controllers
 
         private bool ProductExists(int id)
         {
-            return _context.Products!.Any(e => e.Id == id);
+            return _context.Products!.Any(product => product.Id == id);
+        }
+
+        private bool CategoryExists(string categoryName)
+        {
+            return _context.Categories!.Any(category => category.Name == categoryName);
         }
     }
 }
