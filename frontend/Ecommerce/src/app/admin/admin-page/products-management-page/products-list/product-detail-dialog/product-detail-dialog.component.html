@@ -23,8 +23,8 @@
           <h3>Picture</h3>
           <img src="{{ product!.picture }}" [width]="pictureWidth | async" alt="product picture"/>
     
-          <h3>Is available</h3>
-          <span>{{ product!.isAvailable ? 'Yes' : 'No' }}</span>
+          <h3>Availability</h3>
+          <span>{{ product!.isAvailable ? 'Available' : 'Not available' }}</span>
     
           <h3>Category</h3>
           <span>{{categoryName}}</span>

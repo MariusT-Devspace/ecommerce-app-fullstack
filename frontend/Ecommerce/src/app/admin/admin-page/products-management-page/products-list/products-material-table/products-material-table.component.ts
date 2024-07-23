@@ -36,11 +36,11 @@ export class ProductsMaterialTableComponent implements AfterViewInit {
   };
   displayedColumnsWithAvailability: DisplayedColumns = {
     columnsName: ['id', 'title', 'isAvailable'],
-    columnsTitle: ['Id', 'Title', 'Available']
+    columnsTitle: ['Id', 'Title', 'Availability']
   };
   displayedColumnsWithExtraInfo: DisplayedColumns = {
     columnsName: ['id', 'title', 'isAvailable', 'category'],
-    columnsTitle: ['Id', 'Title', 'Available', 'Category']
+    columnsTitle: ['Id', 'Title', 'Availability', 'Category']
   };
   
   displayedColumnsWithAvailabilityBreakpoint = '(min-width: 447px)'

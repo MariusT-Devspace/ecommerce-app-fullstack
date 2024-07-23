@@ -10,7 +10,7 @@
       <td mat-cell *matCellDef="let row">
         {{
           column == 'isAvailable'
-          ? (row[column] ? "Yes" : "No")
+          ? (row[column] ? "Available" : "Not available")
           : column == 'category'
           ? getCategoryById(row['categoryId'])
           : row[column]
