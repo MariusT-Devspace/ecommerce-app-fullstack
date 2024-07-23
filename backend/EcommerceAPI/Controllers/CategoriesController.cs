@@ -87,7 +87,7 @@ namespace EcommerceAPI.Controllers
                 return NotFound();
             }
 
-            var existingCategory = await _context.Categories.AnyAsync(c => c.Name == category.Name);
+            var existingCategory = await _context.Categories.AnyAsync(c => c.Name == categoryDTO.Name);
             if (existingCategory)
             {
                 return BadRequest("Category name must be unique");
