@@ -25,7 +25,7 @@ namespace EcommerceAPI.Models.DataModels
         public Rating? Rating { get; set; }
 
         [Required]
-        public int? CategoryId { get; set; }
+        public string? CategoryId { get; set; }
         public Category? Category { get; set; }
 
     }

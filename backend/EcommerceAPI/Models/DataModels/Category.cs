@@ -3,7 +3,10 @@
 namespace EcommerceAPI.Models.DataModels
 {
     public class Category : BaseEntity
-    { 
+    {
+        [Required, StringLength(50, MinimumLength = 3, ErrorMessage = "Category id must be between 3 and 50 characters")]
+        public string CategoryId { get; set; } = string.Empty;
+
         [Required, StringLength(50, MinimumLength = 3, ErrorMessage = "Category name must be between 3 and 50 characters")]
         public string Name { get; set; } = string.Empty;
 
