@@ -73,8 +73,12 @@ export class CategoriesListComponent implements OnInit{
     })
   }
 
-  get categoryName() {
+  get categoryName(): string {
     return this.categoryForm.value.name;
+  }
+
+  get categoryId(): string {
+    return this.categoryName.replace(' ', '-').toLowerCase();
   }
 
   toggleAddCategory() {
