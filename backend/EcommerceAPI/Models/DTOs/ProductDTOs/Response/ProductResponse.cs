@@ -13,7 +13,7 @@ namespace EcommerceAPI.Models.DTOs.ProductDTOs.Response
         public string Picture { get; set; } = string.Empty;
         public bool IsAvailable { get; set; } = true;
         public int? RatingId { get; set; }
-        public int? CategoryId { get; set; }
+        public string? CategoryId { get; set; }
         public DateTime CreatedOn { get; private set; } = DateTime.Now;
     }
 }
