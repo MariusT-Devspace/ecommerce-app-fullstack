@@ -6,6 +6,6 @@ export interface Product {
     picture:     string;
     isAvailable: boolean;
     ratingId:    number;
-    categoryId:  number;
+    categoryId:  string;
     createdOn:   string;
 }

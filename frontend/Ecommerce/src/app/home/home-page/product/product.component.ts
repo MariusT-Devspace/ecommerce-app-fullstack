@@ -19,7 +19,7 @@ export class ProductComponent{
     picture: "",
     isAvailable: true,
     ratingId: 0,
-    categoryId: 0,
+    categoryId: "",
     createdOn: ""
   };
 

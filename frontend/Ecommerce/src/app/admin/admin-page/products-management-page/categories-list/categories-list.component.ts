@@ -111,7 +111,7 @@ export class CategoriesListComponent implements OnInit{
       this.onAddCategory.emit(category);
   }
 
-  editCategory(id: number) {
+  editCategory(id: string) {
     /* TODO: Show validation errors to user */
     if(this.categoryForm.valid){
       const category: Category = {

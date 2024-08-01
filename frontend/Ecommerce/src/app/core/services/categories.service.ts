@@ -2,7 +2,6 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Category } from 'src/app/models/category.model';
-import { CategoryPOST } from 'src/app/models/categoryPOST.model';
 import { environment } from 'src/environment/environment';
 import { LoginService } from '../auth/services/login.service';
 
@@ -27,7 +26,7 @@ export class CategoriesService {
       observe: 'response' as 'response'
     };
     return this.httpClient.post(addCategoryURL, body, httpOptions) as Observable<any>; */
-    return this.httpClient.post(addCategoryURL, body) as Observable<any>;
+    return this.httpClient.post(addCategoryURL, category) as Observable<any>;
   }
 
   editCategory(category: Category): Observable<any> {
@@ -35,7 +34,7 @@ export class CategoriesService {
     return this.httpClient.put(editCategoryURL, category) as Observable<any>
   }
 
-  deleteCategory(id: number): Observable<any> {
+  deleteCategory(id: string): Observable<any> {
     let deleteCategoryURL = `${this.baseURL}/${id}`
     return this.httpClient.delete(deleteCategoryURL) as Observable<any>;
   }
