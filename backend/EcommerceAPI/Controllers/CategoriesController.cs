@@ -4,8 +4,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 using EcommerceAPI.DataAccess;
 using EcommerceAPI.Models.DataModels;
-using EcommerceAPI.Models.DTOs.CategoryDTOs.Request;
-using EcommerceAPI.Models.DTOs.CategoryDTOs.Response;
+using EcommerceAPI.Models.DTOs.CategoryDTOs;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EcommerceAPI.Controllers
@@ -31,7 +30,7 @@ namespace EcommerceAPI.Controllers
 
         // GET: Categories
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<CategoryResponse>>> GetCategories()
+        public async Task<ActionResult<IEnumerable<CategoryREST>>> GetCategories()
         {
             if (_context.Categories == null)
             {
@@ -39,14 +38,14 @@ namespace EcommerceAPI.Controllers
             }
 
             var categories = await _context.Categories.ToListAsync();
-            var categoriesResponse = _mapper.Map<IEnumerable<CategoryResponse>>(categories);
+            var categoriesResponse = _mapper.Map<IEnumerable<CategoryREST>>(categories);
 
             return Ok(categoriesResponse);
         }
 
         // GET: Categories/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<CategoryResponse>> GetCategory(int id)
+        public async Task<ActionResult<CategoryREST>> GetCategory(string id)
         {
             if (_context.Categories == null)
             {
@@ -60,15 +59,15 @@ namespace EcommerceAPI.Controllers
                 return NotFound();
             }
 
-            var categoryResponse = _mapper.Map<CategoryResponse>(category);
-            return Ok(categoryResponse);
+            var CategoryREST = _mapper.Map<CategoryREST>(category);
+            return Ok(CategoryREST);
         }
 
         // PUT: Categories/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Administrator")]
-        public async Task<IActionResult> PutCategory(int id, [FromBody] CategoryRequestPUT categoryDTO)
+        public async Task<IActionResult> PutCategory(string id, [FromBody] CategoryREST categoryDTO)
         {
             if (_context.Categories == null)
             {
@@ -87,8 +86,7 @@ namespace EcommerceAPI.Controllers
                 return NotFound();
             }
 
-            var existingCategory = await _context.Categories.AnyAsync(c => c.Name == categoryDTO.Name);
-            if (existingCategory)
+            if (CategoryExists(id))
             {
                 return BadRequest("Category name must be unique");
             }
@@ -120,7 +118,7 @@ namespace EcommerceAPI.Controllers
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Administrator")]
-        public async Task<ActionResult<Category>> PostCategory(CategoryRequestPOST categoryRequest)
+        public async Task<ActionResult<Category>> PostCategory(CategoryREST categoryRequest)
         {
             _logger.LogInformation("API request: {@Controller} - {@ActionMethod}", nameof(CategoriesController), nameof(PostCategory));
             _logger.LogInformation("Request info: {@Headers}", _contextAccessor.HttpContext?.Request.Headers);
@@ -139,8 +137,7 @@ namespace EcommerceAPI.Controllers
                 return BadRequest(ModelState);
             }
 
-            var existingCategory = await _context.Categories.AnyAsync(c => c.Name == categoryRequest.Name);
-            if (existingCategory)
+            if (CategoryExists(categoryRequest.Id))
             {
                 return BadRequest("Category name must be unique");
             }
@@ -151,9 +148,9 @@ namespace EcommerceAPI.Controllers
                 _context.Categories.Add(category);
                 await _context.SaveChangesAsync();
 
-                var categoryResponse = _mapper.Map<CategoryResponse>(category);
+                var CategoryREST = _mapper.Map<CategoryREST>(category);
 
-                return CreatedAtAction("GetCategory", new { id = categoryResponse.Id }, categoryResponse);
+                return CreatedAtAction("GetCategory", new { id = CategoryREST.Id }, CategoryREST);
             
 
             
@@ -163,7 +160,7 @@ namespace EcommerceAPI.Controllers
         // DELETE: Categories/5
         [HttpDelete("{id}")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Administrator")]
-        public async Task<IActionResult> DeleteCategory(int id)
+        public async Task<IActionResult> DeleteCategory(string id)
         {
             if (_context.Categories == null)
             {
@@ -182,9 +179,9 @@ namespace EcommerceAPI.Controllers
             return NoContent();
         }
 
-        private bool CategoryExists(int id)
+        private bool CategoryExists(string id)
         {
-            return _context.Categories!.Any(category => category.Id == id);
+            return _context.Categories!.Any(category => category.CategoryId == id);
         }
     }
 }
