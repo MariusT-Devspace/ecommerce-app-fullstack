@@ -11,6 +11,7 @@ using EcommerceAPI.Extensions;
 using System.Runtime.InteropServices;
 using EcommerceAPI.Services.Interfaces;
 using EcommerceAPI.Services.Classes;
+using EcommerceAPI.Models.MappingProfiles;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -31,7 +32,8 @@ else
     Environment.SetEnvironmentVariable("ApiRoute", "api/");
 
 // Add Automapper service
-builder.Services.AddAutoMapper(typeof(Program));
+builder.Services.AddAutoMapper(typeof(CategoryMappingProfile));
+builder.Services.AddAutoMapper(typeof(ProductMappingProfile));
 
 builder.Services.AddControllers().AddJsonOptions(x =>
                 x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
