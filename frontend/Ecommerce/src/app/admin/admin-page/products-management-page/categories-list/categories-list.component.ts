@@ -2,7 +2,6 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ThemeColor } from 'src/app/constants';
 import { Category } from 'src/app/models/category.model';
-import { CategoryPOST } from 'src/app/models/categoryPOST.model';
 import { IconButtonType } from 'src/app/shared/icon-button/icon-button-type.enum';
 import { IconButton } from 'src/app/shared/icon-button/icon-button.model';
 import { MaterialIcon } from 'src/app/shared/icon-button/material-icons.enum';
@@ -14,7 +13,7 @@ import { MaterialIcon } from 'src/app/shared/icon-button/material-icons.enum';
 })
 export class CategoriesListComponent implements OnInit{
   @Input() categories : Category[] = []
-  @Output() onAddCategory = new EventEmitter<CategoryPOST>();
+  @Output() onAddCategory = new EventEmitter<Category>();
   @Output() onDeleteCategory = new EventEmitter<Category>();
   @Output() onEditCategory = new EventEmitter<Category>();
 
@@ -103,7 +102,8 @@ export class CategoriesListComponent implements OnInit{
   }
 
   submitCategory() {
-    const category: CategoryPOST = {
+    const category: Category = {
+      id: this.categoryId,
       name: this.categoryName
     };
     /* TODO: Show validation errors to user */
@@ -125,6 +125,4 @@ export class CategoriesListComponent implements OnInit{
   deleteCategory(category: Category) {
     this.onDeleteCategory.emit(category);
   }
-
-  
 }

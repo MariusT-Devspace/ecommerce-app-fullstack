@@ -18,7 +18,7 @@ export class CategoriesService {
     return this.httpClient.get(getCategoriesURL) as Observable<Category[]>;
   }
 
-  addCategory(body: CategoryPOST): Observable<any> {
+  addCategory(category: Category): Observable<any> {
     let addCategoryURL = `${this.baseURL}`;
     /* const httpOptions = {
       withCredentials: true, 

@@ -1,7 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { CategoriesService } from 'src/app/core/services/categories.service';
 import { Category } from 'src/app/models/category.model';
-import { CategoryPOST } from 'src/app/models/categoryPOST.model';
 import { CategoriesListComponent } from './categories-list/categories-list.component';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmDeleteCategoryDialogComponent } from './categories-list/confirm-delete-category-dialog/confirm-delete-category-dialog.component';
@@ -33,7 +32,7 @@ export class ProductsManagementPageComponent implements OnInit{
     });
   }
 
-  addCategory(category: CategoryPOST) {
+  addCategory(category: Category) {
     this.categoriesService.addCategory(category).subscribe({
       next: (response: any) => {
         this.categoriesListCardComponent.toggleAddCategory();
