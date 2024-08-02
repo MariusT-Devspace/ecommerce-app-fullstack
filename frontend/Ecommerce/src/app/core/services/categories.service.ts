@@ -14,19 +14,22 @@ export class CategoriesService {
   constructor(private httpClient: HttpClient, private loginService: LoginService) { }
 
   getCategories(): Observable<Category[]> {
-    let getCategoriesURL = `${this.baseURL}`;
-    return this.httpClient.get(getCategoriesURL) as Observable<Category[]>;
+    return this.httpClient.get(this.baseURL) as Observable<Category[]>;
+  }
+
+  getCategory(id: string): Observable<Category> {
+    let getCategoryURL = `${this.baseURL}/${id}`;
+    return this.httpClient.get(getCategoryURL) as Observable<Category>
   }
 
   addCategory(category: Category): Observable<any> {
-    let addCategoryURL = `${this.baseURL}`;
     /* const httpOptions = {
       withCredentials: true, 
       secureCookie: false,
       observe: 'response' as 'response'
     };
     return this.httpClient.post(addCategoryURL, body, httpOptions) as Observable<any>; */
-    return this.httpClient.post(addCategoryURL, category) as Observable<any>;
+    return this.httpClient.post(this.baseURL, category) as Observable<any>;
   }
 
   editCategory(category: Category): Observable<any> {
