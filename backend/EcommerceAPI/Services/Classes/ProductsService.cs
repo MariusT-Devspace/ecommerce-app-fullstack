@@ -16,13 +16,13 @@ namespace EcommerceAPI.Services.Classes
             _logger = logger;
         }
 
-        public async Task<IEnumerable<Product>> GetProductsByCategoryAsync(string categoryName)
+        public async Task<IEnumerable<Product>> GetProductsByCategoryAsync(string categoryId)
         {
             _logger.LogInformation("{Service} - {Method}", nameof(ProductsService), nameof(GetProductsByCategoryAsync));
-            _logger.LogInformation("Category name: {categoryName}", categoryName);
+            _logger.LogInformation("Category id: {categoryId}", categoryId);
 
             return await (from category in _dbContext.Categories
-                          where category.Name == categoryName
+                          where category.CategoryId == categoryId
                           select category.Products).SingleAsync<IEnumerable<Product>>();
         }
     }

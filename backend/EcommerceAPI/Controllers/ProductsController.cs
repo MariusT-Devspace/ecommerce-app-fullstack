@@ -66,16 +66,16 @@ namespace EcommerceAPI.Controllers
         }
 
         // GET: Products/category/electronics
-        [HttpGet("category/{categoryName}")]
-        public async Task<ActionResult<IEnumerable<ProductResponse>>> GetProductsByCategory(string categoryName)
+        [HttpGet("category/{categoryId}")]
+        public async Task<ActionResult<IEnumerable<ProductResponse>>> GetProductsByCategory(string categoryId)
         {
             if (_context.Products == null)
                 return NotFound();
 
-            if (!CategoryExists(categoryName))
-                return NotFound($"Category {categoryName} not found");
+            if (!CategoryExists(categoryId))
+                return NotFound($"Category {categoryId} not found");
 
-            var products = await _productsService.GetProductsByCategoryAsync(categoryName);
+            var products = await _productsService.GetProductsByCategoryAsync(categoryId);
             var productsResponse = _mapper.Map<IEnumerable<ProductResponse>>(products);
 
             return Ok(productsResponse);
@@ -176,9 +176,9 @@ namespace EcommerceAPI.Controllers
             return _context.Products!.Any(product => product.Id == id);
         }
 
-        private bool CategoryExists(string categoryName)
+        private bool CategoryExists(string categoryId)
         {
-            return _context.Categories!.Any(category => category.Name == categoryName);
+            return _context.Categories!.Any(category => category.CategoryId == categoryId);
         }
     }
 }
