@@ -19,7 +19,7 @@ export class MatNavigationComponent implements OnInit {
 
   _loginService: LoginService;
   _categoriesService: CategoriesService;
-  _activatedRoute: ActivatedRoute;
+  _route: ActivatedRoute;
   _titleManagerService: TitleManagerService;
   UserRole = UserRole;
   categories: Category[] = [];
@@ -43,7 +43,7 @@ export class MatNavigationComponent implements OnInit {
     ) {
     this._loginService = loginService;
     this._categoriesService = categoriesService;
-    this._activatedRoute = activatedRoute;
+    this._route = activatedRoute;
     this._titleManagerService = titleManagerService;
   }
 
@@ -53,14 +53,23 @@ export class MatNavigationComponent implements OnInit {
     console.log("logged in: ", this._loginService.isLoggedIn);
 
     // Set title of current route on first load
-    if (this._activatedRoute.snapshot.firstChild !== null &&
-      this._activatedRoute.snapshot.firstChild !== undefined) {
-        let route = getDeepestRoute(
-          this._activatedRoute.snapshot.firstChild
-        );
-        if (!route.routeConfig?.title)
-          this.setTitle(route.url.toString());
+    if (this._route.snapshot.firstChild !== null &&
+      this._route.snapshot.firstChild !== undefined) {
+      let route = getDeepestRoute(this._route.snapshot.firstChild);
+
+      if (!route.routeConfig?.title) {
+        let urlSegments = route.url;
+        this._categoriesService.getCategory(urlSegments[urlSegments.length - 1].toString())
+            .subscribe({
+              next: (category: Category) => {
+                console.log(`Cat: ${category.id} ${category.name}`);
+                this.setTitle(category.name)
+              },
+              error: (err: Error) => console.error("Could not retrieve category" + err.message),
+              complete: () => console.log("Category retrieved")
+            })
       }
+    }
       
 
     // Set title on route change
@@ -69,7 +78,15 @@ export class MatNavigationComponent implements OnInit {
       map((event: NavigationEnd) => event.urlAfterRedirects)).subscribe(
         (url: string) => {
           let urlSegments = url.split("/");
-          this.setTitle(urlSegments[urlSegments.length - 1]);
+          this._categoriesService.getCategory(urlSegments[urlSegments.length - 1])
+                .subscribe({
+                  next: (category: Category) => {
+                    console.log(`Cat: ${category.id} ${category.name}`);
+                    this.setTitle(category.name);
+                  },
+                  error: (err: Error) => console.error("Could not retrieve category" + err.message),
+                  complete: () => console.log("Category retrieved")
+                })
         }
       )
     this.getCategories();
@@ -100,9 +117,8 @@ export class MatNavigationComponent implements OnInit {
   }
 
   setTitle(title: string) {
-    const titleUppercase = title.slice(0, 1).toUpperCase() + title.slice(1);
-    this.title.set(titleUppercase);
-    this._titleManagerService.setTitle(titleUppercase);
+    this.title.set(title);
+    this._titleManagerService.setTitle(title);
   }
 }
 
