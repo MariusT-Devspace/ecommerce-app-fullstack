@@ -14,7 +14,7 @@
       <mat-nav-list>
         @for(category of categories; track category.id) {
           <a mat-list-item href="#" 
-          [routerLink]="['/c', category.name.toLowerCase()]"
+          [routerLink]="['/c', category.id]"
           routerLinkActive="active-link"
           >  
             {{category.name}}
