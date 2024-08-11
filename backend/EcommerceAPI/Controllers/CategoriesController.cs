@@ -1,4 +1,4 @@
-using AutoMapper;
+﻿using AutoMapper;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
@@ -6,8 +6,10 @@ using EcommerceAPI.DataAccess;
 using EcommerceAPI.Models.DataModels;
 using Microsoft.AspNetCore.Mvc;
 using EcommerceAPI.Models.DTOs.CategoryDTOs.Request;
+using EcommerceAPI.Utils;
 using EcommerceAPI.Models.DTOs.CategoryDTOs;
 using System.Net;
+using Microsoft.Data.SqlClient;
 
 namespace EcommerceAPI.Controllers
 {
@@ -88,9 +90,16 @@ namespace EcommerceAPI.Controllers
                 return NotFound();
             }
 
-            if (CategoryExists(id))
+            if (categoryRequest.Name == category.Name)
             {
-                return BadRequest("Category name must be unique");
+                return BadRequest("Category name must be different than the current one");
+            }
+
+            var newSlug = StringUtils.ToSlug(categoryRequest.Name);
+
+            if (await _context.Categories.AnyAsync(c => c.Id != categoryRequest.Id && c.Slug == newSlug))
+            {
+                return Conflict(new { statusCode = HttpStatusCode.Conflict, message = "Category name must be unique", categoryRequest });
             }
 
             _mapper.Map(categoryRequest, category);
@@ -111,8 +120,19 @@ namespace EcommerceAPI.Controllers
                     throw;
                 }
             }
+            catch (DbUpdateException ex)
+            {
+                if (ex.InnerException is SqlException sqlEx && (sqlEx.Number == 2627 || sqlEx.Number == 2601))
+                {
+                    return Conflict(new { statusCode = HttpStatusCode.Conflict, message = "Category name must be unique", categoryRequest });
+                }
+                else
+                {
+                    throw;
+                }
+            }
 
-            return NoContent();
+            return Ok(_mapper.Map<CategoryResponse>(category));
         }
 
         // POST: Categories
@@ -138,17 +158,31 @@ namespace EcommerceAPI.Controllers
                 return BadRequest(ModelState);
             }
 
-            if (CategoryExists(categoryRequest.Id))
+            if (CategoryExists(StringUtils.ToSlug(categoryRequest.Name)))
             {
-                return BadRequest("Category name must be unique");
+                return Conflict(new { statusCode = HttpStatusCode.Conflict, message = "Category name must be unique", categoryRequest });
             }
 
             var category = _mapper.Map<Category>(categoryRequest);
 
             _context.Categories.Add(category);
+
+            try
+            {
                 await _context.SaveChangesAsync();
             }
             catch (DbUpdateException ex)
+            {
+                if (ex.InnerException is SqlException sqlEx && (sqlEx.Number == 2627 || sqlEx.Number == 2601))
+                {
+                    return Conflict(new { statusCode = HttpStatusCode.Conflict, message = "Category name must be unique", categoryRequest });
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
             var categoryResponse = _mapper.Map<CategoryResponse>(category);
 
             return CreatedAtAction(nameof(PostCategory), new { id = categoryResponse.Id }, categoryResponse);
@@ -157,7 +191,7 @@ namespace EcommerceAPI.Controllers
         // DELETE: Categories/5
         [HttpDelete("{id}")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Administrator")]
-        public async Task<IActionResult> DeleteCategory(string id)
+        public async Task<IActionResult> DeleteCategory(int id)
         {
             if (_context.Categories == null)
             {
@@ -176,9 +210,13 @@ namespace EcommerceAPI.Controllers
             return NoContent();
         }
 
-        private bool CategoryExists(string id)
+        private bool CategoryExists(object identifier)
         {
-            return _context.Categories!.Any(category => category.CategoryId == id);
+            return identifier is int id 
+                   ? _context.Categories!.Any(category => category.Id == id)
+                   : identifier is string slug
+                   ? _context.Categories!.Any(category => category.Slug == slug)
+                   : throw new ArgumentException("Input must be either an integer or a string");
         }
     }
 }
