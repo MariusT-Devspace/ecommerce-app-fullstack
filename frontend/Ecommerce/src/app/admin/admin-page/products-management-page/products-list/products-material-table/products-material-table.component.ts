@@ -77,7 +77,7 @@ export class ProductsMaterialTableComponent implements AfterViewInit {
     })
   }
 
-  getCategoryById(id: string) {
+  getCategoryById(id: number) {
     return this.categories.find(category => category.id == id) 
             ? this.categories.find(category => category.id == id)?.name
             : 'None'

@@ -59,6 +59,10 @@ export class CategoriesListComponent implements OnInit{
     color: undefined
   }
 
+  get categoryName(): string {
+    return this.categoryForm.value.name;
+  }
+
   /* TODO: Implement pagination or scrolling */
 
   constructor(private formBuilder: FormBuilder) {}
@@ -73,13 +77,6 @@ export class CategoriesListComponent implements OnInit{
     })
   }
 
-  get categoryName(): string {
-    return this.categoryForm.value.name;
-  }
-
-  get categoryId(): string {
-    return this.categoryName.replace(' ', '-').toLowerCase();
-  }
 
   toggleAddCategory() {
     this.isAddCategoryMode = !this.isAddCategoryMode;
@@ -87,7 +84,6 @@ export class CategoriesListComponent implements OnInit{
       this.categoryForm.reset();
       this.isEditMode = false;
     }
-      
   }
 
   enableEditMode(index: number, inputValue: string) {
@@ -96,7 +92,6 @@ export class CategoriesListComponent implements OnInit{
     this.isAddCategoryMode = false;
     this.editIndex = index;
     this.categoryForm.setValue({name: inputValue});
-    console.log(`edit mode: ${this.isEditMode}. index = ${this.editIndex}`);
   }
 
   disableEditMode() {

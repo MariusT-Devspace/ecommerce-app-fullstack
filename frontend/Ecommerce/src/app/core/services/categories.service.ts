@@ -37,7 +37,7 @@ export class CategoriesService {
     return this.httpClient.put(editCategoryURL, category) as Observable<any>
   }
 
-  deleteCategory(id: string): Observable<any> {
+  deleteCategory(id: number): Observable<any> {
     let deleteCategoryURL = `${this.baseURL}/${id}`
     return this.httpClient.delete(deleteCategoryURL) as Observable<any>;
   }
