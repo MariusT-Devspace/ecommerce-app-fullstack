@@ -4,6 +4,6 @@ namespace EcommerceAPI.Services.Interfaces
 {
     public interface IProductsService
     {
-        Task<IEnumerable<Product>> GetProductsByCategoryAsync(string categoryId);
+        Task<IEnumerable<Product>> GetProductsByCategoryAsync(int categoryId);
     }
 }

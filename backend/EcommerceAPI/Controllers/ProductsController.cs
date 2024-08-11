@@ -67,7 +67,7 @@ namespace EcommerceAPI.Controllers
 
         // GET: Products/category/electronics
         [HttpGet("category/{categoryId}")]
-        public async Task<ActionResult<IEnumerable<ProductResponse>>> GetProductsByCategory(string categoryId)
+        public async Task<ActionResult<IEnumerable<ProductResponse>>> GetProductsByCategory(int categoryId)
         {
             if (_context.Products == null)
                 return NotFound();
@@ -132,7 +132,7 @@ namespace EcommerceAPI.Controllers
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Administrator")]
-        public async Task<ActionResult<Product>> PostProduct([FromBody] ProductRequestPOST productRequest)
+        public async Task<ActionResult<Product>> PostProduct(ProductRequestPOST productRequest)
         {
             if (_context.Products == null)
             {
@@ -146,7 +146,7 @@ namespace EcommerceAPI.Controllers
 
             var productResponse = _mapper.Map<ProductResponse>(product);
 
-            return CreatedAtAction("GetProduct", new { id = productResponse.Id }, productResponse);
+            return CreatedAtAction(nameof(PostProduct), new { id = productResponse.Id }, productResponse);
         }
 
         // DELETE: Products/5
@@ -176,9 +176,9 @@ namespace EcommerceAPI.Controllers
             return _context.Products!.Any(product => product.Id == id);
         }
 
-        private bool CategoryExists(string categoryId)
+        private bool CategoryExists(int categoryId)
         {
-            return _context.Categories!.Any(category => category.CategoryId == categoryId);
+            return _context.Categories!.Any(category => category.Id == categoryId);
         }
     }
 }
