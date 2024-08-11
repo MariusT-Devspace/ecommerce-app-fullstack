@@ -4,7 +4,7 @@
 
 namespace EcommerceAPI.Migrations
 {
-    public partial class ChangePricerangelimitonProductstable : Migration
+    public partial class ChangePriceRangeLimitOnProductsTable : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

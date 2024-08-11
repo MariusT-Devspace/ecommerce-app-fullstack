@@ -26,14 +26,10 @@ namespace EcommerceAPI.DataAccess
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-
-            // Ignore category primary key inherited from the base entity
+            
+            // Configure unique index on category slug
             modelBuilder.Entity<Category>()
-                .Ignore(c => c.Id);
-
-            // Configure unique index on category name
-            modelBuilder.Entity<Category>()
-                .HasIndex(c => c.Name)
+                .HasIndex(c => c.Slug)
                 .IsUnique();
         }
     }

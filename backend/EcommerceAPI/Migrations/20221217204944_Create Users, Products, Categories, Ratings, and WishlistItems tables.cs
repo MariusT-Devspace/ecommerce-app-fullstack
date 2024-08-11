@@ -1,11 +1,10 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore.Migrations;
+﻿using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
 namespace EcommerceAPI.Migrations
 {
-    public partial class CreateUsersProductsCategoriesRatingsandWishlistItemstables : Migration
+    public partial class CreateUsersProductsCategoriesRatingsAndWishlistItemsTables : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

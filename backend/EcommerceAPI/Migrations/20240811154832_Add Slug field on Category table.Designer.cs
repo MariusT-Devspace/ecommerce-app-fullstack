@@ -3,17 +3,15 @@ using System;
 using EcommerceAPI.DataAccess;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
-using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
 namespace EcommerceAPI.Migrations
 {
     [DbContext(typeof(EcommerceDBContext))]
-    [Migration("20240607120405_AddUniqueConstraintToCategoryName")]
-    partial class AddUniqueConstraintToCategoryName
+    [Migration("20240811154832_Add Slug field on Category table")]
+    partial class AddSlugFieldOnCategoryTable
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -46,12 +44,17 @@ namespace EcommerceAPI.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
+                    b.Property<string>("Slug")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
                     b.Property<DateTime>("UpdatedOn")
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("Name")
+                    b.HasIndex("Slug")
                         .IsUnique();
 
                     b.ToTable("Categories");
@@ -65,8 +68,11 @@ namespace EcommerceAPI.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<int?>("CategoryId")
+                    b.Property<string>("CategoryId")
                         .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("CategoryId1")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("CreatedOn")
@@ -106,7 +112,7 @@ namespace EcommerceAPI.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CategoryId");
+                    b.HasIndex("CategoryId1");
 
                     b.HasIndex("RatingId");
 
@@ -225,9 +231,7 @@ namespace EcommerceAPI.Migrations
                 {
                     b.HasOne("EcommerceAPI.Models.DataModels.Category", "Category")
                         .WithMany("Products")
-                        .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("CategoryId1");
 
                     b.HasOne("EcommerceAPI.Models.DataModels.Rating", "Rating")
                         .WithMany()
