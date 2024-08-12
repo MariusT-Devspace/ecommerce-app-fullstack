@@ -71,7 +71,7 @@ namespace EcommerceAPI.Controllers
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Administrator")]
-        public async Task<IActionResult> PutCategory(int id, [FromBody] CategoryRequestPUT categoryRequest)
+        public async Task<IActionResult> PutCategory(int id, [FromBody] CategoryPUT categoryRequest)
         {
             if (_context.Categories == null)
             {
@@ -139,7 +139,7 @@ namespace EcommerceAPI.Controllers
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Administrator")]
-        public async Task<ActionResult<Category>> PostCategory(CategoryRequestPOST categoryRequest)
+        public async Task<ActionResult<Category>> PostCategory(CategoryPOST categoryRequest)
         {
             _logger.LogInformation("API request: {@Controller} - {@ActionMethod}", nameof(CategoriesController), nameof(PostCategory));
             _logger.LogInformation("Request info: {@Headers}", _contextAccessor.HttpContext?.Request.Headers);

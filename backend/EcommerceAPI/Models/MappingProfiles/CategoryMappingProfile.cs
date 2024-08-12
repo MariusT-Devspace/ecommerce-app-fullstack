@@ -8,8 +8,8 @@ namespace EcommerceAPI.Models.MappingProfiles
     public class CategoryMappingProfile: Profile
     {
         public CategoryMappingProfile() {
-            CreateMap<CategoryRequestPOST, Category>();
-            CreateMap<CategoryRequestPUT, Category>();
+            CreateMap<CategoryPOST, Category>();
+            CreateMap<CategoryPUT, Category>();
             CreateMap<Category, CategoryResponse>();
         }
     }

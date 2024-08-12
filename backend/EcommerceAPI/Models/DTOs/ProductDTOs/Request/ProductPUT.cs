@@ -4,7 +4,7 @@ using EcommerceAPI.Models.DataModels;
 namespace EcommerceAPI.Models.DTOs.ProductDTOs.Request
 {
     [MetadataType(typeof(Product))]
-    public class ProductRequestPUT
+    public class ProductPUT
     {
         public int Id { get; set; }
         public string Title { get; set; } = string.Empty;

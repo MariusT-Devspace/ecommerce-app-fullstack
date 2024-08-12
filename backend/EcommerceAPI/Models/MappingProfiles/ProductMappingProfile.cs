@@ -9,8 +9,8 @@ namespace EcommerceAPI.Models.MappingProfiles
     {
         public ProductMappingProfile() {
             CreateMap<Product, ProductResponse>();
-            CreateMap<ProductRequestPOST, Product>();
-            CreateMap<ProductRequestPUT, Product>();
+            CreateMap<ProductPOST, Product>();
+            CreateMap<ProductPUT, Product>();
         }
     }
 }
