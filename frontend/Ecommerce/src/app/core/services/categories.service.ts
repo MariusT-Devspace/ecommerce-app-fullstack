@@ -4,6 +4,8 @@ import { Observable } from 'rxjs';
 import { Category } from 'src/app/models/category.model';
 import { environment } from 'src/environment/environment';
 import { LoginService } from '../auth/services/login.service';
+import { CategoryRequestPOST } from 'src/app/models/DTOs/category-request-post.model';
+import { CategoryRequestPUT } from 'src/app/models/DTOs/category-request-put.model';
 
 @Injectable({
   providedIn: 'root'
@@ -22,7 +24,7 @@ export class CategoriesService {
     return this.httpClient.get(getCategoryURL) as Observable<Category>
   }
 
-  addCategory(category: Category): Observable<any> {
+  addCategory(category: CategoryRequestPOST): Observable<any> {
     /* const httpOptions = {
       withCredentials: true, 
       secureCookie: false,
@@ -32,7 +34,7 @@ export class CategoriesService {
     return this.httpClient.post(this.baseURL, category) as Observable<any>;
   }
 
-  editCategory(category: Category): Observable<any> {
+  editCategory(category: CategoryRequestPUT): Observable<any> {
     let editCategoryURL = `${this.baseURL}/${category.id}`;
     return this.httpClient.put(editCategoryURL, category) as Observable<any>
   }

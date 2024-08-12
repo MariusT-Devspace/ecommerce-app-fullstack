@@ -2,6 +2,8 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ThemeColor } from 'src/app/constants';
 import { Category } from 'src/app/models/category.model';
+import { CategoryRequestPOST } from 'src/app/models/DTOs/category-request-post.model';
+import { CategoryRequestPUT } from 'src/app/models/DTOs/category-request-put.model';
 import { IconButtonType } from 'src/app/shared/icon-button/icon-button-type.enum';
 import { IconButton } from 'src/app/shared/icon-button/icon-button.model';
 import { MaterialIcon } from 'src/app/shared/icon-button/material-icons.enum';
@@ -13,9 +15,10 @@ import { MaterialIcon } from 'src/app/shared/icon-button/material-icons.enum';
 })
 export class CategoriesListComponent implements OnInit{
   @Input() categories : Category[] = []
-  @Output() onAddCategory = new EventEmitter<Category>();
-  @Output() onDeleteCategory = new EventEmitter<Category>();
-  @Output() onEditCategory = new EventEmitter<Category>();
+  @Output() onAddCategory = new EventEmitter<CategoryRequestPOST>();
+  @Output() onEditCategory = new EventEmitter<CategoryRequestPUT>();
+  @Output() onDeleteCategory = new EventEmitter<number>();
+
 
   isAddCategoryMode: boolean = false;
   categoryForm: FormGroup = new FormGroup({})
@@ -101,27 +104,25 @@ export class CategoriesListComponent implements OnInit{
   }
 
   submitCategory() {
-    const category: Category = {
-      id: this.categoryId,
-      name: this.categoryName
-    };
     /* TODO: Show validation errors to user */
-    if(this.categoryForm.valid)
-      this.onAddCategory.emit(category);
+    if(this.categoryForm.valid) {
+      this.onAddCategory.emit({ name: this.categoryName });
+    }
+      
   }
 
-  editCategory(id: string) {
+  editCategory(id: number) {
     /* TODO: Show validation errors to user */
     if(this.categoryForm.valid){
-      const category: Category = {
-        id: id,
+      const categoryRequestPUT: CategoryRequestPUT = {
+        id,
         name: this.categoryName
       }
-      this.onEditCategory.emit(category);
+      this.onEditCategory.emit(categoryRequestPUT);
     }
   }
 
   deleteCategory(category: Category) {
-    this.onDeleteCategory.emit(category);
+    this.onDeleteCategory.emit(Number(id));
   }
 }

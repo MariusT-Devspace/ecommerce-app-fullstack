@@ -8,6 +8,8 @@ import { ProductPOST } from 'src/app/models/DTOs/product-post.model';
 import { ProductsService } from 'src/app/core/services/products.service';
 import { Product } from 'src/app/models/product.model';
 import { ProductPUT } from 'src/app/models/DTOs/product-put.model';
+import { CategoryRequestPOST } from 'src/app/models/DTOs/category-request-post.model';
+import { CategoryRequestPUT } from 'src/app/models/DTOs/category-request-put.model';
 
 @Component({
   selector: 'app-products-management-page',
@@ -18,7 +20,11 @@ export class ProductsManagementPageComponent implements OnInit{
   categories : Category[] = []  
   @ViewChild(CategoriesListComponent) categoriesListCardComponent!: CategoriesListComponent;
 
-  constructor (private categoriesService : CategoriesService, private productsService: ProductsService, private dialog: MatDialog) {}
+  constructor (
+    private categoriesService : CategoriesService, 
+    private productsService: ProductsService, 
+    private dialog: MatDialog
+  ) {}
 
   ngOnInit(): void {
     this.getCategories();
@@ -32,7 +38,7 @@ export class ProductsManagementPageComponent implements OnInit{
     });
   }
 
-  addCategory(category: Category) {
+  addCategory(category: CategoryRequestPOST) {
     this.categoriesService.addCategory(category).subscribe({
       next: (response: any) => {
         this.categoriesListCardComponent.toggleAddCategory();
@@ -43,7 +49,7 @@ export class ProductsManagementPageComponent implements OnInit{
     });
   }
 
-  editCategory(category: Category) {
+  editCategory(category: CategoryRequestPUT) {
     this.categoriesService.editCategory(category).subscribe({
       next: (response: any) => { 
         this.categoriesListCardComponent.disableEditMode();
