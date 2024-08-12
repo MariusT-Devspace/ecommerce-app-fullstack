@@ -6,7 +6,7 @@ import { ProductsService } from 'src/app/core/services/products.service';
 import { Category } from 'src/app/models/category.model';
 import { Product } from 'src/app/models/product.model';
 import { BehaviorSubject, map } from 'rxjs';
-import { ProductPUT } from 'src/app/models/productPUT.model';
+import { ProductPUT } from 'src/app/models/DTOs/product-put.model';
 import { IconButton } from 'src/app/shared/icon-button/icon-button.model';
 import { MaterialIcon } from 'src/app/shared/icon-button/material-icons.enum';
 import { IconButtonType } from 'src/app/shared/icon-button/icon-button-type.enum';

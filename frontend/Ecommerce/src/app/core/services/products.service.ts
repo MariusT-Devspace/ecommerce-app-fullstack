@@ -1,10 +1,10 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { ProductPOST } from 'src/app/models/productPOST.model';
+import { ProductPOST } from 'src/app/models/DTOs/product-post.model';
 import { environment } from '../../../environment/environment'
 import { Product } from 'src/app/models/product.model';
 import { BehaviorSubject } from 'rxjs';
-import { ProductPUT } from 'src/app/models/productPUT.model';
+import { ProductPUT } from 'src/app/models/DTOs/product-put.model';
 
 @Injectable({
   providedIn: 'root'

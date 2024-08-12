@@ -4,7 +4,7 @@ import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms'
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { map } from 'rxjs/internal/operators/map';
 import { Category } from 'src/app/models/category.model';
-import { ProductPOST } from 'src/app/models/productPOST.model';
+import { ProductPOST } from 'src/app/models/DTOs/product-post.model';
 
 @Component({
   selector: 'app-add-product-dialog',

@@ -4,10 +4,10 @@ import { Category } from 'src/app/models/category.model';
 import { CategoriesListComponent } from './categories-list/categories-list.component';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmDeleteCategoryDialogComponent } from './categories-list/confirm-delete-category-dialog/confirm-delete-category-dialog.component';
-import { ProductPOST } from 'src/app/models/productPOST.model';
+import { ProductPOST } from 'src/app/models/DTOs/product-post.model';
 import { ProductsService } from 'src/app/core/services/products.service';
 import { Product } from 'src/app/models/product.model';
-import { ProductPUT } from 'src/app/models/productPUT.model';
+import { ProductPUT } from 'src/app/models/DTOs/product-put.model';
 
 @Component({
   selector: 'app-products-management-page',
