@@ -33,7 +33,7 @@
                             (click)="enableEditMode(i, category.name)"></app-icon-button>
                             <app-icon-button [button]="deleteIconButton"
                             [disabled]="isAddCategoryMode"
-                            (click)="deleteCategory(category)"></app-icon-button>
+                            (click)="deleteCategory(category.id)"></app-icon-button>
                         </div>
                     </div>
                 </ng-template>

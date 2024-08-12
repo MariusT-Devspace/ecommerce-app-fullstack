@@ -122,7 +122,7 @@ export class CategoriesListComponent implements OnInit{
     }
   }
 
-  deleteCategory(category: Category) {
+  deleteCategory(id: number) {
     this.onDeleteCategory.emit(Number(id));
   }
 }

@@ -60,7 +60,8 @@ export class ProductsManagementPageComponent implements OnInit{
     });
   }
 
-  deleteCategory(category: Category) {
+  deleteCategory(id: number) {
+    let category: Category = this.categories.find(category => category.id == id)!
     let dialogRef = this.dialog.open(ConfirmDeleteCategoryDialogComponent, {
       data: { categoryName: category.name }
     });
