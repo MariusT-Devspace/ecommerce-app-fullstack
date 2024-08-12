@@ -1,4 +1,4 @@
-export interface CategoryRequestPUT {
+export interface CategoryPUT {
     id:     number,
     name:   string
 }

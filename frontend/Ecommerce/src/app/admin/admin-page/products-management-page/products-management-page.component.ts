@@ -8,8 +8,8 @@ import { ProductPOST } from 'src/app/models/DTOs/product-post.model';
 import { ProductsService } from 'src/app/core/services/products.service';
 import { Product } from 'src/app/models/product.model';
 import { ProductPUT } from 'src/app/models/DTOs/product-put.model';
-import { CategoryRequestPOST } from 'src/app/models/DTOs/category-request-post.model';
-import { CategoryRequestPUT } from 'src/app/models/DTOs/category-request-put.model';
+import { CategoryPOST } from 'src/app/models/DTOs/category-post.model';
+import { CategoryPUT } from 'src/app/models/DTOs/category-put.model';
 
 @Component({
   selector: 'app-products-management-page',
@@ -38,7 +38,7 @@ export class ProductsManagementPageComponent implements OnInit{
     });
   }
 
-  addCategory(category: CategoryRequestPOST) {
+  addCategory(category: CategoryPOST) {
     this.categoriesService.addCategory(category).subscribe({
       next: (response: any) => {
         this.categoriesListCardComponent.toggleAddCategory();
@@ -49,7 +49,7 @@ export class ProductsManagementPageComponent implements OnInit{
     });
   }
 
-  editCategory(category: CategoryRequestPUT) {
+  editCategory(category: CategoryPUT) {
     this.categoriesService.editCategory(category).subscribe({
       next: (response: any) => { 
         this.categoriesListCardComponent.disableEditMode();
