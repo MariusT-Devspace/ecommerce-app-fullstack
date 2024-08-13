@@ -6,6 +6,13 @@ namespace EcommerceAPI.Models.DTOs.CategoryDTOs.Request
     [MetadataType(typeof(Category))]
     public class CategoryPOST
     {
-        public string Name { get; set; } = string.Empty;
+        private string _name;
+        public string Name {
+            get => _name;
+            set
+            {
+                _name = value.Trim();
+            } 
+        }
     }
 }

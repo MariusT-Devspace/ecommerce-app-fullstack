@@ -10,6 +10,8 @@ using EcommerceAPI.Utils;
 using EcommerceAPI.Models.DTOs.CategoryDTOs;
 using System.Net;
 using Microsoft.Data.SqlClient;
+using Microsoft.IdentityModel.Tokens;
+using System.Reflection.Metadata;
 
 namespace EcommerceAPI.Controllers
 {
@@ -90,13 +92,20 @@ namespace EcommerceAPI.Controllers
                 return NotFound();
             }
 
-            if (categoryRequest.Name == category.Name)
+            // Handle empty category name
+            if (categoryRequest.Name.IsNullOrEmpty())
             {
-                return BadRequest("Category name must be different than the current one");
+                _logger.LogError("Category name validation failed. Null or empty values not allowed");
+                return BadRequest("Category name validation failed. Null or empty values not allowed");
             }
 
-            var newSlug = StringUtils.ToSlug(categoryRequest.Name);
+            if (categoryRequest.Name == category.Name)
+            {
+                return BadRequest("New category name must be different than the current one");
+            }
 
+            // Handle conflicts
+            var newSlug = StringUtils.ToSlug(categoryRequest.Name);
             if (await _context.Categories.AnyAsync(c => c.Id != categoryRequest.Id && c.Slug == newSlug))
             {
                 return Conflict(new { statusCode = HttpStatusCode.Conflict, message = "Category name must be unique", categoryRequest });
@@ -152,12 +161,15 @@ namespace EcommerceAPI.Controllers
                 return NotFound();
             }
 
-            if (!ModelState.IsValid)
+
+            // Handle empty category name
+            if (categoryRequest.Name.IsNullOrEmpty())
             {
-                _logger.LogError("New category validation failed");
-                return BadRequest(ModelState);
+                _logger.LogError("New category validation failed. Null or empty values not allowed");
+                return BadRequest("New category validation failed. Null or empty values not allowed");
             }
 
+            // Handle conflicts
             if (CategoryExists(StringUtils.ToSlug(categoryRequest.Name)))
             {
                 return Conflict(new { statusCode = HttpStatusCode.Conflict, message = "Category name must be unique", categoryRequest });

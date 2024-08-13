@@ -4,7 +4,7 @@
     {
         public static string ToSlug(string s)
         {
-            return s.Replace(' ', '-').ToLower().Trim();
+            return s.Replace(' ', '-').ToLower();
         }
     }
 }
