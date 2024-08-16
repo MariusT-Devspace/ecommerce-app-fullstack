@@ -6,6 +6,7 @@ using EcommerceAPI.Helpers;
 using EcommerceAPI.Identity;
 using EcommerceAPI.Models.DataModels;
 using Serilog.Context;
+using Microsoft.AspNetCore.Identity;
 
 namespace EcommerceAPI.Controllers
 {
@@ -65,12 +66,22 @@ namespace EcommerceAPI.Controllers
                         else
                             user = await _dBContext.Users.SingleOrDefaultAsync(user => user.UserNameNormalized.Equals(login.Identifier.ToUpperInvariant()));
 
-                        isValidPassword = PasswordHasher.VerifyPassword(user!, user.PasswordHash, login.Password);
+                        ;
                         _logger.LogDebug("{Controller} - {ActionMethod}: Password is valid: {isValidPassword}", isValidPassword);
 
                         // If both username and password are valid, return a token
-                        if (isValidUsername && isValidPassword)
+                        isValidPassword = PasswordHasher.VerifyPassword(user!, user.PasswordHash, login.Password) == PasswordVerificationResult.Success ||
+                                          PasswordHasher.VerifyPassword(user!, user.PasswordHash, login.Password) == PasswordVerificationResult.SuccessRehashNeeded;
+                        
+                        if (isValidPassword)
                         {
+                            if (PasswordHasher.VerifyPassword(user, user.PasswordHash, login.Password) == PasswordVerificationResult.SuccessRehashNeeded)
+                            {
+                                user.PasswordHash = PasswordHasher.HashPassword(user, login.Password);
+                                _dBContext.Entry(user).State = EntityState.Modified;
+                                await _dBContext.SaveChangesAsync();
+                            }
+
                             _logger.LogInformation("{Controller} - {ActionMethod}: User login credentials are valid, creating token...");
 
                             DateTime expiration = DateTime.UtcNow.AddDays(1);
@@ -92,7 +103,7 @@ namespace EcommerceAPI.Controllers
 
                             return Ok(token);
                         }
-                        else
+                        else 
                         {
                             _logger.LogError("{Controller} - {ActionMethod}: Password is not valid");
                             return BadRequest(badRequestMessage);
