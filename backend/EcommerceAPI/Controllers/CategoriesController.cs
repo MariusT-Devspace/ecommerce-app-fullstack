@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+using AutoMapper;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
@@ -10,8 +10,6 @@ using EcommerceAPI.Utils;
 using EcommerceAPI.Models.DTOs.CategoryDTOs;
 using System.Net;
 using Microsoft.Data.SqlClient;
-using Microsoft.IdentityModel.Tokens;
-using System.Reflection.Metadata;
 
 namespace EcommerceAPI.Controllers
 {
@@ -93,7 +91,7 @@ namespace EcommerceAPI.Controllers
             }
 
             // Handle empty category name
-            if (categoryRequest.Name.IsNullOrEmpty())
+            if (string.IsNullOrEmpty(categoryRequest.Name))
             {
                 _logger.LogError("Category name validation failed. Null or empty values not allowed");
                 return BadRequest("Category name validation failed. Null or empty values not allowed");
@@ -163,7 +161,7 @@ namespace EcommerceAPI.Controllers
 
 
             // Handle empty category name
-            if (categoryRequest.Name.IsNullOrEmpty())
+            if (string.IsNullOrEmpty(categoryRequest.Name))
             {
                 _logger.LogError("New category validation failed. Null or empty values not allowed");
                 return BadRequest("New category validation failed. Null or empty values not allowed");
