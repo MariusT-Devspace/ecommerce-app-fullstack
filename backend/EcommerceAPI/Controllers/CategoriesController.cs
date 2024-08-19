@@ -1,4 +1,4 @@
-using AutoMapper;
+﻿using AutoMapper;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
@@ -18,15 +18,15 @@ namespace EcommerceAPI.Controllers
     [ApiController]
     public class CategoriesController : ControllerBase
     {
-        private readonly EcommerceDBContext _context;
+        private readonly EcommerceDBContext _dbContext;
         private readonly IMapper _mapper;
         private readonly ILogger<CategoriesController> _logger;
         private readonly IHttpContextAccessor _contextAccessor;
 
-        public CategoriesController(EcommerceDBContext context, IMapper mapper,
+        public CategoriesController(EcommerceDBContext dbContext, IMapper mapper,
             ILogger<CategoriesController> logger, IHttpContextAccessor contextAccessor)
         {
-            _context = context;
+            _dbContext = dbContext;
             _mapper = mapper;
             _logger = logger;
             _contextAccessor = contextAccessor;
@@ -36,12 +36,12 @@ namespace EcommerceAPI.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<CategoryResponse>>> GetCategories()
         {
-            if (_context.Categories == null)
+            if (_dbContext.Categories == null)
             {
                 return NotFound();
             }
 
-            var categories = await _context.Categories.ToListAsync();
+            var categories = await _dbContext.Categories.ToListAsync();
             var categoriesResponse = _mapper.Map<IEnumerable<CategoryResponse>>(categories);
 
             return Ok(categoriesResponse);
@@ -51,12 +51,12 @@ namespace EcommerceAPI.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<CategoryResponse>> GetCategory(int id)
         {
-            if (_context.Categories == null)
+            if (_dbContext.Categories == null)
             {
                 return NotFound();
             }
 
-            var category = await _context.Categories.FindAsync(id);
+            var category = await _dbContext.Categories.FindAsync(id);
 
             if (category == null)
             {
@@ -73,7 +73,7 @@ namespace EcommerceAPI.Controllers
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Administrator")]
         public async Task<IActionResult> PutCategory(int id, [FromBody] CategoryPUT categoryRequest)
         {
-            if (_context.Categories == null)
+            if (_dbContext.Categories == null)
             {
                 return NotFound();
             }
@@ -83,7 +83,7 @@ namespace EcommerceAPI.Controllers
                 return BadRequest("Id does not match.");
             }
 
-            var category = await _context.Categories.FindAsync(id);
+            var category = await _dbContext.Categories.FindAsync(id);
 
             if (category == null)
             {
@@ -104,17 +104,17 @@ namespace EcommerceAPI.Controllers
 
             // Handle conflicts
             var newSlug = StringUtils.ToSlug(categoryRequest.Name);
-            if (await _context.Categories.AnyAsync(c => c.Id != categoryRequest.Id && c.Slug == newSlug))
+            if (await _dbContext.Categories.AnyAsync(c => c.Id != categoryRequest.Id && c.Slug == newSlug))
             {
                 return Conflict(new { statusCode = HttpStatusCode.Conflict, message = "Category name must be unique", categoryRequest });
             }
 
             _mapper.Map(categoryRequest, category);
-            _context.Entry(category).State = EntityState.Modified;
+            _dbContext.Entry(category).State = EntityState.Modified;
 
             try
             {
-                await _context.SaveChangesAsync();
+                await _dbContext.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -154,7 +154,7 @@ namespace EcommerceAPI.Controllers
             _logger.LogInformation("Request body: {@RequestBody}", categoryRequest);
 
 
-            if (_context.Categories == null)
+            if (_dbContext.Categories == null)
             {
                 return NotFound();
             }
@@ -175,11 +175,11 @@ namespace EcommerceAPI.Controllers
 
             var category = _mapper.Map<Category>(categoryRequest);
 
-            _context.Categories.Add(category);
+            _dbContext.Categories.Add(category);
 
             try
             {
-                await _context.SaveChangesAsync();
+                await _dbContext.SaveChangesAsync();
             }
             catch (DbUpdateException ex)
             {
@@ -203,19 +203,19 @@ namespace EcommerceAPI.Controllers
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Administrator")]
         public async Task<IActionResult> DeleteCategory(int id)
         {
-            if (_context.Categories == null)
+            if (_dbContext.Categories == null)
             {
                 return NotFound();
             }
 
-            var category = await _context.Categories.FindAsync(id);
+            var category = await _dbContext.Categories.FindAsync(id);
             if (category == null)
             {
                 return NotFound();
             }
 
-            _context.Categories.Remove(category);
-            await _context.SaveChangesAsync();
+            _dbContext.Categories.Remove(category);
+            await _dbContext.SaveChangesAsync();
 
             return NoContent();
         }
@@ -223,9 +223,9 @@ namespace EcommerceAPI.Controllers
         private bool CategoryExists(object identifier)
         {
             return identifier is int id 
-                   ? _context.Categories!.Any(category => category.Id == id)
+                   ? _dbContext.Categories!.Any(category => category.Id == id)
                    : identifier is string slug
-                   ? _context.Categories!.Any(category => category.Slug == slug)
+                   ? _dbContext.Categories!.Any(category => category.Slug == slug)
                    : throw new ArgumentException("Input must be either an integer or a string");
         }
     }

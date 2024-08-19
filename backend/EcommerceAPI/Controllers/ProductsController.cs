@@ -16,16 +16,16 @@ namespace EcommerceAPI.Controllers
     [ApiController]
     public class ProductsController : ControllerBase
     {
-        private readonly EcommerceDBContext _context;
+        private readonly EcommerceDBContext _dbContext;
         private readonly IMapper _mapper;
         private IProductsService _productsService;
 
         public ProductsController(
-            EcommerceDBContext context, 
+            EcommerceDBContext dbContext, 
             IMapper mapper,
             IProductsService productsService)
         {
-            _context = context;
+            _dbContext = dbContext;
             _mapper = mapper;
             _productsService = productsService;
         }
@@ -34,12 +34,12 @@ namespace EcommerceAPI.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<ProductResponse>>> GetProducts()
         { 
-            if (_context.Products == null)
+            if (_dbContext.Products == null)
             {
                 return NotFound();
             }
 
-            var products = await _context.Products.ToListAsync();
+            var products = await _dbContext.Products.ToListAsync();
             var productsResponse = _mapper.Map<IEnumerable<ProductResponse>>(products);
 
             return Ok(productsResponse);
@@ -49,12 +49,12 @@ namespace EcommerceAPI.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<ProductResponse>> GetProduct(int id)
         {
-            if (_context.Products == null)
+            if (_dbContext.Products == null)
             {
                 return NotFound();
             }
 
-            var product = await _context.Products.FindAsync(id);
+            var product = await _dbContext.Products.FindAsync(id);
 
             if (product == null)
             {
@@ -69,7 +69,7 @@ namespace EcommerceAPI.Controllers
         [HttpGet("category/{categoryId}")]
         public async Task<ActionResult<IEnumerable<ProductResponse>>> GetProductsByCategory(int categoryId)
         {
-            if (_context.Products == null)
+            if (_dbContext.Products == null)
                 return NotFound();
 
             if (!CategoryExists(categoryId))
@@ -88,7 +88,7 @@ namespace EcommerceAPI.Controllers
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Administrator")]
         public async Task<IActionResult> PutProduct(int id, ProductPUT productDTO)
         {
-            if (_context.Products == null)
+            if (_dbContext.Products == null)
             {
                 return NotFound();
             }
@@ -98,7 +98,7 @@ namespace EcommerceAPI.Controllers
                 return BadRequest("Id does not match.");
             }
 
-            var product = await _context.Products.FindAsync(id);
+            var product = await _dbContext.Products.FindAsync(id);
 
             if (product == null)
             {
@@ -107,11 +107,11 @@ namespace EcommerceAPI.Controllers
 
             _mapper.Map(productDTO, product);
 
-            _context.Entry(product).State = EntityState.Modified;
+            _dbContext.Entry(product).State = EntityState.Modified;
 
             try
             {
-                await _context.SaveChangesAsync();
+                await _dbContext.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -134,15 +134,15 @@ namespace EcommerceAPI.Controllers
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Administrator")]
         public async Task<ActionResult<Product>> PostProduct(ProductPOST productRequest)
         {
-            if (_context.Products == null)
+            if (_dbContext.Products == null)
             {
                 return NotFound();
             }
 
             var product = _mapper.Map<Product>(productRequest);
 
-            _context.Products.Add(product);
-            await _context.SaveChangesAsync();
+            _dbContext.Products.Add(product);
+            await _dbContext.SaveChangesAsync();
 
             var productResponse = _mapper.Map<ProductResponse>(product);
 
@@ -154,31 +154,31 @@ namespace EcommerceAPI.Controllers
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Administrator")]
         public async Task<IActionResult> DeleteProduct(int id)
         {
-            if (_context.Products == null)
+            if (_dbContext.Products == null)
             {
                 return NotFound();
             }
 
-            var product = await _context.Products.FindAsync(id);
+            var product = await _dbContext.Products.FindAsync(id);
             if (product == null)
             {
                 return NotFound();
             }
 
-            _context.Products.Remove(product);
-            await _context.SaveChangesAsync();
+            _dbContext.Products.Remove(product);
+            await _dbContext.SaveChangesAsync();
 
             return NoContent();
         }
 
         private bool ProductExists(int id)
         {
-            return _context.Products!.Any(product => product.Id == id);
+            return _dbContext.Products!.Any(product => product.Id == id);
         }
 
         private bool CategoryExists(int categoryId)
         {
-            return _context.Categories!.Any(category => category.Id == categoryId);
+            return _dbContext.Categories!.Any(category => category.Id == categoryId);
         }
     }
 }
