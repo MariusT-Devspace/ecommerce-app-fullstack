@@ -16,14 +16,11 @@ import { getDeepestRoute } from 'src/app/utils/route-helper';
   styleUrls: ['./mat-navigation.component.css']
 })
 export class MatNavigationComponent implements OnInit {
-
-  _loginService: LoginService;
-  _categoriesService: CategoriesService;
-  _route: ActivatedRoute;
-  _titleManagerService: TitleManagerService;
   UserRole = UserRole;
   categories: Category[] = [];
-
+  isLoggedIn: boolean | undefined;
+  userRole: UserRole | undefined;
+  isCategoryRouteActive: WritableSignal<boolean> = signal(false);
 
   isHandset$: Observable<boolean> = this.breakpointObserver.observe([Breakpoints.XSmall, Breakpoints.Small])
     .pipe(
@@ -40,29 +37,26 @@ export class MatNavigationComponent implements OnInit {
     private activatedRoute: ActivatedRoute,
     private categoriesService: CategoriesService,
     private titleManagerService: TitleManagerService
-    ) {
-    this._loginService = loginService;
-    this._categoriesService = categoriesService;
-    this._route = activatedRoute;
-    this._titleManagerService = titleManagerService;
-  }
+    ) { }
 
   ngOnInit(): void {
     console.log("Nav loaded");
     //this._loginService.isLoggedIn$.next(this._loginService.isLoggedIn);
-    console.log("logged in: ", this._loginService.isLoggedIn);
+    this.isLoggedIn = this.loginService.isLoggedIn;
+    console.log("logged in: ", this.isLoggedIn);
+    if (this.isLoggedIn)
+      this.userRole = this.loginService.userRole
 
     // Set title of current route on first load
-    if (this._route.snapshot.firstChild !== null &&
-      this._route.snapshot.firstChild !== undefined) {
-      let route = getDeepestRoute(this._route.snapshot.firstChild);
+    if (this.activatedRoute.snapshot.firstChild !== null &&
+      this.activatedRoute.snapshot.firstChild !== undefined) {
+      let route = getDeepestRoute(this.activatedRoute.snapshot.firstChild);
 
       if (!route.routeConfig?.title) {
         let urlSegments = route.url;
-        this._categoriesService.getCategory(urlSegments[urlSegments.length - 1].toString())
+        this.categoriesService.getCategory(urlSegments[urlSegments.length - 1].toString())
             .subscribe({
               next: (category: Category) => {
-                console.log(`Cat: ${category.id} ${category.name}`);
                 this.setTitle(category.name)
               },
               error: (err: Error) => console.error("Could not retrieve category" + err.message),
@@ -71,30 +65,33 @@ export class MatNavigationComponent implements OnInit {
       }
     }
       
-
     // Set title on route change
     this.router.events.pipe(
       filter((event): event is NavigationEnd => event instanceof NavigationEnd),
       map((event: NavigationEnd) => event.urlAfterRedirects)).subscribe(
         (url: string) => {
           let urlSegments = url.split("/");
-          this._categoriesService.getCategory(urlSegments[urlSegments.length - 1])
+          this.categoriesService.getCategory(urlSegments[urlSegments.length - 1])
                 .subscribe({
                   next: (category: Category) => {
-                    console.log(`Cat: ${category.id} ${category.name}`);
                     this.setTitle(category.name);
                   },
                   error: (err: Error) => console.error("Could not retrieve category" + err.message),
                   complete: () => console.log("Category retrieved")
                 })
+          
+          if (getDeepestRoute(this.activatedRoute.snapshot).paramMap.has('category'))
+            this.isCategoryRouteActive?.set(true)
+          else
+            this.isCategoryRouteActive?.set(false)
         }
       )
     this.getCategories();
   }
 
   logOut() {
-    this._loginService.logOut().subscribe({
-      next: (response) => this._loginService.isLoggedIn = false,
+    this.loginService.logOut().subscribe({
+      next: (response) => this.loginService.isLoggedIn = false,
       error: (err: Error) => console.error("Error logging out: ", err),
       complete: () => {
         console.log("Logout complete");
@@ -118,7 +115,7 @@ export class MatNavigationComponent implements OnInit {
 
   setTitle(title: string) {
     this.title.set(title);
-    this._titleManagerService.setTitle(title);
+    this.titleManagerService.setTitle(title);
   }
 }
 
