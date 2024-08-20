@@ -26,8 +26,8 @@ export class ProductsService {
     return this.httpClient.get(url);
   }
 
-  getProductsByCategory(categoryId: number): any {
-    let url = `${this.baseURL}/category/${categoryId}`;
+  getProductsByCategory(categorySlug: string): any {
+    let url = `${this.baseURL}/category/${categorySlug}`;
     return this.httpClient.get(url);    
   }
 
