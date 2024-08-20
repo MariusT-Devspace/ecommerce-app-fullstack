@@ -11,6 +11,6 @@ namespace EcommerceAPI.Models.DTOs.ProductDTOs.Request
         public decimal Price { get; set; }
         public string Picture { get; set; } = string.Empty;
         public bool IsAvailable { get; set; } = true;
-        public string? CategoryId { get; set; }
+        public int CategoryId { get; set; }
     }
 }
