@@ -80,7 +80,6 @@ export class CategoriesListComponent implements OnInit{
     })
   }
 
-
   toggleAddCategory() {
     this.isAddCategoryMode = !this.isAddCategoryMode;
     if (this.isAddCategoryMode){
