@@ -10,6 +10,7 @@ using EcommerceAPI.Utils;
 using EcommerceAPI.Models.DTOs.CategoryDTOs;
 using System.Net;
 using Microsoft.Data.SqlClient;
+using EcommerceAPI.Services.Interfaces;
 
 namespace EcommerceAPI.Controllers
 {
@@ -22,14 +23,17 @@ namespace EcommerceAPI.Controllers
         private readonly IMapper _mapper;
         private readonly ILogger<CategoriesController> _logger;
         private readonly IHttpContextAccessor _contextAccessor;
+        private readonly ICategoriesService _categoriesService;
 
         public CategoriesController(EcommerceDBContext dbContext, IMapper mapper,
-            ILogger<CategoriesController> logger, IHttpContextAccessor contextAccessor)
+            ILogger<CategoriesController> logger, IHttpContextAccessor contextAccessor,
+            ICategoriesService categoriesService)
         {
             _dbContext = dbContext;
             _mapper = mapper;
             _logger = logger;
             _contextAccessor = contextAccessor;
+            _categoriesService = categoriesService;
         }
 
         // GET: Categories
@@ -47,16 +51,16 @@ namespace EcommerceAPI.Controllers
             return Ok(categoriesResponse);
         }
 
-        // GET: Categories/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<CategoryResponse>> GetCategory(int id)
+        // GET: Categories/electronics
+        [HttpGet("{slug}")]
+        public async Task<ActionResult<CategoryResponse>> GetCategory(string slug)
         {
             if (_dbContext.Categories == null)
             {
                 return NotFound();
             }
 
-            var category = await _dbContext.Categories.FindAsync(id);
+            var category = await _categoriesService.GetCategoryBySlugAsync(slug);
 
             if (category == null)
             {
