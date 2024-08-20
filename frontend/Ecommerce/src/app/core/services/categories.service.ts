@@ -19,8 +19,8 @@ export class CategoriesService {
     return this.httpClient.get(this.baseURL) as Observable<Category[]>;
   }
 
-  getCategory(id: string): Observable<Category> {
-    let getCategoryURL = `${this.baseURL}/${id}`;
+  getCategory(slug: string): Observable<Category> {
+    let getCategoryURL = `${this.baseURL}/${slug}`;
     return this.httpClient.get(getCategoryURL) as Observable<Category>
   }
 
