@@ -104,13 +104,11 @@ else
 }
 
 
-
-    
-
 builder.Services.AddDbContext<EcommerceDBContext>(options => options.UseSqlServer(connectionString));
 
 // Add Custom Services 
-builder.Services.AddScoped<IProductsService, ProductsService>();
+builder.Services.AddScoped<IProductsService, ProductsService>()
+                .AddScoped<ICategoriesService, CategoriesService>();
 
 
 // Configure Serilog
