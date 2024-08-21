@@ -1,14 +1,15 @@
-import { Component, OnInit, WritableSignal, signal } from '@angular/core';
+import { Component, OnInit, ViewChild, WritableSignal, signal } from '@angular/core';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { Observable } from 'rxjs';
 import { filter, map, shareReplay } from 'rxjs/operators';
 import { LoginService } from '../auth/services/login.service';
-import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
+import { ActivatedRoute, NavigationEnd, Router, RouterLinkActive, UrlSegment } from '@angular/router';
 import { UserRole } from '../auth/models/token.model';
 import { CategoriesService } from '../services/categories.service';
 import { Category } from 'src/app/models/category.model';
 import { TitleManagerService } from '../services/title-manager.service';
 import { getDeepestRoute } from 'src/app/utils/route-helper';
+import { ROUTES } from 'src/app/constants';
 
 @Component({
   selector: 'app-navigation',
@@ -21,6 +22,7 @@ export class MatNavigationComponent implements OnInit {
   isLoggedIn: boolean | undefined;
   userRole: UserRole | undefined;
   isCategoryRouteActive: WritableSignal<boolean> = signal(false);
+  ROUTES = ROUTES
 
   isHandset$: Observable<boolean> = this.breakpointObserver.observe([Breakpoints.XSmall, Breakpoints.Small])
     .pipe(
@@ -54,14 +56,22 @@ export class MatNavigationComponent implements OnInit {
 
       if (!route.routeConfig?.title) {
         let urlSegments = route.url;
-        this.categoriesService.getCategory(urlSegments[urlSegments.length - 1].toString())
-            .subscribe({
-              next: (category: Category) => {
-                this.setTitle(category.name)
-              },
-              error: (err: Error) => console.error("Could not retrieve category" + err.message),
-              complete: () => console.log("Category retrieved")
-            })
+        let urlSegmentsString: string[] = [];
+        urlSegments.forEach(urlSegment => {
+          urlSegmentsString.push(urlSegment.path)
+        });
+        if (this.isCategoryRouteActive()) {
+          this.categoriesService.getCategory(urlSegments[urlSegments.length - 1].toString())
+          .subscribe({
+            next: (category: Category) => {
+              this.setTitle(category.name)
+            },
+            error: (err: Error) => console.error("Could not retrieve category" + err.message),
+            complete: () => console.log("Category retrieved")
+          })
+        } else {
+          this.setTitle(this.getRouteTitle(urlSegmentsString));
+        }
       }
     }
       
@@ -71,14 +81,18 @@ export class MatNavigationComponent implements OnInit {
       map((event: NavigationEnd) => event.urlAfterRedirects)).subscribe(
         (url: string) => {
           let urlSegments = url.split("/");
-          this.categoriesService.getCategory(urlSegments[urlSegments.length - 1])
-                .subscribe({
-                  next: (category: Category) => {
-                    this.setTitle(category.name);
-                  },
-                  error: (err: Error) => console.error("Could not retrieve category" + err.message),
-                  complete: () => console.log("Category retrieved")
-                })
+          if (this.isCategoryRouteActive()) {
+            this.categoriesService.getCategory(urlSegments[urlSegments.length - 1])
+            .subscribe({
+              next: (category: Category) => {
+                this.setTitle(category.name);
+              },
+              error: (err: Error) => console.error("Could not retrieve category" + err.message),
+              complete: () => console.log("Category retrieved")
+            })
+          } else {
+            this.setTitle(this.getRouteTitle(urlSegments))
+          }
           
           if (getDeepestRoute(this.activatedRoute.snapshot).paramMap.has('category'))
             this.isCategoryRouteActive?.set(true)
@@ -116,6 +130,11 @@ export class MatNavigationComponent implements OnInit {
   setTitle(title: string) {
     this.title.set(title);
     this.titleManagerService.setTitle(title);
+  }
+
+  getRouteTitle(urlSegments: string[]): string {
+    let routeKey = urlSegments[urlSegments.length - 1].toString() as keyof typeof this.ROUTES
+    return this.ROUTES[routeKey].title
   }
 }
 
