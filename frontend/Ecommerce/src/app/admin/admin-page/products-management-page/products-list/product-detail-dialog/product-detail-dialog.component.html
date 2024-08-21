@@ -53,10 +53,10 @@
               <input matInput #input maxlength="100" placeholder="Picture" formControlName="picture">
             </mat-form-field>
         
-            <label id="available-radio-group-label">Is available</label>
+            <label id="available-radio-group-label">Availability</label>
             <mat-radio-group aria-labelledby="available-radio-group-labe" aria-label="Select an option" formControlName="isAvailable">
-              <mat-radio-button [value]=true>Yes</mat-radio-button>
-              <mat-radio-button [value]=false>No</mat-radio-button>
+              <mat-radio-button [value]=false>Not available</mat-radio-button>
+              <mat-radio-button [value]=true>Available</mat-radio-button>
             </mat-radio-group>
         
             <mat-form-field appearance="fill">
