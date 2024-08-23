@@ -3,7 +3,9 @@
       [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
       [mode]="(isHandset$ | async) ? 'over' : 'side'"
       [opened]="(isHandset$ | async) === false">
-    <mat-toolbar></mat-toolbar>
+    <mat-toolbar>
+      <span [hidden]="(isHandset$ | async)">Online store</span>
+    </mat-toolbar>
     @if(this.isLoggedIn && this.userRole == UserRole.Administrator) {
       <mat-nav-list>
         <a mat-list-item href="#" routerLink="/admin/{{ROUTES.products.slug}}" 
@@ -27,7 +29,7 @@
   </mat-sidenav>
   <mat-sidenav-content>
     <mat-toolbar color="primary">
-      <mat-toolbar-row class="mat-elevation-z6">
+      <mat-toolbar-row >
       <button
         type="button"
         aria-label="Toggle sidenav"
@@ -36,7 +38,7 @@
         *ngIf="isHandset$ | async">
         <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
       </button>
-      <span>Online store</span>
+      <span [hidden]="!(isHandset$ | async)">Online store</span>
       <span class="spacer"></span>
       <button mat-flat-button color="primary" type="button" (click)="logOut()" 
         *ngIf="this.isLoggedIn; else logIn">Logout</button>

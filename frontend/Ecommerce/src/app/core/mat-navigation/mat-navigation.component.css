@@ -14,6 +14,7 @@
 
 .sidenav .mat-toolbar {
   background: inherit;
+  margin-bottom: 30px;
 }
 
 .active-link::before {
@@ -24,12 +25,13 @@
 .mat-toolbar.mat-primary {
   position: sticky;
   top: 0;
-  z-index: 1;
+  z-index: 10;
 }
 
 .content-wrapper{
   height: calc(100vh - 64px);
   min-height: 600px;
+  padding-top: 30px;
 }
 
 .spacer {
