@@ -28,18 +28,18 @@
     }
   </mat-sidenav>
   <mat-sidenav-content>
-    <mat-toolbar color="primary">
-      <mat-toolbar-row >
-      <button
+    @if(isCategoryRouteActive()) {
+      <mat-toolbar class="secondary-toolbar">
+        <button
         type="button"
         aria-label="Toggle sidenav"
         mat-icon-button
         (click)="drawer.toggle()"
-        *ngIf="isHandset$ | async">
-        <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
-      </button>
-      <span [hidden]="!(isHandset$ | async)">Online store</span>
-      <span class="spacer"></span>
+        *ngIf="(isHandset$ | async) && isCategoryRouteActive()">
+          <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
+        </button>
+        <h1>{{ title() }}</h1>
+      </mat-toolbar>
       <button mat-flat-button color="primary" type="button" (click)="logOut()" 
         *ngIf="this.isLoggedIn; else logIn">Logout</button>
       <ng-template #logIn>
@@ -51,7 +51,6 @@
         <h2>{{ title() }}</h2>
       </mat-toolbar-row>
     }
-    </mat-toolbar>
     <!-- Add Content Here -->
     <div class="content-wrapper">
       <router-outlet></router-outlet>
