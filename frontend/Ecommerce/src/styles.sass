@@ -1,5 +1,32 @@
 /* You can add global styles to this file, and also import other style files */
 
+@use '@angular/material' as mat
+@use '../m3-theme.scss' as theme
+
+@include mat.core()
+
+html
+    @include mat.core-theme(theme.$light-theme)
+    @include mat.autocomplete-theme(theme.$light-theme)
+    @include mat.card-theme(theme.$light-theme)
+    @include mat.button-theme(theme.$light-theme)
+    @include mat.dialog-theme(theme.$light-theme)
+    @include mat.divider-theme(theme.$light-theme)
+    @include mat.form-field-theme(theme.$light-theme)
+    @include mat.icon-theme(theme.$light-theme)
+    @include mat.icon-button-theme(theme.$light-theme)
+    @include mat.input-theme(theme.$light-theme)
+    @include mat.list-theme(theme.$light-theme)
+    @include mat.paginator-theme(theme.$light-theme)
+    @include mat.progress-spinner-theme(theme.$light-theme)
+    @include mat.radio-theme(theme.$light-theme)
+    @include mat.select-theme(theme.$light-theme)
+    @include mat.sidenav-theme(theme.$light-theme)
+    @include mat.sort-theme(theme.$light-theme)
+    @include mat.table-theme(theme.$light-theme)
+    @include mat.toolbar-theme(theme.$light-theme)
+    
+
 body
     font-family: Roboto, "Helvetica Neue", sans-serif
     margin: 0
