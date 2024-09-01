@@ -1,0 +1,75 @@
+@use '@angular/material' as mat
+@use '../../../../m3-theme' as theme
+
+.sidenav-container
+  height: 100%
+
+.sidenav 
+  width: 250px
+  margin-top: 64px
+  padding: 17.51px 20px
+  z-index: 99
+
+.sidenav .section-title
+  font-size: 1.2em
+  margin-bottom: 40px
+  padding: 16px
+
+.active-link::before 
+  background-color: #000000
+  opacity: 0.12
+
+mat-toolbar
+  padding-left: 32px
+  padding-right: 32px
+
+.main-toolbar
+  position: fixed
+  top: 0
+  z-index: 10
+/*   background-color: #ffd9e1
+  color: #cb065c */
+
+.logo-button
+  font-size: 1em
+  text-decoration: none !important
+  color: mat.get-theme-color(theme.$light-theme, primary, 30) !important
+
+.secondary-toolbar
+  position: fixed
+  top: 55.99px
+  color: mat.get-theme-color(theme.$light-theme, primary, 30) !important
+  z-index: 10
+
+.content-wrapper
+  //height: calc(100vh - 64px)
+  min-height: 600px
+  padding: 0 40px
+  padding-top: 80px
+  background-color: mat.get-theme-color(theme.$light-theme, neutral, 100) !important
+
+.content-wrapper.withSecondaryToolbar
+  padding-top: 160px
+
+.spacer 
+  flex: 1 1 auto
+
+mat-toolbar-row:last-child span 
+  font-weight: 300
+  font-size: 19px
+  margin: 0
+
+@media only screen and (min-width: 960px)
+  .sidenav
+    background-color: mat.get-theme-color(theme.$light-theme, neutral, 100) !important
+
+  .secondary-toolbar
+    position: sticky
+    background-color: mat.get-theme-color(theme.$light-theme, neutral, 100) !important
+    color: inherit !important
+    top: 90px
+    h1
+      font-size: 1.5em !important
+
+  .content-wrapper.withSecondaryToolbar
+    padding-top: 110px

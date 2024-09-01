@@ -1,11 +1,25 @@
-<mat-sidenav-container class="sidenav-container">
+<mat-toolbar class="main-toolbar">
+    <button
+      type="button"
+      aria-label="Toggle sidenav"
+      mat-icon-button
+      (click)="drawer.toggle()"
+      *ngIf="(isHandset$ | async) && isCategoryRouteActive() == false">
+      <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
+    </button>
+    <a href="#" routerLink="/" class="logo-button">Online store</a>
+    <span class="spacer"></span>
+    <button mat-flat-button color="primary" type="button" (click)="logOut()" 
+      *ngIf="this.isLoggedIn; else logIn">Logout</button>
+    <ng-template #logIn>
+      <button mat-flat-button color="primary" type="button" (click)="navigateToLogIn()">Login</button>
+    </ng-template>
+</mat-toolbar>
+<mat-sidenav-container>
   <mat-sidenav #drawer class="sidenav" fixedInViewport
       [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
       [mode]="(isHandset$ | async) ? 'over' : 'side'"
       [opened]="(isHandset$ | async) === false">
-    <mat-toolbar>
-      <span [hidden]="(isHandset$ | async)">Online store</span>
-    </mat-toolbar>
     @if(this.isLoggedIn && this.userRole == UserRole.Administrator) {
       <mat-nav-list>
         <a mat-list-item href="#" routerLink="/admin/{{ROUTES.products.slug}}" 
@@ -40,19 +54,9 @@
         </button>
         <h1>{{ title() }}</h1>
       </mat-toolbar>
-      <button mat-flat-button color="primary" type="button" (click)="logOut()" 
-        *ngIf="this.isLoggedIn; else logIn">Logout</button>
-      <ng-template #logIn>
-        <button mat-flat-button color="primary" type="button" (click)="navigateToLogIn()">Login</button>
-      </ng-template>
-    </mat-toolbar-row>
-    @if(isCategoryRouteActive()) {
-      <mat-toolbar-row>
-        <h2>{{ title() }}</h2>
-      </mat-toolbar-row>
     }
     <!-- Add Content Here -->
-    <div class="content-wrapper">
+    <div class="content-wrapper" [ngClass]="{'withSecondaryToolbar': isCategoryRouteActive()}">
       <router-outlet></router-outlet>
     </div>
   </mat-sidenav-content>
