@@ -3,7 +3,7 @@ import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { Observable } from 'rxjs';
 import { filter, map, shareReplay } from 'rxjs/operators';
 import { LoginService } from '../auth/services/login.service';
-import { ActivatedRoute, NavigationEnd, Router, RouterLinkActive, UrlSegment } from '@angular/router';
+import { ActivatedRoute, ActivatedRouteSnapshot, NavigationEnd, Router } from '@angular/router';
 import { UserRole } from '../auth/models/token.model';
 import { CategoriesService } from '../services/categories.service';
 import { Category } from 'src/app/models/category.model';
@@ -22,7 +22,8 @@ export class MatNavigationComponent implements OnInit {
   isLoggedIn: boolean | undefined;
   userRole: UserRole | undefined;
   isCategoryRouteActive: WritableSignal<boolean> = signal(false);
-  ROUTES = ROUTES
+  ROUTES = ROUTES;
+  currentRoute?: ActivatedRouteSnapshot;
 
   isHandset$: Observable<boolean> = this.breakpointObserver.observe([Breakpoints.XSmall, Breakpoints.Small])
     .pipe(
@@ -42,64 +43,57 @@ export class MatNavigationComponent implements OnInit {
     ) { }
 
   ngOnInit(): void {
-    console.log("Nav loaded");
+    // Check login status
     //this._loginService.isLoggedIn$.next(this._loginService.isLoggedIn);
     this.isLoggedIn = this.loginService.isLoggedIn;
     console.log("logged in: ", this.isLoggedIn);
     if (this.isLoggedIn)
       this.userRole = this.loginService.userRole
-
-    let route = getDeepestRoute(this.activatedRoute.snapshot);
     
     // Set title of current route on first load
-    this.isCategoryRouteActive.set(route.paramMap.has('category'))
+    this.currentRoute = getDeepestRoute(this.activatedRoute.snapshot);
+    this.isCategoryRouteActive.set(this.currentRoute!.paramMap.has('category'));
+    let urlSegments = this.currentRoute!.url;
+    let urlSegmentsString: string[] = [];
+    urlSegments.forEach(urlSegment => {
+      urlSegmentsString.push(urlSegment.path);
+    });
+    this.setTitle(urlSegmentsString);
 
-    if (!route.routeConfig?.title) {
-      let urlSegments = route.url;
-      let urlSegmentsString: string[] = [];
-      urlSegments.forEach(urlSegment => {
-        urlSegmentsString.push(urlSegment.path)
-      });
-      if (this.isCategoryRouteActive()) {
-        this.categoriesService.getCategory(urlSegmentsString[urlSegmentsString.length - 1])
-        .subscribe({
-          next: (category: Category) => {
-            this.setTitle(category.name)
-          },
-          error: (err: Error) => console.error("Could not retrieve category" + err.message),
-          complete: () => console.log("Category retrieved")
-        })
-      } else {
-        this.setTitle(this.getRouteTitle(urlSegmentsString));
-      }
-    }
-      
     // Set title on route change
     this.router.events.pipe(
       filter((event): event is NavigationEnd => event instanceof NavigationEnd),
       map((event: NavigationEnd) => event.urlAfterRedirects)).subscribe(
         (url: string) => {
-          let urlSegments = url.split("/");
-          route = getDeepestRoute(this.activatedRoute.snapshot);
-          this.isCategoryRouteActive.set(route.paramMap.has('category'))
-
-          if (this.isCategoryRouteActive()) {
-            this.categoriesService.getCategory(urlSegments[urlSegments.length - 1])
-            .subscribe({
-              next: (category: Category) => {
-                this.setTitle(category.name);
-              },
-              error: (err: Error) => console.error("Could not retrieve category" + err.message),
-              complete: () => console.log("Category retrieved")
-            })
-          } else {
-            this.setTitle(this.getRouteTitle(urlSegments))
-          }
-
-          route = getDeepestRoute(this.activatedRoute.snapshot);
+          this.currentRoute = getDeepestRoute(this.activatedRoute.snapshot);
+          this.isCategoryRouteActive.set(this.currentRoute.paramMap.has('category'));
+          this.setTitle(url.split("/"));
+          this.currentRoute = getDeepestRoute(this.activatedRoute.snapshot); 
         }
       )
     this.getCategories();
+  }
+
+  private setTitle(urlSegments: string[]) {
+    let setTitle = (title: string | undefined) => {
+      if (title !== undefined) {
+        this.title.set(title);
+        this.titleManagerService.setTitle(title);
+      }
+    }
+
+    if (!this.currentRoute!.routeConfig?.title) {
+      if (this.isCategoryRouteActive()) {
+        this.categoriesService.getCategory(urlSegments[urlSegments.length - 1])
+          .subscribe({
+            next: (category: Category) => setTitle(category.name),
+            error: (err: Error) => console.error("Could not retrieve category" + err.message),
+            complete: () => console.log("Category retrieved")
+          });
+      } else {
+        setTitle(this.getRouteTitle(urlSegments));
+      }
+    }
   }
 
   logOut() {
@@ -124,13 +118,6 @@ export class MatNavigationComponent implements OnInit {
       error: (err: Error) => console.error("Error retrieving categories", err),
       complete: () => console.log("Categories retrieved successfuly")
     });
-  }
-
-  setTitle(title: string | undefined) {
-    if (title !== undefined) {
-      this.title.set(title);
-      this.titleManagerService.setTitle(title);
-    }
   }
 
   getRouteTitle(urlSegments: string[]): string | undefined {
