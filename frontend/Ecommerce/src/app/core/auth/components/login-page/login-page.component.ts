@@ -23,9 +23,7 @@ export class LoginPageComponent{
     this.loginService.logIn(requestBody).subscribe(
       {
         next: (response: Token) => {
-          console.log("logIn() - next");
           // Set token
-          console.log("Login data: ", requestBody);
           this.setToken(response);
         },
         error: (err: Error) => {
@@ -57,7 +55,7 @@ export class LoginPageComponent{
           welcomeMessage: tokenResponse.welcomeMessage
         }
         localStorage.setItem("user_info", JSON.stringify(userInfo));
-        this.authUtilsService.navigateToHome();
+        this.authUtilsService.navigateHome();
       },
       error: (err: Error) => {
         console.error("Error checking token cookie: ", err.message);

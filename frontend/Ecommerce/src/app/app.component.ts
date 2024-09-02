@@ -12,6 +12,6 @@ export class AppComponent implements OnInit{
   constructor(private authUtilsService: AuthUtilsService) { }
 
   ngOnInit(): void {
-    this.authUtilsService.navigateToHome();
+    this.authUtilsService.navigateHome();
   }
 }

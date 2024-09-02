@@ -13,7 +13,7 @@ export class AuthUtilsService {
   constructor(private loginService: LoginService, 
     private router: Router, private activatedRoute: ActivatedRoute) { }
 
-  navigateToHome() {
+  navigateHome() {
     console.log("navigateToHome()");
     this.loginService.checkTokenCookie().subscribe({
       next: (response: HttpResponse<Authenticated>) => {
