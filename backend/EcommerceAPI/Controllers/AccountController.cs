@@ -127,7 +127,7 @@ namespace EcommerceAPI.Controllers
         }
 
         [HttpPost("SetToken")]
-        public async Task<IActionResult> SetToken()
+        public IActionResult SetToken()
         {
            
             try
@@ -145,7 +145,6 @@ namespace EcommerceAPI.Controllers
                     });
                 }
                 
-
                 return Ok();
             }
             catch(Exception ex)
@@ -156,7 +155,7 @@ namespace EcommerceAPI.Controllers
         }
 
         [HttpGet("CheckCookie")]
-        public async Task<IActionResult> CheckCookie()
+        public IActionResult CheckCookie()
         {
             try
             {
@@ -180,7 +179,7 @@ namespace EcommerceAPI.Controllers
         }
 
         [HttpPost("Logout")]
-        public async Task<IActionResult> Logout()
+        public IActionResult Logout()
         {
             // Delete the JWT cookie
             HttpContext.Response.Cookies.Delete("auth_token");
