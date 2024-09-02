@@ -13,21 +13,11 @@ namespace EcommerceAPI.Controllers
     [Route("[controller]")]
     [Route("api/[controller]")]
     [ApiController]
-    public class AccountController : ControllerBase
+    public class AccountController(
+            EcommerceDBContext dBContext, JwtSettings jwtSettings, 
+            ILogger<AccountController> logger, IHttpContextAccessor contextAccessor
+        ) : ControllerBase
     {
-        private readonly EcommerceDBContext _dBContext;
-        private readonly JwtSettings _jwtSettings;
-        private readonly ILogger<AccountController> _logger;
-        private readonly IHttpContextAccessor _contextAccessor;
-
-        public AccountController(EcommerceDBContext dBContext, JwtSettings jwtSettings, ILogger<AccountController> logger, IHttpContextAccessor contextAccessor)
-        {
-            _dBContext = dBContext;
-            _jwtSettings = jwtSettings;
-            _logger = logger;
-            _contextAccessor = contextAccessor;
-        }
-
         [HttpPost("Login")]
         public async Task<ActionResult<IEnumerable<UserToken>>> Login(Login login)
         {
@@ -36,10 +26,10 @@ namespace EcommerceAPI.Controllers
             {
                 try
                 {
-                    _logger.LogInformation("API request: {Controller} - {ActionMethod}");
-                    _logger.LogInformation("Request info: {@Headers}", _contextAccessor.HttpContext?.Request.Headers);
+                    logger.LogInformation("API request: {Controller} - {ActionMethod}");
+                    logger.LogInformation("Request info: {@Headers}", contextAccessor.HttpContext?.Request.Headers);
 
-                    if (_dBContext.Users == null)
+                    if (dBContext.Users == null)
                     {
                         return NotFound();
                     }
@@ -49,9 +39,9 @@ namespace EcommerceAPI.Controllers
 
                     // Verify login input
                     if (LoginHelpers.IsEmail(login.Identifier))
-                        isValidUsername = await _dBContext.Users.AnyAsync(user => user.EmailNormalized.Equals(login.Identifier.ToUpperInvariant()));
+                        isValidUsername = await dBContext.Users.AnyAsync(user => user.EmailNormalized.Equals(login.Identifier.ToUpperInvariant()));
                     else
-                        isValidUsername = await _dBContext.Users.AnyAsync(user => user.UserNameNormalized.Equals(login.Identifier.ToUpperInvariant()));
+                        isValidUsername = await dBContext.Users.AnyAsync(user => user.UserNameNormalized.Equals(login.Identifier.ToUpperInvariant()));
 
                     User? user;
                     string badRequestMessage = "Wrong username or password";
@@ -59,15 +49,15 @@ namespace EcommerceAPI.Controllers
                     // If username valid, verify password hash
                     if (isValidUsername)
                     {
-                        _logger.LogInformation("{Controller} - {ActionMethod}: Username {Username} is valid", login.Identifier);
+                        logger.LogInformation("{Controller} - {ActionMethod}: Username {Username} is valid", login.Identifier);
 
                         if (LoginHelpers.IsEmail(login.Identifier))
-                            user = await _dBContext.Users.SingleOrDefaultAsync(user => user.EmailNormalized.Equals(login.Identifier.ToUpperInvariant()));
+                            user = await dBContext.Users.SingleOrDefaultAsync(user => user.EmailNormalized.Equals(login.Identifier.ToUpperInvariant()));
                         else
-                            user = await _dBContext.Users.SingleOrDefaultAsync(user => user.UserNameNormalized.Equals(login.Identifier.ToUpperInvariant()));
+                            user = await dBContext.Users.SingleOrDefaultAsync(user => user.UserNameNormalized.Equals(login.Identifier.ToUpperInvariant()));
 
                         ;
-                        _logger.LogDebug("{Controller} - {ActionMethod}: Password is valid: {isValidPassword}", isValidPassword);
+                        logger.LogDebug("{Controller} - {ActionMethod}: Password is valid: {isValidPassword}", isValidPassword);
 
                         // If both username and password are valid, return a token
                         isValidPassword = PasswordHasher.VerifyPassword(user!, user.PasswordHash, login.Password) == PasswordVerificationResult.Success ||
@@ -78,11 +68,11 @@ namespace EcommerceAPI.Controllers
                             if (PasswordHasher.VerifyPassword(user, user.PasswordHash, login.Password) == PasswordVerificationResult.SuccessRehashNeeded)
                             {
                                 user.PasswordHash = PasswordHasher.HashPassword(user, login.Password);
-                                _dBContext.Entry(user).State = EntityState.Modified;
-                                await _dBContext.SaveChangesAsync();
+                                dBContext.Entry(user).State = EntityState.Modified;
+                                await dBContext.SaveChangesAsync();
                             }
 
-                            _logger.LogInformation("{Controller} - {ActionMethod}: User login credentials are valid, creating token...");
+                            logger.LogInformation("{Controller} - {ActionMethod}: User login credentials are valid, creating token...");
 
                             DateTime expiration = DateTime.UtcNow.AddDays(1);
                             string message = $"Welcome back, {user.FirstName}";
@@ -99,28 +89,28 @@ namespace EcommerceAPI.Controllers
                                 Role = user.Role,
                                 WelcomeMessage = message
                             };
-                            token.Token = await token.GetTokenKey(_jwtSettings);
+                            token.Token = await token.GetTokenKey(jwtSettings);
 
                             return Ok(token);
                         }
                         else 
                         {
-                            _logger.LogError("{Controller} - {ActionMethod}: Password is not valid");
+                            logger.LogError("{Controller} - {ActionMethod}: Password is not valid");
                             return BadRequest(badRequestMessage);
                         }
                     }
                     else
                     {
-                        _logger.LogError("{Controller} - {ActionMethod}: Username {Username} is not valid", login.Identifier);
+                        logger.LogError("{Controller} - {ActionMethod}: Username {Username} is not valid", login.Identifier);
                         return BadRequest(badRequestMessage);
                     }
 
                 }
                 catch (Exception ex)
                 {
-                    _logger.LogError("{Controller} - {ActionMethod}: Error trying to log in: {Message}", ex.Message);
-                    _logger.LogError("{Controller} - {ActionMethod}: Inner exception: {InnerException}", ex.InnerException);
-                    _logger.LogError("{Controller} - {ActionMethod}: Stack trace: {StackTrace}", ex.StackTrace);
+                    logger.LogError("{Controller} - {ActionMethod}: Error trying to log in: {Message}", ex.Message);
+                    logger.LogError("{Controller} - {ActionMethod}: Inner exception: {InnerException}", ex.InnerException);
+                    logger.LogError("{Controller} - {ActionMethod}: Stack trace: {StackTrace}", ex.StackTrace);
                     throw new Exception("Login error", ex);
                 }
             }
@@ -136,7 +126,7 @@ namespace EcommerceAPI.Controllers
                 if (authorizationHeader.Count > 0)
                 {
                     var token = authorizationHeader[0].Substring("Bearer ".Length);
-                    _logger.LogInformation("Token: {Token}: ", token);
+                    logger.LogInformation("Token: {Token}: ", token);
                     Response.Cookies.Append("auth_token", token, new CookieOptions
                     {
                         HttpOnly = true,
@@ -161,19 +151,19 @@ namespace EcommerceAPI.Controllers
             {
                 if (Request.Cookies.ContainsKey("auth_token"))
                 {
-                    _logger.LogInformation("Cookies contain auth_token key: {ContainsKey}: ", Request.Cookies.ContainsKey("auth_token"));
-                    _logger.LogInformation("Request cookies: {RequestCookies}: ", Request.Cookies);
+                    logger.LogInformation("Cookies contain auth_token key: {ContainsKey}: ", Request.Cookies.ContainsKey("auth_token"));
+                    logger.LogInformation("Request cookies: {RequestCookies}: ", Request.Cookies);
                     return Ok(new { authenticated = true });
                 }
                 else
                 {
-                    _logger.LogInformation("Cookies contain auth_token key: {ContainsKey}: ", Request.Cookies.ContainsKey("auth_token"));
+                    logger.LogInformation("Cookies contain auth_token key: {ContainsKey}: ", Request.Cookies.ContainsKey("auth_token"));
                     return Ok(new { authenticated = false });
                 }
             }
             catch(Exception ex)
             {
-                _logger.LogError("Error checking token cookie: {Exception}", ex);
+                logger.LogError("Error checking token cookie: {Exception}", ex);
                 throw new Exception("Error checking token cookie: ", ex);
             }
         }
@@ -195,10 +185,10 @@ namespace EcommerceAPI.Controllers
             {
                 try
                 {
-                    _logger.LogInformation("API request: {Controller} - {ActionMethod}");
-                    _logger.LogInformation("Request info: {Headers}", _contextAccessor.HttpContext?.Request.Headers);
+                    logger.LogInformation("API request: {Controller} - {ActionMethod}");
+                    logger.LogInformation("Request info: {Headers}", contextAccessor.HttpContext?.Request.Headers);
 
-                    if (_dBContext.Users == null)
+                    if (dBContext.Users == null)
                     {
                         return NotFound();
                     }
@@ -207,24 +197,24 @@ namespace EcommerceAPI.Controllers
                     if (ModelState.IsValid)
                     {
                         // Check if username already exists
-                        _logger.LogInformation("{Controller} - {ActionMethod}: Check username: {Username}",register.Username);
-                        var userNameAlreadyExists = await _dBContext.Users.AnyAsync(user => user.UserNameNormalized.Equals(register.Username.ToUpperInvariant()));
+                        logger.LogInformation("{Controller} - {ActionMethod}: Check username: {Username}",register.Username);
+                        var userNameAlreadyExists = await dBContext.Users.AnyAsync(user => user.UserNameNormalized.Equals(register.Username.ToUpperInvariant()));
                         if (userNameAlreadyExists)
                         {
-                            _logger.LogError("{Controller} - {ActionMethod}: Username {Username} already exists", register.Username);
+                            logger.LogError("{Controller} - {ActionMethod}: Username {Username} already exists", register.Username);
                             return BadRequest("This username already exists");
                         }
 
                         // Check if email is already registered
-                        _logger.LogInformation("{Controller} - {ActionMethod}: Check email: {Username}", register.Email);
-                        var emailAlreadyExists = await _dBContext.Users.AnyAsync(user => user.EmailNormalized.Equals(register.Email.ToUpperInvariant()));
+                        logger.LogInformation("{Controller} - {ActionMethod}: Check email: {Username}", register.Email);
+                        var emailAlreadyExists = await dBContext.Users.AnyAsync(user => user.EmailNormalized.Equals(register.Email.ToUpperInvariant()));
                         if (emailAlreadyExists)
                         {
-                            _logger.LogError("{Controller} - {ActionMethod}: Email address {Email} is already registered", register.Email);
+                            logger.LogError("{Controller} - {ActionMethod}: Email address {Email} is already registered", register.Email);
                             return BadRequest("This email is already registered");
                         }
 
-                        _logger.LogInformation("{Controller} - {ActionMethod}: Create new user: {Username}", register.Username);
+                        logger.LogInformation("{Controller} - {ActionMethod}: Create new user: {Username}", register.Username);
                         // Create new user
                         User user = new()
                         {
@@ -238,13 +228,13 @@ namespace EcommerceAPI.Controllers
                         user.PasswordHash = PasswordHasher.HashPassword(user, register.Password);
 
                         // Save user in the database
-                        _dBContext.Users.Add(user);
-                        await _dBContext.SaveChangesAsync();
-                        _logger.LogInformation("{Controller} - {ActionMethod}: New user {Username} saved in the database", register.Username);
+                        dBContext.Users.Add(user);
+                        await dBContext.SaveChangesAsync();
+                        logger.LogInformation("{Controller} - {ActionMethod}: New user {Username} saved in the database", register.Username);
 
 
                         // Login registered user
-                        _logger.LogInformation("{Controller} - {ActionMethod}: Login request");
+                        logger.LogInformation("{Controller} - {ActionMethod}: Login request");
                         return await Login(new Login()
                         {
                             Identifier = register.Username,
@@ -255,15 +245,15 @@ namespace EcommerceAPI.Controllers
                     {
                         // Return BadRequest with the ModelState containing the invalid fields
                         // if user failed to correctly fill up the sign up form
-                        _logger.LogError("{Controller} - {ActionMethod}: User failed to fill all required fields correctly");
+                        logger.LogError("{Controller} - {ActionMethod}: User failed to fill all required fields correctly");
                         return BadRequest(ModelState);
                     }
                 }
                 catch (Exception ex)
                 {
-                    _logger.LogError("{Controller} - {ActionMethod}: Error trying to log in: {Message}", ex.Message);
-                    _logger.LogError("{Controller} - {ActionMethod}: Inner exception: {InnerException}", ex.InnerException);
-                    _logger.LogError("{Controller} - {ActionMethod}: Stack trace: {StackTrace}", ex.StackTrace);
+                    logger.LogError("{Controller} - {ActionMethod}: Error trying to log in: {Message}", ex.Message);
+                    logger.LogError("{Controller} - {ActionMethod}: Inner exception: {InnerException}", ex.InnerException);
+                    logger.LogError("{Controller} - {ActionMethod}: Stack trace: {StackTrace}", ex.StackTrace);
                     throw new Exception("Register error", ex);
                 }
             }

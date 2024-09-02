@@ -17,36 +17,23 @@ namespace EcommerceAPI.Controllers
     [Route("[controller]")]
     [Route("api/[controller]")]
     [ApiController]
-    public class CategoriesController : ControllerBase
-    {
-        private readonly EcommerceDBContext _dbContext;
-        private readonly IMapper _mapper;
-        private readonly ILogger<CategoriesController> _logger;
-        private readonly IHttpContextAccessor _contextAccessor;
-        private readonly ICategoriesService _categoriesService;
-
-        public CategoriesController(EcommerceDBContext dbContext, IMapper mapper,
+    public class CategoriesController(
+            EcommerceDBContext dbContext, IMapper mapper,
             ILogger<CategoriesController> logger, IHttpContextAccessor contextAccessor,
-            ICategoriesService categoriesService)
-        {
-            _dbContext = dbContext;
-            _mapper = mapper;
-            _logger = logger;
-            _contextAccessor = contextAccessor;
-            _categoriesService = categoriesService;
-        }
-
+            ICategoriesService categoriesService
+        ) : ControllerBase
+    {
         // GET: Categories
         [HttpGet]
         public async Task<ActionResult<IEnumerable<CategoryResponse>>> GetCategories()
         {
-            if (_dbContext.Categories == null)
+            if (dbContext.Categories == null)
             {
                 return NotFound();
             }
 
-            var categories = await _dbContext.Categories.ToListAsync();
-            var categoriesResponse = _mapper.Map<IEnumerable<CategoryResponse>>(categories);
+            var categories = await dbContext.Categories.ToListAsync();
+            var categoriesResponse = mapper.Map<IEnumerable<CategoryResponse>>(categories);
 
             return Ok(categoriesResponse);
         }
@@ -55,19 +42,19 @@ namespace EcommerceAPI.Controllers
         [HttpGet("{slug}")]
         public async Task<ActionResult<CategoryResponse>> GetCategory(string slug)
         {
-            if (_dbContext.Categories == null)
+            if (dbContext.Categories == null)
             {
                 return NotFound();
             }
 
-            var category = await _categoriesService.GetCategoryBySlugAsync(slug);
+            var category = await categoriesService.GetCategoryBySlugAsync(slug);
 
             if (category == null)
             {
                 return NotFound();
             }
 
-            var categoryResponse = _mapper.Map<CategoryResponse>(category);
+            var categoryResponse = mapper.Map<CategoryResponse>(category);
             return Ok(categoryResponse);
         }
 
@@ -77,7 +64,7 @@ namespace EcommerceAPI.Controllers
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Administrator")]
         public async Task<IActionResult> PutCategory(int id, [FromBody] CategoryPUT categoryRequest)
         {
-            if (_dbContext.Categories == null)
+            if (dbContext.Categories == null)
             {
                 return NotFound();
             }
@@ -87,7 +74,7 @@ namespace EcommerceAPI.Controllers
                 return BadRequest("Id does not match.");
             }
 
-            var category = await _dbContext.Categories.FindAsync(id);
+            var category = await dbContext.Categories.FindAsync(id);
 
             if (category == null)
             {
@@ -97,7 +84,7 @@ namespace EcommerceAPI.Controllers
             // Handle empty category name
             if (string.IsNullOrEmpty(categoryRequest.Name))
             {
-                _logger.LogError("Category name validation failed. Null or empty values not allowed");
+                logger.LogError("Category name validation failed. Null or empty values not allowed");
                 return BadRequest("Category name validation failed. Null or empty values not allowed");
             }
 
@@ -108,17 +95,17 @@ namespace EcommerceAPI.Controllers
 
             // Handle conflicts
             var newSlug = StringUtils.ToSlug(categoryRequest.Name);
-            if (await _dbContext.Categories.AnyAsync(c => c.Id != categoryRequest.Id && c.Slug == newSlug))
+            if (await dbContext.Categories.AnyAsync(c => c.Id != categoryRequest.Id && c.Slug == newSlug))
             {
                 return Conflict(new { statusCode = HttpStatusCode.Conflict, message = "Category name must be unique", categoryRequest });
             }
 
-            _mapper.Map(categoryRequest, category);
-            _dbContext.Entry(category).State = EntityState.Modified;
+            mapper.Map(categoryRequest, category);
+            dbContext.Entry(category).State = EntityState.Modified;
 
             try
             {
-                await _dbContext.SaveChangesAsync();
+                await dbContext.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -143,7 +130,7 @@ namespace EcommerceAPI.Controllers
                 }
             }
 
-            return Ok(_mapper.Map<CategoryResponse>(category));
+            return Ok(mapper.Map<CategoryResponse>(category));
         }
 
         // POST: Categories
@@ -152,13 +139,13 @@ namespace EcommerceAPI.Controllers
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Administrator")]
         public async Task<ActionResult<Category>> PostCategory(CategoryPOST categoryRequest)
         {
-            _logger.LogInformation("API request: {@Controller} - {@ActionMethod}", nameof(CategoriesController), nameof(PostCategory));
-            _logger.LogInformation("Request info: {@Headers}", _contextAccessor.HttpContext?.Request.Headers);
-            _logger.LogInformation("Request info: {@Body}", _contextAccessor.HttpContext?.Request.Body);
-            _logger.LogInformation("Request body: {@RequestBody}", categoryRequest);
+            logger.LogInformation("API request: {@Controller} - {@ActionMethod}", nameof(CategoriesController), nameof(PostCategory));
+            logger.LogInformation("Request info: {@Headers}", contextAccessor.HttpContext?.Request.Headers);
+            logger.LogInformation("Request info: {@Body}", contextAccessor.HttpContext?.Request.Body);
+            logger.LogInformation("Request body: {@RequestBody}", categoryRequest);
 
 
-            if (_dbContext.Categories == null)
+            if (dbContext.Categories == null)
             {
                 return NotFound();
             }
@@ -167,7 +154,7 @@ namespace EcommerceAPI.Controllers
             // Handle empty category name
             if (string.IsNullOrEmpty(categoryRequest.Name))
             {
-                _logger.LogError("New category validation failed. Null or empty values not allowed");
+                logger.LogError("New category validation failed. Null or empty values not allowed");
                 return BadRequest("New category validation failed. Null or empty values not allowed");
             }
 
@@ -177,13 +164,13 @@ namespace EcommerceAPI.Controllers
                 return Conflict(new { statusCode = HttpStatusCode.Conflict, message = "Category name must be unique", categoryRequest });
             }
 
-            var category = _mapper.Map<Category>(categoryRequest);
+            var category = mapper.Map<Category>(categoryRequest);
 
-            _dbContext.Categories.Add(category);
+            dbContext.Categories.Add(category);
 
             try
             {
-                await _dbContext.SaveChangesAsync();
+                await dbContext.SaveChangesAsync();
             }
             catch (DbUpdateException ex)
             {
@@ -197,7 +184,7 @@ namespace EcommerceAPI.Controllers
                 }
             }
 
-            var categoryResponse = _mapper.Map<CategoryResponse>(category);
+            var categoryResponse = mapper.Map<CategoryResponse>(category);
 
             return CreatedAtAction(nameof(PostCategory), new { id = categoryResponse.Id }, categoryResponse);
         }
@@ -207,19 +194,19 @@ namespace EcommerceAPI.Controllers
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Administrator")]
         public async Task<IActionResult> DeleteCategory(int id)
         {
-            if (_dbContext.Categories == null)
+            if (dbContext.Categories == null)
             {
                 return NotFound();
             }
 
-            var category = await _dbContext.Categories.FindAsync(id);
+            var category = await dbContext.Categories.FindAsync(id);
             if (category == null)
             {
                 return NotFound();
             }
 
-            _dbContext.Categories.Remove(category);
-            await _dbContext.SaveChangesAsync();
+            dbContext.Categories.Remove(category);
+            await dbContext.SaveChangesAsync();
 
             return NoContent();
         }
@@ -227,9 +214,9 @@ namespace EcommerceAPI.Controllers
         private bool CategoryExists(object identifier)
         {
             return identifier is int id 
-                   ? _dbContext.Categories!.Any(category => category.Id == id)
+                   ? dbContext.Categories!.Any(category => category.Id == id)
                    : identifier is string slug
-                   ? _dbContext.Categories!.Any(category => category.Slug == slug)
+                   ? dbContext.Categories!.Any(category => category.Slug == slug)
                    : throw new ArgumentException("Input must be either an integer or a string");
         }
     }

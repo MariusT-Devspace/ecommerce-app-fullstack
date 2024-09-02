@@ -10,26 +10,19 @@ namespace EcommerceAPI.Controllers
     [Route("[controller]")]
     [Route("api/[controller]")]
     [ApiController]
-    public class UsersController : ControllerBase
+    public class UsersController(EcommerceDBContext dbContext) : ControllerBase
     {
-        private readonly EcommerceDBContext _dbContext;
-
-        public UsersController(EcommerceDBContext dbContext)
-        {
-            _dbContext = dbContext;
-        }
-
         // GET: Users
         [HttpGet]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Administrator")]
         public async Task<ActionResult<IEnumerable<User>>> GetUser()
         {
-            if (_dbContext.Users == null)
+            if (dbContext.Users == null)
             {
                 return NotFound();
             }
 
-            return await _dbContext.Users.ToListAsync();
+            return await dbContext.Users.ToListAsync();
         }
 
         // GET: Users/5
@@ -37,12 +30,12 @@ namespace EcommerceAPI.Controllers
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Administrator")]
         public async Task<ActionResult<User>> GetUser(string id)
         {
-            if (_dbContext.Users == null)
+            if (dbContext.Users == null)
             {
                 return NotFound();
             }
 
-            var user = await _dbContext.Users.FindAsync(id);
+            var user = await dbContext.Users.FindAsync(id);
 
             if (user == null)
             {
@@ -63,11 +56,11 @@ namespace EcommerceAPI.Controllers
                 return BadRequest();
             }
 
-            _dbContext.Entry(user).State = EntityState.Modified;
+            dbContext.Entry(user).State = EntityState.Modified;
 
             try
             {
-                await _dbContext.SaveChangesAsync();
+                await dbContext.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -90,13 +83,13 @@ namespace EcommerceAPI.Controllers
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Administrator")]
         public async Task<ActionResult<User>> PostUser([FromBody] User user)
         {
-            if (_dbContext.Users == null)
+            if (dbContext.Users == null)
             {
                 return NotFound();
             }
 
-            _dbContext.Users.Add(user);
-            await _dbContext.SaveChangesAsync();
+            dbContext.Users.Add(user);
+            await dbContext.SaveChangesAsync();
 
             return CreatedAtAction("GetUser", new { id = user.Id }, user);
         }
@@ -106,26 +99,26 @@ namespace EcommerceAPI.Controllers
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Administrator")]
         public async Task<IActionResult> DeleteUser(string id)
         {
-            if (_dbContext.Users == null)
+            if (dbContext.Users == null)
             {
                 return NotFound();
             }
 
-            var user = await _dbContext.Users.FindAsync(id);
+            var user = await dbContext.Users.FindAsync(id);
             if (user == null)
             {
                 return NotFound();
             }
 
-            _dbContext.Users.Remove(user);
-            await _dbContext.SaveChangesAsync();
+            dbContext.Users.Remove(user);
+            await dbContext.SaveChangesAsync();
 
             return NoContent();
         }
 
         private bool UserExists(string id)
         {
-            return _dbContext.Users!.Any(user => user.Id == id);
+            return dbContext.Users!.Any(user => user.Id == id);
         }
     }
 }
