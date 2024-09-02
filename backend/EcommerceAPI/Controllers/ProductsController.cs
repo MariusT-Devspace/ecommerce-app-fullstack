@@ -51,7 +51,7 @@ namespace EcommerceAPI.Controllers
             }
 
             var productResponse = mapper.Map<ProductResponse>(product);
-            return Ok(product);
+            return Ok(productResponse);
         }
 
         // GET: Products/category/electronics
