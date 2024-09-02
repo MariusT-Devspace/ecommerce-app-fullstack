@@ -53,7 +53,9 @@ export class LoginService {
   setToken(token: string): Observable<any> {
     console.log("setToken()");
     let setTokenURL = `${this.baseURL}/SetToken`;
-    return this.httpClient.post(setTokenURL, {}, { headers: { 'Authorization': "Bearer " + token }}) as Observable<any>;
+    return this.httpClient.post(setTokenURL, {}, 
+      { headers: { 'Authorization': "Bearer " + token }}
+    ) as Observable<any>;
   }
 
   checkTokenCookie():  Observable<HttpResponse<Authenticated>>{
@@ -64,7 +66,8 @@ export class LoginService {
       secureCookie: false,
       observe: 'response' as 'response'
     };  
-    return this.httpClient.get<Authenticated>(checkTokenCookieURL, httpOptions) as Observable<HttpResponse<Authenticated>>;
+    return this.httpClient.get<Authenticated>(checkTokenCookieURL, httpOptions
+            ) as Observable<HttpResponse<Authenticated>>;
   }
 
   logOut(): Observable<any> {

@@ -1,8 +1,7 @@
 import { CollectionViewer, DataSource } from '@angular/cdk/collections';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
-import { map } from 'rxjs/operators';
-import { Observable, of as observableOf, merge, BehaviorSubject } from 'rxjs';
+import { Observable, of as observableOf } from 'rxjs';
 import { ProductsService } from 'src/app/core/services/products.service';
 import { Product } from 'src/app/models/product.model';
 

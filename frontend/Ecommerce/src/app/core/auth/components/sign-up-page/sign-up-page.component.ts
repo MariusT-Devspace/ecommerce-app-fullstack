@@ -15,7 +15,10 @@ export class SignUpPageComponent {
 
   showConfirmationPage = false
 
-  constructor(private signUpService: SignUpService, private loginService: LoginService, @Inject(LoginPageComponent) private loginPageComponent: LoginPageComponent) {
+  constructor(
+    private signUpService: SignUpService, private loginService: LoginService, 
+    @Inject(LoginPageComponent) private loginPageComponent: LoginPageComponent
+  ) {
     this.loginService.isLoading$.subscribe({next: (v) => this.showConfirmationPage = v});
   }
 
@@ -33,7 +36,6 @@ export class SignUpPageComponent {
         },
         complete: () => console.log("Signed up correctly.")
       }
-      
     );
   }
 }

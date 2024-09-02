@@ -21,20 +21,22 @@ export class AddProductDialogComponent implements OnInit{
     map(result => result.matches ? 'handset' : 'desktop')
   );
 
-  constructor(public addProductDialogRef: MatDialogRef<AddProductDialogComponent>, 
-    private formBuilder: FormBuilder, 
-    @Inject(MAT_DIALOG_DATA) public data: {categories: Category[]},
-    private breakpointObserver: BreakpointObserver) {
-      this.breakpoint$.subscribe({
-        next: (v) => {
-          if (v === 'desktop') {
-            addProductDialogRef.updateSize('500px');
-          } else {
-            addProductDialogRef.updateSize('350px');
-          }
+  constructor(
+      public addProductDialogRef: MatDialogRef<AddProductDialogComponent>, 
+      private formBuilder: FormBuilder, 
+      @Inject(MAT_DIALOG_DATA) public data: {categories: Category[]},
+      private breakpointObserver: BreakpointObserver
+  ) {
+    this.breakpoint$.subscribe({
+      next: (v) => {
+        if (v === 'desktop') {
+          addProductDialogRef.updateSize('500px');
+        } else {
+          addProductDialogRef.updateSize('350px');
         }
-      });
-    }
+      }
+    });
+  }
 
   ngOnInit() {
     this.addProductForm = this.formBuilder.group({

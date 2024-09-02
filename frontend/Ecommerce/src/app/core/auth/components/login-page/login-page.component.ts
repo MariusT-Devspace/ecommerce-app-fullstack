@@ -14,8 +14,10 @@ import { LoginService } from '../../services/login.service';
 })
 export class LoginPageComponent{
 
-  constructor(private loginService: LoginService, private router: Router, private authUtilsService: AuthUtilsService) { 
-  }
+  constructor(
+    private loginService: LoginService, private router: Router, 
+    private authUtilsService: AuthUtilsService
+  ) { }
 
   logIn(requestBody: Login){
     console.log("logIn()");

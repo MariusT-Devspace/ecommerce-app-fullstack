@@ -5,7 +5,6 @@ import { MatSort } from '@angular/material/sort';
 import { MaterialTableDataSource } from './material-table-datasource';
 import { User } from 'src/app/models/user.model';
 import { UsersService } from 'src/app/core/services/users.service';
-import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
 import { BreakpointObserver } from '@angular/cdk/layout';
 import { fromEvent } from 'rxjs/internal/observable/fromEvent';
 import { UserRole } from 'src/app/core/auth/models/token.model';

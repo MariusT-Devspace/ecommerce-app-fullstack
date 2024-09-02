@@ -60,7 +60,9 @@ export class ProductsMaterialTableComponent implements AfterViewInit {
     color: undefined
   }
 
-  constructor(private productsService: ProductsService, private breakpointObserver: BreakpointObserver) {
+  constructor(
+    private productsService: ProductsService, private breakpointObserver: BreakpointObserver
+  ) {
     this.dataSource = new MaterialTableDataSource(productsService);
   }
   

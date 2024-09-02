@@ -40,14 +40,16 @@ export class ProductDetailDialogComponent {
     color: undefined
   }
 
-  constructor(public productDetailDialogRef: MatDialogRef<ProductDetailDialogComponent>, 
+  constructor(
+    public productDetailDialogRef: MatDialogRef<ProductDetailDialogComponent>, 
     private formBuilder: FormBuilder,
     @Inject(MAT_DIALOG_DATA) public data: {
       productId: number,
       categories: Category[]
     }, 
     private productsService: ProductsService, 
-    private breakpointObserver: BreakpointObserver) {
+    private breakpointObserver: BreakpointObserver
+  ) {
     this.productsService.getProductById(this.data.productId).subscribe({
       next: (response: Product) => { 
         this.product = response;
@@ -90,8 +92,6 @@ export class ProductDetailDialogComponent {
       }
     });
   }
-
-
 
   enableEditMode(): void {
     this.isEditMode = true;

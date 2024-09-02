@@ -27,7 +27,7 @@ export class ProductsListComponent implements OnInit{
         });
       } else {
         this.productsService.getProductsByCategory(params.get('category')!).subscribe({
-          next: (response: Product[]) => {this.products.set(response); console.log(`Products: ${response}`);},
+          next: (response: Product[]) => this.products.set(response),
           error: (err: Error) => console.error("Could not retrieve products" + err.message),
           complete: () => console.log("All products have been retrieved")
         });

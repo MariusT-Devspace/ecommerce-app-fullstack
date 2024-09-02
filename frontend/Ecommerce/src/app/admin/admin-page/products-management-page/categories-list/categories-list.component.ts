@@ -19,7 +19,6 @@ export class CategoriesListComponent implements OnInit{
   @Output() onEditCategory = new EventEmitter<CategoryPUT>();
   @Output() onDeleteCategory = new EventEmitter<number>();
 
-
   isAddCategoryMode: boolean = false;
   categoryForm: FormGroup = new FormGroup({})
   isEditMode: boolean = false;

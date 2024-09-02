@@ -96,6 +96,13 @@ export class MatNavigationComponent implements OnInit {
     }
   }
 
+  getRouteTitle(urlSegments: string[]): string | undefined {
+    let routeKey = urlSegments[urlSegments.length - 1].toString() as keyof typeof this.ROUTES
+    return this.ROUTES[routeKey]
+            ? this.ROUTES[routeKey].title
+            : ""
+  }
+
   logOut() {
     this.loginService.logOut().subscribe({
       next: (response) => this.loginService.isLoggedIn = false,
@@ -118,12 +125,5 @@ export class MatNavigationComponent implements OnInit {
       error: (err: Error) => console.error("Error retrieving categories", err),
       complete: () => console.log("Categories retrieved successfuly")
     });
-  }
-
-  getRouteTitle(urlSegments: string[]): string | undefined {
-    let routeKey = urlSegments[urlSegments.length - 1].toString() as keyof typeof this.ROUTES
-    return this.ROUTES[routeKey]
-            ? this.ROUTES[routeKey].title
-            : ""
   }
 }

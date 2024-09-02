@@ -1,12 +1,10 @@
 import { Component, EventEmitter, Inject, LOCALE_ID, Output } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { ProductDetailDialogComponent } from '../../../products-management-page/products-list/product-detail-dialog/product-detail-dialog.component';
 import { User } from 'src/app/models/user.model';
 import { UserRole } from 'src/app/core/auth/models/token.model';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { map } from 'rxjs/internal/operators/map';
-import {formatDate} from '@angular/common';
+import { formatDate } from '@angular/common';
 
 enum Layout {
   Handset, 
