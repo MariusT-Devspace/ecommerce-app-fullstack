@@ -6,7 +6,7 @@
 
 .sidenav 
   width: 250px
-  margin-top: 56px
+  top: 56px !important
   padding: 17.51px 20px
   z-index: 99
 
@@ -15,9 +15,10 @@
   margin-bottom: 40px
   padding: 16px
 
-.active-link::before 
-  background-color: #000000
-  opacity: 0.12
+.active-link
+  background-color: mat.get-theme-color(theme.$light-theme, surface-container)
+  .list-item-text
+    color: mat.get-theme-color(theme.$light-theme, primary, 30) !important
 
 mat-toolbar
   padding-left: 16px
@@ -27,18 +28,16 @@ mat-toolbar
   position: fixed
   top: 0
   z-index: 10
-/*   background-color: #ffd9e1
-  color: #cb065c */
 
 .logo-button
   font-size: 1em
   text-decoration: none !important
-  color: mat.get-theme-color(theme.$light-theme, primary, 30) !important
+  color: mat.get-theme-color(theme.$light-theme, primary, 25) !important
 
 .secondary-toolbar
   position: fixed
   top: 55.99px
-  color: mat.get-theme-color(theme.$light-theme, primary, 30) !important
+  color: mat.get-theme-color(theme.$light-theme, primary, 25) !important
   z-index: 10
 
 .content-wrapper
@@ -61,7 +60,7 @@ mat-toolbar-row:last-child span
 
 @media only screen and (min-width: 599px)
   .sidenav
-    margin-top: 64px
+    top: 64px !important
 
 @media only screen and (min-width: 960px)
   .sidenav

@@ -21,7 +21,7 @@
       [mode]="(isHandset$ | async) ? 'over' : 'side'"
       [opened]="(isHandset$ | async) === false">
     @if(this.isLoggedIn && this.userRole == UserRole.Administrator) {
-      <mat-nav-list>
+      <mat-nav-list role="navigation">
         <a mat-list-item href="#" routerLink="/admin/{{ROUTES.products.slug}}" 
           routerLinkActive="active-link">{{ROUTES.products.title}}</a>
         <a mat-list-item href="#" routerLink="/admin/{{ROUTES.users.slug}}" 
@@ -35,7 +35,7 @@
           [routerLink]="['/c', category.slug]"
           routerLinkActive="active-link"
           >  
-            {{category.name}}
+          <span class="list-item-text">{{category.name}}</span>
           </a>
         }
       </mat-nav-list>
