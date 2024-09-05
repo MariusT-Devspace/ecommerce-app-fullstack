@@ -6,7 +6,7 @@
 
 .sidenav 
   width: 250px
-  margin-top: 64px
+  margin-top: 56px
   padding: 17.51px 20px
   z-index: 99
 
@@ -20,8 +20,8 @@
   opacity: 0.12
 
 mat-toolbar
-  padding-left: 32px
-  padding-right: 32px
+  padding-left: 16px
+  padding-right: 16px
 
 .main-toolbar
   position: fixed
@@ -44,7 +44,7 @@ mat-toolbar
 .content-wrapper
   //height: calc(100vh - 64px)
   min-height: 600px
-  padding: 0 40px
+  padding: 0 20px
   padding-top: 80px
   background-color: mat.get-theme-color(theme.$light-theme, neutral, 100) !important
 
@@ -59,6 +59,10 @@ mat-toolbar-row:last-child span
   font-size: 19px
   margin: 0
 
+@media only screen and (min-width: 599px)
+  .sidenav
+    margin-top: 64px
+
 @media only screen and (min-width: 960px)
   .sidenav
     background-color: mat.get-theme-color(theme.$light-theme, neutral, 100) !important
@@ -69,7 +73,7 @@ mat-toolbar-row:last-child span
     color: inherit !important
     top: 90px
     h1
-      font-size: 1.5em !important
+      font-size: 2rem !important
 
   .content-wrapper.withSecondaryToolbar
     padding-top: 110px

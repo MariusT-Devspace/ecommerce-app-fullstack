@@ -25,11 +25,13 @@ export class MatNavigationComponent implements OnInit {
   ROUTES = ROUTES;
   currentRoute?: ActivatedRouteSnapshot;
 
-  isHandset$: Observable<boolean> = this.breakpointObserver.observe([Breakpoints.XSmall, Breakpoints.Small])
-    .pipe(
-      map(result => result.matches),
-      shareReplay()
-    );
+  isHandset$: Observable<boolean> = this.breakpointObserver.observe(
+    [Breakpoints.XSmall, Breakpoints.Small]
+  ).pipe(
+    map(result => result.matches),
+    shareReplay()
+  );
+    
 
   title: WritableSignal<string> = signal('');
 
